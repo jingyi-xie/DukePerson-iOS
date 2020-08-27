@@ -112,14 +112,42 @@ func addOrUpdatePerson(firstName: String, lastName: String, whereFrom: String, g
 
 class HW1ViewController : UIViewController {
     
-    let first_input = UITextField()
-    let last_input = UITextField()
-    let from_input = UITextField()
-    let id_input = UITextField()
+    // text fields to input name, from and netid
+    var first_input = UITextField()
+    var last_input = UITextField()
+    var from_input = UITextField()
+    var id_input = UITextField()
     
     var selectedGender : Gender?
     var selectedRole : DukeRole?
     var selectedProgram : DukeProgram?
+    var firstName : String?
+    var lastName : String?
+    var from : String?
+    var netid : String?
+    
+    // helper function to create a new label
+    func createLabel(text : String, pos : CGRect) -> UILabel {
+        let label = UILabel()
+        label.frame = pos
+        label.text = text
+        label.textColor = .white
+        return label
+    }
+    
+    // helper function to create a new text field
+    func createTextField(pos : CGRect, target : Selector) -> UITextField {
+        let textField = UITextField()
+        textField.frame = pos
+        textField.backgroundColor = .black
+        textField.textColor = .white
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = UIColor.white.cgColor
+        textField.layer.cornerRadius = 4.0
+        textField.addTarget(self, action: target, for: .editingChanged)
+        //textField.resignFirstResponder()
+        return textField
+    }
     
     override func loadView() {
 // You can change color scheme if you wish
@@ -134,71 +162,34 @@ class HW1ViewController : UIViewController {
         
 // You can add code here
         // First Name
-        let first_label = UILabel()
-        first_label.frame = CGRect(x: 40, y: 60, width: 200, height: 25)
-        first_label.text = "First Name"
-        first_label.textColor = .white
-        view.addSubview(first_label)
+        view.addSubview(createLabel(text: "First Name",
+                                    pos: CGRect(x: 40, y: 60, width: 200, height: 25)))
         
         //let first_input = UITextField()
-        first_input.frame = CGRect(x: 150, y: 60, width: 180, height: 25)
-        first_input.backgroundColor = .black
-        first_input.textColor = .white
-        first_input.layer.borderWidth = 1
-        first_input.layer.borderColor = UIColor.white.cgColor
-        first_input.layer.cornerRadius = 4.0
-        //first_input.resignFirstResponder()
+        first_input = createTextField(pos: CGRect(x: 150, y: 60, width: 180, height: 25), target: #selector(changedText(_:)))
         view.addSubview(first_input)
         
         // last name
-        let last_label = UILabel()
-        last_label.frame = CGRect(x: 40, y: 110, width: 200, height: 25)
-        last_label.text = "Last Name"
-        last_label.textColor = .white
-        view.addSubview(last_label)
+        view.addSubview(createLabel(text: "Last Name",
+                                    pos: CGRect(x: 40, y: 110, width: 200, height: 25)))
         
-        //let last_input = UITextField()
-        last_input.frame = CGRect(x: 150, y: 110, width: 180, height: 25)
-        last_input.backgroundColor = .black
-        last_input.textColor = .white
-        last_input.layer.borderWidth = 1
-        last_input.layer.borderColor = UIColor.white.cgColor
-        last_input.layer.cornerRadius = 4.0
-        //last_input.resignFirstResponder()
+        last_input = createTextField(pos: CGRect(x: 150, y: 110, width: 180, height: 25), target: #selector(changedText(_:)))
         view.addSubview(last_input)
         
         // from
-        let from_label = UILabel()
-        from_label.frame = CGRect(x: 40, y: 160, width: 200, height: 25)
-        from_label.text = "From"
-        from_label.textColor = .white
-        view.addSubview(from_label)
+        view.addSubview(createLabel(text: "From",
+                                    pos: CGRect(x: 40, y: 160, width: 200, height: 25)))
         
         //let from_input = UITextField()
-        from_input.frame = CGRect(x: 150, y: 160, width: 180, height: 25)
-        from_input.backgroundColor = .black
-        from_input.textColor = .white
-        from_input.layer.borderWidth = 1
-        from_input.layer.borderColor = UIColor.white.cgColor
-        from_input.layer.cornerRadius = 4.0
-        //from_input.resignFirstResponder()
+        from_input = createTextField(pos: CGRect(x: 150, y: 160, width: 180, height: 25), target: #selector(changedText(_:)))
         view.addSubview(from_input)
         
         // netid
-        let id_label = UILabel()
-        id_label.frame = CGRect(x: 40, y: 210, width: 200, height: 25)
-        id_label.text = "NetID"
-        id_label.textColor = .white
-        view.addSubview(id_label)
+        view.addSubview(createLabel(text: "NetID",
+                                    pos: CGRect(x: 40, y: 210, width: 200, height: 25)))
         
         // let id_input = UITextField()
-        id_input.frame = CGRect(x: 150, y: 210, width: 180, height: 25)
-        id_input.backgroundColor = .black
-        id_input.textColor = .white
-        id_input.layer.borderWidth = 1
-        id_input.layer.borderColor = UIColor.white.cgColor
-        id_input.layer.cornerRadius = 4.0
-        //id_input.resignFirstResponder()
+        id_input = createTextField(pos: CGRect(x: 150, y: 210, width: 180, height: 25), target: #selector(changedText(_:)))
         view.addSubview(id_input)
         
         // segmented control to select gender
@@ -224,52 +215,84 @@ class HW1ViewController : UIViewController {
         program_select.selectedSegmentTintColor = .white
         program_select.addTarget(self, action: #selector(selectProgram(_:)), for: .valueChanged)
         view.addSubview(program_select)
+        
+        // add/update button
+        let add_update_btn = UIButton()
+        add_update_btn.frame = CGRect(x: 30, y: 410, width: 100, height: 30)
+        add_update_btn.backgroundColor = .black
+        add_update_btn.layer.borderWidth = 1
+        add_update_btn.layer.cornerRadius = 4
+        add_update_btn.layer.borderColor = UIColor.white.cgColor
+        view.addSubview(add_update_btn)
     }
     
 // You can add code here
+    @objc func changedText(_ text_input: UITextField) {
+        // Use "if let" to get string from text field.
+        if let value = text_input.text {
+            if text_input == first_input {
+                firstName = value
+                print("first name is " + firstName!)
+            }
+            else if text_input == last_input {
+                lastName = value
+                print("last name is " + lastName!)
+
+            }
+            else if text_input == from_input {
+                from = value
+                print("from is " + from!)
+            }
+            else {
+                netid = value
+                print("netid is " + netid!)
+            }
+        }
+    }
+    
     // when change the gender segmented control
     @objc func selectGender(_ gender_select: UISegmentedControl) {
         switch (gender_select.selectedSegmentIndex) {
-        case 0:
-            selectedGender = Gender.Male
-            print(selectedGender!)
-        case 1:
-            selectedGender = Gender.Female
-            print(selectedGender!)
-        default:
-            break
+            case 0:
+                selectedGender = Gender.Male
+                print(selectedGender!)
+            case 1:
+                selectedGender = Gender.Female
+                print(selectedGender!)
+            default:
+                break
         }
     }
     
     @objc func selectRole(_ role_select: UISegmentedControl) {
         switch (role_select.selectedSegmentIndex) {
-        case 0:
-            selectedRole = DukeRole.Professor
-            print(selectedRole!)
-        case 1:
-            selectedRole = DukeRole.TA
-            print(selectedRole!)
-        case 2:
-            selectedRole = DukeRole.Student
-            print(selectedRole!)
-        default:
-            break
+            case 0:
+                selectedRole = DukeRole.Professor
+                print(selectedRole!)
+            case 1:
+                selectedRole = DukeRole.TA
+                print(selectedRole!)
+            case 2:
+                selectedRole = DukeRole.Student
+                print(selectedRole!)
+            default:
+                break
         }
     }
     
     @objc func selectProgram(_ program_select: UISegmentedControl) {
         switch (program_select.selectedSegmentIndex) {
-        case 0:
-            selectedProgram = DukeProgram.Undergrad
-            print(selectedProgram!)
-        case 1:
-            selectedProgram = DukeProgram.Grad
-            print(selectedProgram!)
-        case 2:
-            selectedProgram = DukeProgram.NA
-            print(selectedProgram!)
-        default:
-            break
+            case 0:
+                selectedProgram = DukeProgram.Undergrad
+                print(selectedProgram!)
+            case 1:
+                selectedProgram = DukeProgram.Grad
+                print(selectedProgram!)
+            case 2:
+                selectedProgram = DukeProgram.NA
+                print(selectedProgram!)
+            default:
+                break
         }
     }
 
