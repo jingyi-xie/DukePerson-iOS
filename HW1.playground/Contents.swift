@@ -104,6 +104,7 @@ func addOrUpdatePerson(first: String, last: String, whereFrom: String, gender: G
     // if not in the database, create a new record
     people_list.append(DukePerson(firstName: firstName, lastName: lastName, whereFrom: whereFrom, gender: gender, role: role, program: program, netid: netid))
     return "The person has been added"
+
 }
 
 class HW1ViewController : UIViewController {
@@ -260,16 +261,16 @@ class HW1ViewController : UIViewController {
         last_input.text = ""
         from_input.text = ""
         id_input.text = ""
-        selectedGender = nil
-        selectedRole = nil
-        selectedProgram = nil
+        gender_select.selectedSegmentIndex = -1
+        role_select.selectedSegmentIndex = -1
+        program_select.selectedSegmentIndex = -1
         firstName = nil
         lastName = nil
         from = nil
         netid = nil
-        gender_select.selectedSegmentIndex = -1
-        role_select.selectedSegmentIndex = -1
-        program_select.selectedSegmentIndex = -1
+        selectedGender = nil
+        selectedRole = nil
+        selectedProgram = nil
     }
     
 // You can add code here
@@ -373,8 +374,7 @@ class HW1ViewController : UIViewController {
                     gender_select.selectedSegmentIndex = 0
                 case Gender.Female:
                     gender_select.selectedSegmentIndex = 1
-                default:
-                    break
+
                 }
                 switch (person.role) {
                 case DukeRole.Professor:
@@ -383,8 +383,6 @@ class HW1ViewController : UIViewController {
                     role_select.selectedSegmentIndex = 1
                 case DukeRole.Student:
                     role_select.selectedSegmentIndex = 2
-                default:
-                    break
                 }
                 switch (person.program) {
                 case DukeProgram.Undergrad:
@@ -393,8 +391,6 @@ class HW1ViewController : UIViewController {
                     program_select.selectedSegmentIndex = 1
                 case DukeProgram.NA:
                     program_select.selectedSegmentIndex = 2
-                default:
-                    break
                 }
             }
         }
