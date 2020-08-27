@@ -70,23 +70,22 @@ people_list.append(DukePerson(firstName: "Ric", lastName: "Telford", whereFrom: 
 people_list.append(DukePerson(firstName: "Haohong", lastName: "Zhao", whereFrom: "China", gender: .Male, role: .TA, program: .Grad, netid: "hz147"))
 people_list.append(DukePerson(firstName: "Yuchen", lastName: "Yang", whereFrom: "China", gender: .Female, role: .TA, program: .Grad, netid: "yy227"))
 
-//print(people_list)
-
 // find person in the array data base
-func findPerson(first: String, last: String) -> String {
+func findPerson(first: String, last: String) -> (String, DukePerson?) {
+    let firstName = first.trimmingCharacters(in: .whitespacesAndNewlines)
+    let lastName = last.trimmingCharacters(in: .whitespacesAndNewlines)
     for person in people_list {
-        if person.firstName.lowercased() == first.lowercased() && person.lastName.lowercased() == last.lowercased() {
-            return person.description
+        if person.firstName.lowercased() == firstName.lowercased() && person.lastName.lowercased() == lastName.lowercased() {
+            return (person.description, person)
         }
     }
-    return "The person was not found"
+    return ("The person was not found", nil)
 }
 
-//print(findPerson(first: "Jingyi", last: "xie"))
-
-
-func addOrUpdatePerson(firstName: String, lastName: String, whereFrom: String, gender: Gender, role: DukeRole, program: DukeProgram, netid: String) -> String {
+func addOrUpdatePerson(first: String, last: String, whereFrom: String, gender: Gender, role: DukeRole, program: DukeProgram, netid: String) -> String {
     var found : Bool = false
+    let firstName = first.trimmingCharacters(in: .whitespacesAndNewlines)
+    let lastName = last.trimmingCharacters(in: .whitespacesAndNewlines)
     for person in people_list {
         // if in the database, update the current record
         if person.firstName.lowercased() == firstName.lowercased() && person.lastName.lowercased() == lastName.lowercased() {
@@ -107,9 +106,6 @@ func addOrUpdatePerson(firstName: String, lastName: String, whereFrom: String, g
     return "The person has been added"
 }
 
-//print(addOrUpdatePerson(firstName: "jingyi", lastName: "xie", whereFrom: "place", gender: .Female, role: .Student, program: .Grad, netid: "id"))
-//print(people_list)
-
 class HW1ViewController : UIViewController {
     
     // text fields to input name, from and netid
@@ -117,6 +113,12 @@ class HW1ViewController : UIViewController {
     var last_input = UITextField()
     var from_input = UITextField()
     var id_input = UITextField()
+    var gender_select = UISegmentedControl()
+    var role_select = UISegmentedControl()
+    var program_select = UISegmentedControl()
+    var add_update_btn = UIButton()
+    var find_btn = UIButton()
+    var result_label = UILabel()
     
     var selectedGender : Gender?
     var selectedRole : DukeRole?
@@ -131,7 +133,6 @@ class HW1ViewController : UIViewController {
         let label = UILabel()
         label.frame = pos
         label.text = text
-        label.textColor = .white
         return label
     }
     
@@ -139,91 +140,136 @@ class HW1ViewController : UIViewController {
     func createTextField(pos : CGRect, target : Selector) -> UITextField {
         let textField = UITextField()
         textField.frame = pos
-        textField.backgroundColor = .black
-        textField.textColor = .white
-        textField.layer.borderWidth = 1
-        textField.layer.borderColor = UIColor.white.cgColor
+        textField.layer.borderWidth = 1.5
+        textField.layer.borderColor = UIColor.black.cgColor
         textField.layer.cornerRadius = 4.0
         textField.addTarget(self, action: target, for: .editingChanged)
-        //textField.resignFirstResponder()
         return textField
+    }
+    
+    // helper function to create a new segmented control
+    func createSegmentedControl(items: [String], pos : CGRect, target : Selector) -> UISegmentedControl {
+        let segmentedControl = UISegmentedControl(items: items)
+        segmentedControl.frame = pos
+        segmentedControl.selectedSegmentTintColor = .lightGray
+        segmentedControl.addTarget(self, action: target, for: .valueChanged)
+        return segmentedControl
+    }
+    
+    // helper function to create a new button
+    func createBtn(text : String , pos : CGRect, target : Selector) -> UIButton {
+        let btn = UIButton()
+        btn.frame = pos
+        btn.layer.borderWidth = 1
+        btn.layer.cornerRadius = 4
+        btn.setTitleColor(.black, for: .normal)
+        btn.setTitle(text, for: .normal)
+        btn.addTarget(self, action: target, for: .touchUpInside)
+        return btn
     }
     
     override func loadView() {
 // You can change color scheme if you wish
         let view = UIView()
-        view.backgroundColor = .black
-        let label = UILabel()
-        label.frame = CGRect(x: 100, y: 10, width: 200, height: 20)
-        label.text = "ECE 564 Homework 1"
-        label.textColor = .white
-        view.addSubview(label)
+        view.backgroundColor = .white
+        
         self.view = view
         
 // You can add code here
+        
+        let imageView = UIImageView(frame: CGRect(x: 30, y: 10, width: 80, height: 80))
+        view.addSubview(imageView)
+
+        if let sample = Bundle.main.path(forResource: "logo", ofType: "jpg") {
+            let image = UIImage(contentsOfFile: sample)
+            imageView.image = image
+        }
+        
+        let label = UILabel()
+        label.frame = CGRect(x: 150, y: 45, width: 200, height: 20)
+        label.text = "Duke Internal Directory"
+        label.textColor = UIColor(red: 0/255.0, green: 0/255.0, blue: 204/255.0, alpha: 1)
+        label.font = UIFont(name: "Poppins-Regular", size: 30.0)
+        view.addSubview(label)
+        
+        
         // First Name
         view.addSubview(createLabel(text: "First Name",
-                                    pos: CGRect(x: 40, y: 60, width: 200, height: 25)))
+                                    pos: CGRect(x: 40, y: 100, width: 200, height: 25)))
         
-        //let first_input = UITextField()
-        first_input = createTextField(pos: CGRect(x: 150, y: 60, width: 180, height: 25), target: #selector(changedText(_:)))
+        first_input = createTextField(pos: CGRect(x: 150, y: 100, width: 180, height: 25), target: #selector(changedText(_:)))
         view.addSubview(first_input)
         
         // last name
         view.addSubview(createLabel(text: "Last Name",
-                                    pos: CGRect(x: 40, y: 110, width: 200, height: 25)))
+                                    pos: CGRect(x: 40, y: 150, width: 200, height: 25)))
         
-        last_input = createTextField(pos: CGRect(x: 150, y: 110, width: 180, height: 25), target: #selector(changedText(_:)))
+        last_input = createTextField(pos: CGRect(x: 150, y: 150, width: 180, height: 25), target: #selector(changedText(_:)))
         view.addSubview(last_input)
         
         // from
         view.addSubview(createLabel(text: "From",
-                                    pos: CGRect(x: 40, y: 160, width: 200, height: 25)))
+                                    pos: CGRect(x: 40, y: 200, width: 200, height: 25)))
         
-        //let from_input = UITextField()
-        from_input = createTextField(pos: CGRect(x: 150, y: 160, width: 180, height: 25), target: #selector(changedText(_:)))
+        from_input = createTextField(pos: CGRect(x: 150, y: 200, width: 180, height: 25), target: #selector(changedText(_:)))
         view.addSubview(from_input)
         
         // netid
         view.addSubview(createLabel(text: "NetID",
-                                    pos: CGRect(x: 40, y: 210, width: 200, height: 25)))
+                                    pos: CGRect(x: 40, y: 250, width: 200, height: 25)))
         
-        // let id_input = UITextField()
-        id_input = createTextField(pos: CGRect(x: 150, y: 210, width: 180, height: 25), target: #selector(changedText(_:)))
+        id_input = createTextField(pos: CGRect(x: 150, y: 250, width: 180, height: 25), target: #selector(changedText(_:)))
         view.addSubview(id_input)
         
         // segmented control to select gender
-        let gender_select = UISegmentedControl(items: ["Male", "Female"])
-        gender_select.frame = CGRect(x: 30, y: 260, width: 300, height: 25)
-        gender_select.backgroundColor = .gray
-        gender_select.selectedSegmentTintColor = .white
-        gender_select.addTarget(self, action: #selector(selectGender(_:)), for: .valueChanged)
+        gender_select = createSegmentedControl(items: ["Male", "Female"], pos: CGRect(x: 30, y: 300, width: 300, height: 25), target: #selector(selectGender(_:)))
         view.addSubview(gender_select)
         
         // segmented control to select role
-        let role_select = UISegmentedControl(items: ["Prof", "TA", "Student"])
-        role_select.frame = CGRect(x: 30, y: 310, width: 300, height: 25)
-        role_select.backgroundColor = .gray
-        role_select.selectedSegmentTintColor = .white
-        role_select.addTarget(self, action: #selector(selectRole(_:)), for: .valueChanged)
+        role_select = createSegmentedControl(items: ["Prof", "TA", "Student"], pos: CGRect(x: 30, y: 350, width: 300, height: 25), target: #selector(selectRole(_:)))
         view.addSubview(role_select)
         
         // segmented control to select program
-        let program_select = UISegmentedControl(items: ["Undergrad", "Grad", "NA"])
-        program_select.frame = CGRect(x: 30, y: 360, width: 300, height: 25)
-        program_select.backgroundColor = .gray
-        program_select.selectedSegmentTintColor = .white
-        program_select.addTarget(self, action: #selector(selectProgram(_:)), for: .valueChanged)
+        program_select = createSegmentedControl(items: ["Undergrad", "Grad", "NA"], pos: CGRect(x: 30, y: 400, width: 300, height: 25), target: #selector(selectProgram(_:)))
         view.addSubview(program_select)
         
         // add/update button
-        let add_update_btn = UIButton()
-        add_update_btn.frame = CGRect(x: 30, y: 410, width: 100, height: 30)
-        add_update_btn.backgroundColor = .black
-        add_update_btn.layer.borderWidth = 1
-        add_update_btn.layer.cornerRadius = 4
-        add_update_btn.layer.borderColor = UIColor.white.cgColor
+        add_update_btn = createBtn(text: "Add/Update", pos: CGRect(x: 30, y: 450, width: 120, height: 30), target: #selector(buttonClicked(_:)))
         view.addSubview(add_update_btn)
+        
+        // find button
+        find_btn = createBtn(text: "Find", pos: CGRect(x: 210, y: 450, width: 120, height: 30), target: #selector(buttonClicked(_:)))
+        view.addSubview(find_btn)
+        
+        // result label
+        result_label = createLabel(text: "Welcome!", pos: CGRect(x: 30, y: 480, width: 300, height: 200))
+        result_label.lineBreakMode = .byWordWrapping
+        result_label.numberOfLines = 10
+        view.addSubview(result_label)
+    }
+    
+    func hideKeyboard() {
+        first_input.resignFirstResponder()
+        last_input.resignFirstResponder()
+        from_input.resignFirstResponder()
+        id_input.resignFirstResponder()
+    }
+    
+    func clearInput() {
+        first_input.text = ""
+        last_input.text = ""
+        from_input.text = ""
+        id_input.text = ""
+        selectedGender = nil
+        selectedRole = nil
+        selectedProgram = nil
+        firstName = nil
+        lastName = nil
+        from = nil
+        netid = nil
+        gender_select.selectedSegmentIndex = -1
+        role_select.selectedSegmentIndex = -1
+        program_select.selectedSegmentIndex = -1
     }
     
 // You can add code here
@@ -232,67 +278,125 @@ class HW1ViewController : UIViewController {
         if let value = text_input.text {
             if text_input == first_input {
                 firstName = value
-                print("first name is " + firstName!)
             }
             else if text_input == last_input {
                 lastName = value
-                print("last name is " + lastName!)
-
             }
             else if text_input == from_input {
                 from = value
-                print("from is " + from!)
             }
             else {
                 netid = value
-                print("netid is " + netid!)
             }
         }
     }
     
     // when change the gender segmented control
     @objc func selectGender(_ gender_select: UISegmentedControl) {
+        hideKeyboard()
         switch (gender_select.selectedSegmentIndex) {
-            case 0:
-                selectedGender = Gender.Male
-                print(selectedGender!)
-            case 1:
-                selectedGender = Gender.Female
-                print(selectedGender!)
-            default:
-                break
+        case 0:
+            selectedGender = Gender.Male
+        case 1:
+            selectedGender = Gender.Female
+        default:
+            break
         }
     }
     
     @objc func selectRole(_ role_select: UISegmentedControl) {
+        hideKeyboard()
         switch (role_select.selectedSegmentIndex) {
-            case 0:
-                selectedRole = DukeRole.Professor
-                print(selectedRole!)
-            case 1:
-                selectedRole = DukeRole.TA
-                print(selectedRole!)
-            case 2:
-                selectedRole = DukeRole.Student
-                print(selectedRole!)
-            default:
-                break
+        case 0:
+            selectedRole = DukeRole.Professor
+        case 1:
+            selectedRole = DukeRole.TA
+        case 2:
+            selectedRole = DukeRole.Student
+        default:
+            break
         }
     }
     
     @objc func selectProgram(_ program_select: UISegmentedControl) {
+        hideKeyboard()
         switch (program_select.selectedSegmentIndex) {
-            case 0:
-                selectedProgram = DukeProgram.Undergrad
-                print(selectedProgram!)
-            case 1:
-                selectedProgram = DukeProgram.Grad
-                print(selectedProgram!)
-            case 2:
-                selectedProgram = DukeProgram.NA
-                print(selectedProgram!)
-            default:
-                break
+        case 0:
+            selectedProgram = DukeProgram.Undergrad
+        case 1:
+            selectedProgram = DukeProgram.Grad
+        case 2:
+            selectedProgram = DukeProgram.NA
+        default:
+            break
+        }
+    }
+    
+    @objc func buttonClicked(_ btn: UIButton) {
+        hideKeyboard()
+        if btn == add_update_btn {
+            if firstName == nil || lastName == nil || from == nil || netid == nil || selectedGender == nil || selectedRole == nil || selectedProgram == nil {
+                result_label.text = "Error: Please enter all information"
+                result_label.textColor = .red
+            }
+            else {
+                let result = addOrUpdatePerson(first: firstName!, last: lastName!, whereFrom: from!, gender: selectedGender!, role: selectedRole!, program: selectedProgram!, netid: netid!)
+                result_label.text = result
+                result_label.textColor = .green
+                clearInput()
+            }
+            
+        }
+        else if btn == find_btn {
+            if firstName == nil || lastName == nil {
+                result_label.text = "Error: Please provide a first name and last name"
+                result_label.textColor = .red
+            }
+            else {
+                let result = findPerson(first: firstName!, last: lastName!)
+                result_label.text = result.0
+                result_label.textColor = UIColor(red: 0/255.0, green: 255/255.0, blue: 0/255.0, alpha: 1)
+                if (result.1 == nil) {
+                    result_label.textColor = .red
+                    return
+                }
+                let person = result.1!
+                from_input.text = person.whereFrom
+                from = person.whereFrom
+                id_input.text = person.netid
+                netid = person.netid
+                selectedGender = person.gender
+                selectedRole = person.role
+                selectedProgram = person.program
+                switch (person.gender) {
+                case Gender.Male:
+                    gender_select.selectedSegmentIndex = 0
+                case Gender.Female:
+                    gender_select.selectedSegmentIndex = 1
+                default:
+                    break
+                }
+                switch (person.role) {
+                case DukeRole.Professor:
+                    role_select.selectedSegmentIndex = 0
+                case DukeRole.TA:
+                    role_select.selectedSegmentIndex = 1
+                case DukeRole.Student:
+                    role_select.selectedSegmentIndex = 2
+                default:
+                    break
+                }
+                switch (person.program) {
+                case DukeProgram.Undergrad:
+                    program_select.selectedSegmentIndex = 0
+                case DukeProgram.Grad:
+                    program_select.selectedSegmentIndex = 1
+                case DukeProgram.NA:
+                    program_select.selectedSegmentIndex = 2
+                default:
+                    break
+                }
+            }
         }
     }
 
