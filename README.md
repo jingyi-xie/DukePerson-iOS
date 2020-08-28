@@ -4,7 +4,7 @@ This is the project you will use for all four of your ECE564 homework assignment
 ## HW1
 Extra Features:
 * Added a `NetID` property to `DukePerson`.
-* The `FirstName` and `LastName` text fields are not case-sensitive and whitespaces are trimmed to facilitate `find` and `update`.
+* The `FirstName` and `LastName` text fields are **NOT** case-sensitive and whitespaces are trimmed to facilitate `find` and `update`.
 * Changed the background color and added a picture Duke University.
 * After successfully finding a person, all of the text fields and segmented controls are auto-completed so that it's easier to do an `update`. 
 Test this by finding a person first, then update any information. After that, do another find and you should see the updated information.
