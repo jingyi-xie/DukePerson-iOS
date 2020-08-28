@@ -121,6 +121,7 @@ class HW1ViewController : UIViewController {
     var find_btn = UIButton()
     var result_label = UILabel()
     
+    // variables to store the current input information
     var selectedGender : Gender?
     var selectedRole : DukeRole?
     var selectedProgram : DukeProgram?
@@ -166,6 +167,7 @@ class HW1ViewController : UIViewController {
         btn.setTitleColor(.black, for: .normal)
         btn.setTitle(text, for: .normal)
         btn.addTarget(self, action: target, for: .touchUpInside)
+        btn.backgroundColor = UIColor(red: 153/255.0, green: 204/255.0, blue: 255/255.0, alpha: 1)
         return btn
     }
     
@@ -190,11 +192,9 @@ class HW1ViewController : UIViewController {
         label.frame = CGRect(x: 150, y: 45, width: 200, height: 20)
         label.text = "Duke Internal Directory"
         label.textColor = UIColor(red: 0/255.0, green: 0/255.0, blue: 204/255.0, alpha: 1)
-        label.font = UIFont(name: "Poppins-Regular", size: 30.0)
         view.addSubview(label)
         
-        
-        // First Name
+        // first Name
         view.addSubview(createLabel(text: "First Name",
                                     pos: CGRect(x: 40, y: 100, width: 200, height: 25)))
         
@@ -257,13 +257,16 @@ class HW1ViewController : UIViewController {
     }
     
     func clearInput() {
+        // clear text fields
         first_input.text = ""
         last_input.text = ""
         from_input.text = ""
         id_input.text = ""
+        // set segmented controls as unselected
         gender_select.selectedSegmentIndex = -1
         role_select.selectedSegmentIndex = -1
         program_select.selectedSegmentIndex = -1
+        // clear variables used to store the input information
         firstName = nil
         lastName = nil
         from = nil
@@ -275,8 +278,8 @@ class HW1ViewController : UIViewController {
     
 // You can add code here
     @objc func changedText(_ text_input: UITextField) {
-        // Use "if let" to get string from text field.
         if let value = text_input.text {
+            // update variables according to the input of text fields
             if text_input == first_input {
                 firstName = value
             }
@@ -305,6 +308,7 @@ class HW1ViewController : UIViewController {
         }
     }
     
+    // when change the role segmented control
     @objc func selectRole(_ role_select: UISegmentedControl) {
         hideKeyboard()
         switch (role_select.selectedSegmentIndex) {
@@ -319,6 +323,7 @@ class HW1ViewController : UIViewController {
         }
     }
     
+    // when change the program segmented control
     @objc func selectProgram(_ program_select: UISegmentedControl) {
         hideKeyboard()
         switch (program_select.selectedSegmentIndex) {
@@ -349,6 +354,7 @@ class HW1ViewController : UIViewController {
             
         }
         else if btn == find_btn {
+            // check if first name and last name are provided
             if firstName == nil || lastName == nil {
                 result_label.text = "Error: Please provide a first name and last name"
                 result_label.textColor = .red
