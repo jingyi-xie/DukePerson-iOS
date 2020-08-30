@@ -14,6 +14,9 @@
 		8734816C2469DEE9000B9A79 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8734816A2469DEE9000B9A79 /* LaunchScreen.storyboard */; };
 		91A263E624FB62F100DABD2A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 91A263E424FB62F100DABD2A /* Model.xcdatamodeld */; };
 		91A2642724FB6E6C00DABD2A /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A2642624FB6E6C00DABD2A /* InformationViewController.swift */; };
+		91A2642E24FB71E900DABD2A /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A2642D24FB71E900DABD2A /* DataModel.swift */; };
+		91A2643124FB727800DABD2A /* DukePerson+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A2642F24FB727800DABD2A /* DukePerson+CoreDataClass.swift */; };
+		91A2643224FB727800DABD2A /* DukePerson+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A2643024FB727800DABD2A /* DukePerson+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +32,9 @@
 		873481752469E43A000B9A79 /* HW1.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = HW1.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		91A263E524FB62F100DABD2A /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		91A2642624FB6E6C00DABD2A /* InformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationViewController.swift; sourceTree = "<group>"; };
+		91A2642D24FB71E900DABD2A /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
+		91A2642F24FB727800DABD2A /* DukePerson+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DukePerson+CoreDataClass.swift"; sourceTree = "<group>"; };
+		91A2643024FB727800DABD2A /* DukePerson+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DukePerson+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +70,7 @@
 		8734815E2469DEE8000B9A79 /* ECE564_HW */ = {
 			isa = PBXGroup;
 			children = (
+				91A2642C24FB713900DABD2A /* Model */,
 				8734815F2469DEE8000B9A79 /* AppDelegate.swift */,
 				873481612469DEE8000B9A79 /* SceneDelegate.swift */,
 				873481652469DEE8000B9A79 /* Main.storyboard */,
@@ -74,6 +81,16 @@
 				91A2642624FB6E6C00DABD2A /* InformationViewController.swift */,
 			);
 			path = ECE564_HW;
+			sourceTree = "<group>";
+		};
+		91A2642C24FB713900DABD2A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				91A2642F24FB727800DABD2A /* DukePerson+CoreDataClass.swift */,
+				91A2643024FB727800DABD2A /* DukePerson+CoreDataProperties.swift */,
+				91A2642D24FB71E900DABD2A /* DataModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -147,10 +164,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91A2642E24FB71E900DABD2A /* DataModel.swift in Sources */,
 				873481602469DEE8000B9A79 /* AppDelegate.swift in Sources */,
 				873481622469DEE8000B9A79 /* SceneDelegate.swift in Sources */,
 				91A263E624FB62F100DABD2A /* Model.xcdatamodeld in Sources */,
 				91A2642724FB6E6C00DABD2A /* InformationViewController.swift in Sources */,
+				91A2643124FB727800DABD2A /* DukePerson+CoreDataClass.swift in Sources */,
+				91A2643224FB727800DABD2A /* DukePerson+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
