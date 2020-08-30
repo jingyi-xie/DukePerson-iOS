@@ -11,11 +11,40 @@ import CoreData
 
 class InformationViewController: UIViewController {
 
+    @IBOutlet weak var first_input: UITextField!
+    @IBOutlet weak var last_input: UITextField!
+    @IBOutlet weak var from_input: UITextField!
+    @IBOutlet weak var program_input: UITextField!
+    @IBOutlet weak var hobbies_input: UITextField!
+    @IBOutlet weak var languages_input: UITextField!
+    @IBOutlet weak var team_input: UITextField!
+    @IBOutlet weak var email_input: UITextField!
+    @IBOutlet weak var gender_input: UITextField!
+    @IBOutlet weak var role_input: UITextField!
+    
+    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    let genders = ["Male", "Female"]
+    var genderPickerView = UIPickerView()
+    
+    let roles = ["Professor", "TA", "Student"]
+    var rolePickerView = UIPickerView()
+    
         
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        genderPickerView.delegate = self
+        genderPickerView.dataSource = self
+        genderPickerView.tag = 0
+        gender_input.inputView = genderPickerView
+        
+        rolePickerView.delegate = self
+        rolePickerView.dataSource = self
+        rolePickerView.tag = 1
+        role_input.inputView = rolePickerView
         
         self.prePopulate()
         
@@ -95,5 +124,49 @@ class InformationViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    @IBAction func clickAdd(_ sender: Any) {
+        print(self.first_input.text)
+    }
+    
+    @IBAction func clickFind(_ sender: Any) {
+    }
+    
 
+}
+
+extension InformationViewController : UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if pickerView.tag == 0 {
+            return genders.count
+        }
+        else {
+            return roles.count
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if pickerView.tag == 0 {
+            return genders[row]
+        }
+        else {
+            return roles[row]
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if pickerView.tag == 0 {
+            gender_input.text = genders[row]
+            gender_input.resignFirstResponder()
+        }
+        else {
+            role_input.text = roles[row]
+            role_input.resignFirstResponder()
+        }
+        
+    }
 }
