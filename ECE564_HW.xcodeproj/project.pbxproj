@@ -13,6 +13,7 @@
 		873481672469DEE8000B9A79 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873481652469DEE8000B9A79 /* Main.storyboard */; };
 		873481692469DEE9000B9A79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 873481682469DEE9000B9A79 /* Assets.xcassets */; };
 		8734816C2469DEE9000B9A79 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8734816A2469DEE9000B9A79 /* LaunchScreen.storyboard */; };
+		91A263E624FB62F100DABD2A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 91A263E424FB62F100DABD2A /* Model.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		873481732469DFE1000B9A79 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		873481742469E31C000B9A79 /* Practice.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Practice.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		873481752469E43A000B9A79 /* HW1.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = HW1.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		91A263E524FB62F100DABD2A /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 				873481682469DEE9000B9A79 /* Assets.xcassets */,
 				8734816A2469DEE9000B9A79 /* LaunchScreen.storyboard */,
 				8734816D2469DEE9000B9A79 /* Info.plist */,
+				91A263E424FB62F100DABD2A /* Model.xcdatamodeld */,
 			);
 			path = ECE564_HW;
 			sourceTree = "<group>";
@@ -147,6 +150,7 @@
 				873481642469DEE8000B9A79 /* ViewController.swift in Sources */,
 				873481602469DEE8000B9A79 /* AppDelegate.swift in Sources */,
 				873481622469DEE8000B9A79 /* SceneDelegate.swift in Sources */,
+				91A263E624FB62F100DABD2A /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,6 +348,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		91A263E424FB62F100DABD2A /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				91A263E524FB62F100DABD2A /* Model.xcdatamodel */,
+			);
+			currentVersion = 91A263E524FB62F100DABD2A /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 873481542469DEE8000B9A79 /* Project object */;
 }
