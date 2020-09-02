@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class InformationViewController: UIViewController {
+class InformationViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
 
     @IBOutlet weak var first_input: UITextField!
     @IBOutlet weak var last_input: UITextField!
@@ -46,6 +46,17 @@ class InformationViewController: UIViewController {
         rolePickerView.dataSource = self
         rolePickerView.tag = 1
         role_input.inputView = rolePickerView
+        
+        first_input.delegate = self
+        last_input.delegate = self
+        from_input.delegate = self
+        program_input.delegate = self
+        hobbies_input.delegate = self
+        languages_input.delegate = self
+        team_input.delegate = self
+        email_input.delegate = self
+        gender_input.delegate = self
+        role_input.delegate = self
         
         self.prePopulate()
         self.fetchData()
@@ -266,11 +277,12 @@ class InformationViewController: UIViewController {
         }
         
     }
-}
-
-
-
-extension InformationViewController : UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -279,18 +291,20 @@ extension InformationViewController : UIPickerViewDelegate, UIPickerViewDataSour
         if pickerView.tag == 0 {
             return genders.count
         }
-        else {
+        else if pickerView.tag == 1 {
             return roles.count
         }
+        return 1
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView.tag == 0 {
             return genders[row]
         }
-        else {
+        else if pickerView.tag == 1 {
             return roles[row]
         }
+        return "Data not found"
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -302,6 +316,5 @@ extension InformationViewController : UIPickerViewDelegate, UIPickerViewDataSour
             role_input.text = roles[row]
             role_input.resignFirstResponder()
         }
-        
     }
 }
