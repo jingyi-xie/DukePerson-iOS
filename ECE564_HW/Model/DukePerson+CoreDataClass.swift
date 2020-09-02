@@ -21,8 +21,12 @@ public class DukePerson: NSManagedObject {
             pronouns = ["She", "Her"]
         }
         var des : String = ""
-        if self.firstName != nil && self.lastName != nil && self.whereFrom != nil {
-            des = "\(self.firstName!) \(self.lastName!) is from \(self.whereFrom!). "
+        if self.firstName != nil && self.lastName != nil {
+            des = "\(self.firstName!) \(self.lastName!). "
+        }
+        // where from
+        if self.whereFrom != nil && self.whereFrom != "" {
+            des += pronouns[0] + " is from \(self.whereFrom!). "
         }
         // role
         des += pronouns[0] + " is a \(self.role). "

@@ -49,6 +49,7 @@ class InformationViewController: UIViewController {
         
         self.prePopulate()
         self.fetchData()
+        self.clearInput()
         
         var people_list:[DukePerson]?
         try! people_list = context.fetch(DukePerson.fetchRequest())
@@ -140,28 +141,59 @@ class InformationViewController: UIViewController {
         return ("The person was not found", nil)
     }
 
-//    func addOrUpdatePerson(first: String, last: String, whereFrom: String, gender: Gender, role: DukeRole, program: DukeProgram, netid: String) -> String {
-//        var found : Bool = false
-//        let firstName = first.trimmingCharacters(in: .whitespacesAndNewlines)
-//        let lastName = last.trimmingCharacters(in: .whitespacesAndNewlines)
-//        for person in people_list {
-//            // if in the database, update the current record
-//            if person.firstName.lowercased() == firstName.lowercased() && person.lastName.lowercased() == lastName.lowercased() {
-//                person.whereFrom = whereFrom
-//                person.gender = gender
-//                person.role = role
-//                person.program = program
-//                found = true
-//                break
-//            }
-//        }
-//        if found {
-//            return "The person has been updated"
-//        }
-//        // if not in the database, create a new record
-//        people_list.append(DukePerson(firstName: firstName, lastName: lastName, whereFrom: whereFrom, gender: gender, role: role, program: program, netid: netid))
-//        return "The person has been added"
-//    }
+    func addOrUpdatePerson(first: String, last: String, whereFrom: String, program: String, hobbies: String, languages: String, team: String, email: String, gender: String, role: String) -> String {
+        var found : Bool = false
+        let firstName = first.trimmingCharacters(in: .whitespacesAndNewlines)
+        let lastName = last.trimmingCharacters(in: .whitespacesAndNewlines)
+        for person in people_list {
+            // if in the database, update the current record
+            if person.firstName!.lowercased() == firstName.lowercased() && person.lastName!.lowercased() == lastName.lowercased() {
+                person.whereFrom = whereFrom
+                person.program = program
+                person.hobbies = hobbies
+                person.languages = languages
+                person.team = team
+                person.email = email
+                person.gender = gender == "Male" ? Gender.Male : Gender.Female
+                person.role = role == "Professor" ? DukeRole.Professor : (role == "TA" ? DukeRole.TA : DukeRole.Student)
+                found = true
+                break
+            }
+        }
+        if found {
+            try! self.context.save()
+            fetchData()
+            return "The person has been updated"
+        }
+        // if not in the database, create a new record
+        let newPerson = DukePerson(context: self.context)
+        newPerson.firstName = first_input.text
+        newPerson.lastName = last_input.text
+        newPerson.whereFrom = whereFrom
+        newPerson.program = program
+        newPerson.hobbies = hobbies
+        newPerson.languages = languages
+        newPerson.team = team
+        newPerson.email = email
+        newPerson.gender = gender == "Male" ? Gender.Male : Gender.Female
+        newPerson.role = role == "Professor" ? DukeRole.Professor : (role == "TA" ? DukeRole.TA : DukeRole.Student)
+        try! self.context.save()
+        fetchData()
+        return "The person has been added"
+    }
+    
+    func clearInput() {
+        first_input.text = ""
+        last_input.text = ""
+        from_input.text = ""
+        program_input.text = ""
+        hobbies_input.text = ""
+        languages_input.text = ""
+        team_input.text = ""
+        email_input.text = ""
+        gender_input.text = ""
+        role_input.text = ""
+    }
     
 
     /*
@@ -175,16 +207,16 @@ class InformationViewController: UIViewController {
     */
 
     @IBAction func clickAdd(_ sender: Any) {
-        if first_input.text == nil || last_input.text == nil || gender_input.text == "" {
+        if first_input.text == "" || last_input.text == "" || gender_input.text == "" {
             result_label.text = "Error: Please provide first name, last name and gender. "
             result_label.textColor = .red
         }
-//        else {
-//            let result = addOrUpdatePerson(first: firstName!, last: lastName!, whereFrom: from!, gender: selectedGender!, role: selectedRole!, program: selectedProgram!, netid: netid!)
-//            result_label.text = result
-//            result_label.textColor = .green
-//            clearInput()
-//        }
+        else {
+            let result = addOrUpdatePerson(first: first_input.text!, last: last_input.text!, whereFrom: from_input.text!, program: program_input.text!, hobbies: hobbies_input.text!, languages: languages_input.text!, team: team_input.text!, email: email_input.text!, gender: gender_input.text!, role: role_input.text!)
+            result_label.text = result
+            result_label.textColor = .green
+            clearInput()
+        }
         
     }
     
