@@ -22,7 +22,7 @@ class InformationViewController: UIViewController {
     @IBOutlet weak var gender_input: UITextField!
     @IBOutlet weak var role_input: UITextField!
     @IBOutlet weak var result_label: UILabel!
-    
+    @IBOutlet weak var image: UIImageView!
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -217,7 +217,7 @@ class InformationViewController: UIViewController {
             result_label.textColor = .green
             clearInput()
         }
-        
+        image.image = UIImage()
     }
     
     @IBAction func clickFind(_ sender: Any) {
@@ -230,6 +230,7 @@ class InformationViewController: UIViewController {
             result_label.text = result.0
             result_label.textColor = UIColor(red: 0/255.0, green: 255/255.0, blue: 0/255.0, alpha: 1)
             if (result.1 == nil) {
+                image.image = UIImage()
                 result_label.textColor = .red
                 return
             }
@@ -255,8 +256,12 @@ class InformationViewController: UIViewController {
             case DukeRole.Student:
                 role_input.text = "Student"
             }
-            
-            // Todo: change image!
+            if person.firstName == "Jingyi" && person.lastName == "Xie" {
+                image.image = UIImage(named: "jingyi.jpeg")
+            }
+            else {
+                image.image = UIImage()
+            }
             
         }
         

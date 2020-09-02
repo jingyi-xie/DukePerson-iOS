@@ -283,6 +283,7 @@
                         <outlet property="from_input" destination="mrV-tu-lXp" id="o8l-ov-Lyk"/>
                         <outlet property="gender_input" destination="OEH-zW-Pcu" id="dLv-fH-FfJ"/>
                         <outlet property="hobbies_input" destination="QAP-dr-8WH" id="ofS-lf-SMW"/>
+                        <outlet property="image" destination="zmP-Co-cx9" id="acN-xA-wkZ"/>
                         <outlet property="languages_input" destination="mc8-Nc-JgV" id="sbS-QE-5Zq"/>
                         <outlet property="last_input" destination="lIt-S7-kDe" id="HwN-jx-JxM"/>
                         <outlet property="program_input" destination="9az-EW-LTI" id="P3K-OS-5Nw"/>
