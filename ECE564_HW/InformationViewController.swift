@@ -66,7 +66,6 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         try! people_list = context.fetch(DukePerson.fetchRequest())
         print(people_list!)
         
-        // Do any additional setup after loading the view.
     }
     
     func prePopulate() {
@@ -96,7 +95,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         me.whereFrom = "China"
         me.hobbies = "Movies, Music"
         me.languages = "Python, Javascript, Java, C/C++"
-        me.team = "NA"
+        me.team = ""
         me.email = "jx95@duke.edu"
         
         let ta_1 = DukePerson(context: self.context)
@@ -150,6 +149,16 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
             }
         }
         return ("The person was not found", nil)
+    }
+    
+    func isValidEmail() -> Bool {
+        if email_input.text == nil || email_input.text == "" {
+            return true
+        }
+        let email = email_input.text
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: email)
     }
 
     func addOrUpdatePerson(first: String, last: String, whereFrom: String, program: String, hobbies: String, languages: String, team: String, email: String, gender: String, role: String) -> String {
@@ -223,6 +232,11 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
             result_label.textColor = .red
         }
         else {
+            if !self.isValidEmail() {
+                result_label.text = "Error: Please provide a valid email. "
+                result_label.textColor = .red
+                return
+            }
             let result = addOrUpdatePerson(first: first_input.text!, last: last_input.text!, whereFrom: from_input.text!, program: program_input.text!, hobbies: hobbies_input.text!, languages: languages_input.text!, team: team_input.text!, email: email_input.text!, gender: gender_input.text!, role: role_input.text!)
             result_label.text = result
             result_label.textColor = .green
