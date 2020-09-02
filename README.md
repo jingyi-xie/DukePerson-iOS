@@ -13,7 +13,19 @@ Test this by finding a person first, then update any information. After that, do
 * Dismiss keyboard when click on segmentedcontrols or buttons.
 
 ## HW2
-add text here
+**Note: If the virtual keyboard doesn't show up, press cmd + k**
+
+Extra Features:
+* In assignment:
+    * "Team" and "Email" field
+    * `UIPickerView` for gender and role
+    * Picture support. Find "Jingyi Xie" to see the picture
+* Addtional features of my own creation
+    * Core Data as database
+    * `UIStackView`
+    * Implemented auto layout, defining constraints for every component
+    * Dismiss the keyboard when pressed "return"
+    * Email validation in add/update. If email format is invalid, you can see an error message
 
 ## HW3
 add text here
