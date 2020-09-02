@@ -298,7 +298,7 @@ extension InformationViewController : UIPickerViewDelegate, UIPickerViewDataSour
             gender_input.text = genders[row]
             gender_input.resignFirstResponder()
         }
-        else {
+        else if pickerView.tag == 1 {
             role_input.text = roles[row]
             role_input.resignFirstResponder()
         }
