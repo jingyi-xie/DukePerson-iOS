@@ -105,10 +105,10 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         ta_1.role = DukeRole.TA
         ta_1.program = "Grad"
         ta_1.whereFrom = "China"
-        ta_1.hobbies = ""
-        ta_1.languages = ""
+        ta_1.hobbies = "reading books, jogging"
+        ta_1.languages = "swift, java"
         ta_1.team = ""
-        ta_1.email = "hz147@duke.edu"
+        ta_1.email = "haohong.zhao@duke.edu"
         
         
         let ta_2 = DukePerson(context: self.context)
@@ -118,8 +118,8 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         ta_2.role = DukeRole.TA
         ta_2.program = "Grad"
         ta_2.whereFrom = "China"
-        ta_2.hobbies = ""
-        ta_2.languages = ""
+        ta_2.hobbies = "Dancing"
+        ta_2.languages = "Java, cpp"
         ta_2.team = ""
         ta_2.email = "yy227@duke.edu"
         
