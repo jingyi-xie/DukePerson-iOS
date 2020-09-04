@@ -25,6 +25,7 @@ Extra Features:
     * `UIStackView`
     * Implemented auto layout, defining constraints for every component
     * Dismiss the keyboard when pressed "return"
+    * Parse hobbies and languages into array of string
     * Email validation in add/update. If email format is invalid, you can see an error message
 
 ## HW3
