@@ -62,9 +62,9 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         self.fetchData()
         self.clearInput()
         
-        var people_list:[DukePerson]?
-        try! people_list = context.fetch(DukePerson.fetchRequest())
-        print(people_list!)
+//        var people_list:[DukePerson]?
+//        try! people_list = context.fetch(DukePerson.fetchRequest())
+//        print(people_list!)
         
     }
     
