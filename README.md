@@ -13,7 +13,9 @@ Test this by finding a person first, then update any information. After that, do
 * Dismiss keyboard when click on segmentedcontrols or buttons.
 
 ## HW2
-**Note: If the virtual keyboard doesn't show up, press cmd + k**
+Note: 
+* If the virtual keyboard doesn't show up, press `cmd + k`
+* It's possible that core data messes up with the database in the same simulator because of other projects. If this happens, I personally used [simMagnifier](http://www.microedition.biz/simMagnifier/) to locate the source of core data and delete all the files.
 
 Extra Features:
 * In assignment:
@@ -21,7 +23,7 @@ Extra Features:
     * `UIPickerView` for gender and role
     * Picture support. Find "Jingyi Xie" to see the picture
 * Addtional features of my own creation
-    * Core Data as database
+    * Core Data as database. 
     * `UIStackView`
     * Implemented auto layout, defining constraints for every component
     * Dismiss the keyboard when pressed "return"
