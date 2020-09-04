@@ -13,7 +13,9 @@ Test this by finding a person first, then update any information. After that, do
 * Dismiss keyboard when click on segmentedcontrols or buttons.
 
 ## HW2
-**Note: If the virtual keyboard doesn't show up, press cmd + k**
+**Note1: It seems that core data has data conflict when there are many projects with the same name. I personally used [simMagnifier](http://www.microedition.biz/simMagnifier/) to locate the core data source and delete all the files.**
+
+**Note2: If the virtual keyboard doesn't show up, press cmd + k**
 
 Extra Features:
 * In assignment:
