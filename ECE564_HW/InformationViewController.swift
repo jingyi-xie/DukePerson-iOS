@@ -81,8 +81,8 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         prof.role = DukeRole.Professor
         prof.program = "NA"
         prof.whereFrom = "Chatham County, NC"
-        prof.hobbies = "Hiking, Swimming, Biking"
-        prof.languages = "Swift, C, C++"
+        prof.hobbies = ["Hiking", "Swimming", "Biking"]
+        prof.languages = ["Swift", "C", "C++"]
         prof.team = "None"
         prof.email = "rt113@duke.edu"
         
@@ -93,8 +93,8 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         me.role = DukeRole.Student
         me.program = "Grad"
         me.whereFrom = "China"
-        me.hobbies = "Movies, Music"
-        me.languages = "Python, Javascript, Java, C/C++"
+        me.hobbies = ["Movies", "Music"]
+        me.languages = ["Python", "Javascript", "Java", "C/C++"]
         me.team = ""
         me.email = "jx95@duke.edu"
         
@@ -105,8 +105,8 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         ta_1.role = DukeRole.TA
         ta_1.program = "Grad"
         ta_1.whereFrom = "China"
-        ta_1.hobbies = "reading books, jogging"
-        ta_1.languages = "swift, java"
+        ta_1.hobbies = ["reading books", "jogging"]
+        ta_1.languages = ["swift", "java"]
         ta_1.team = ""
         ta_1.email = "haohong.zhao@duke.edu"
         
@@ -118,8 +118,8 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         ta_2.role = DukeRole.TA
         ta_2.program = "Grad"
         ta_2.whereFrom = "China"
-        ta_2.hobbies = "Dancing"
-        ta_2.languages = "Java, cpp"
+        ta_2.hobbies = ["Dancing"]
+        ta_2.languages = ["Java", "cpp"]
         ta_2.team = ""
         ta_2.email = "yy227@duke.edu"
         
@@ -170,8 +170,8 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
             if person.firstName!.lowercased() == firstName.lowercased() && person.lastName!.lowercased() == lastName.lowercased() {
                 person.whereFrom = whereFrom
                 person.program = program
-                person.hobbies = hobbies
-                person.languages = languages
+                person.hobbies = hobbies.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
+                person.languages = languages.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
                 person.team = team
                 person.email = email
                 person.gender = gender == "Male" ? Gender.Male : Gender.Female
@@ -191,8 +191,8 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         newPerson.lastName = last_input.text
         newPerson.whereFrom = whereFrom
         newPerson.program = program
-        newPerson.hobbies = hobbies
-        newPerson.languages = languages
+        newPerson.hobbies = hobbies.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
+        newPerson.languages = languages.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
         newPerson.team = team
         newPerson.email = email
         newPerson.gender = gender == "Male" ? Gender.Male : Gender.Female
@@ -262,8 +262,8 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
             let person = result.1!
             from_input.text = person.whereFrom
             program_input.text = person.program
-            hobbies_input.text = person.hobbies
-            languages_input.text = person.languages
+            hobbies_input.text = person.hobbies == nil ? "" : person.hobbies!.joined(separator: ", ")
+            languages_input.text = person.languages == nil ? "" : person.languages!.joined(separator: ", ")
             team_input.text = person.team
             email_input.text = person.email
             switch (person.gender) {

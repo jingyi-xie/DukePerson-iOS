@@ -4,8 +4,8 @@
         <attribute name="email" optional="YES" attributeType="String"/>
         <attribute name="firstName" optional="YES" attributeType="String"/>
         <attribute name="genderValue" optional="YES" attributeType="String"/>
-        <attribute name="hobbies" optional="YES" attributeType="String"/>
-        <attribute name="languages" optional="YES" attributeType="String"/>
+        <attribute name="hobbies" optional="YES" attributeType="Transformable" customClassName="[String]"/>
+        <attribute name="languages" optional="YES" attributeType="Transformable" customClassName="[String]"/>
         <attribute name="lastName" optional="YES" attributeType="String"/>
         <attribute name="program" optional="YES" attributeType="String"/>
         <attribute name="roleValue" optional="YES" attributeType="String"/>

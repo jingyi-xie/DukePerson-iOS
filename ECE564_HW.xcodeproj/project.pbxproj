@@ -15,8 +15,8 @@
 		91A263E624FB62F100DABD2A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 91A263E424FB62F100DABD2A /* Model.xcdatamodeld */; };
 		91A2642724FB6E6C00DABD2A /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A2642624FB6E6C00DABD2A /* InformationViewController.swift */; };
 		91A2642E24FB71E900DABD2A /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A2642D24FB71E900DABD2A /* DataModel.swift */; };
-		91A2643124FB727800DABD2A /* DukePerson+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A2642F24FB727800DABD2A /* DukePerson+CoreDataClass.swift */; };
-		91A2643224FB727800DABD2A /* DukePerson+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A2643024FB727800DABD2A /* DukePerson+CoreDataProperties.swift */; };
+		91F5A2112501CCC300CF00E6 /* DukePerson+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F5A20F2501CCC300CF00E6 /* DukePerson+CoreDataClass.swift */; };
+		91F5A2122501CCC300CF00E6 /* DukePerson+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F5A2102501CCC300CF00E6 /* DukePerson+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,8 +33,8 @@
 		91A263E524FB62F100DABD2A /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		91A2642624FB6E6C00DABD2A /* InformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationViewController.swift; sourceTree = "<group>"; };
 		91A2642D24FB71E900DABD2A /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
-		91A2642F24FB727800DABD2A /* DukePerson+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DukePerson+CoreDataClass.swift"; sourceTree = "<group>"; };
-		91A2643024FB727800DABD2A /* DukePerson+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DukePerson+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		91F5A20F2501CCC300CF00E6 /* DukePerson+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DukePerson+CoreDataClass.swift"; sourceTree = "<group>"; };
+		91F5A2102501CCC300CF00E6 /* DukePerson+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DukePerson+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,8 +86,8 @@
 		91A2642C24FB713900DABD2A /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				91A2642F24FB727800DABD2A /* DukePerson+CoreDataClass.swift */,
-				91A2643024FB727800DABD2A /* DukePerson+CoreDataProperties.swift */,
+				91F5A20F2501CCC300CF00E6 /* DukePerson+CoreDataClass.swift */,
+				91F5A2102501CCC300CF00E6 /* DukePerson+CoreDataProperties.swift */,
 				91A2642D24FB71E900DABD2A /* DataModel.swift */,
 			);
 			path = Model;
@@ -167,10 +167,10 @@
 				91A2642E24FB71E900DABD2A /* DataModel.swift in Sources */,
 				873481602469DEE8000B9A79 /* AppDelegate.swift in Sources */,
 				873481622469DEE8000B9A79 /* SceneDelegate.swift in Sources */,
+				91F5A2122501CCC300CF00E6 /* DukePerson+CoreDataProperties.swift in Sources */,
 				91A263E624FB62F100DABD2A /* Model.xcdatamodeld in Sources */,
 				91A2642724FB6E6C00DABD2A /* InformationViewController.swift in Sources */,
-				91A2643124FB727800DABD2A /* DukePerson+CoreDataClass.swift in Sources */,
-				91A2643224FB727800DABD2A /* DukePerson+CoreDataProperties.swift in Sources */,
+				91F5A2112501CCC300CF00E6 /* DukePerson+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
