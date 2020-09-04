@@ -2,7 +2,7 @@
 //  DukePerson+CoreDataClass.swift
 //  ECE564_HW
 //
-//  Created by Jingyi on 2020/8/30.
+//  Created by Jaryn on 2020/9/3.
 //  Copyright © 2020 ECE564. All rights reserved.
 //
 //
@@ -35,12 +35,14 @@ public class DukePerson: NSManagedObject {
             des += pronouns[0] + " is working on the \(self.program!) degree. "
         }
         // hobbies
-        if self.hobbies != nil && self.hobbies != "" {
-            des += pronouns[0] + " likes \(self.hobbies!). "
+        if self.hobbies != nil && self.hobbies!.count != 0 {
+            let hobbies_str = self.hobbies!.joined(separator: ", ")
+            des += pronouns[0] + " likes \(hobbies_str). "
         }
         // languages
-        if self.languages != nil && self.languages != ""{
-            des += pronouns[0] + " is proficient in \(self.languages!). "
+        if self.languages != nil && self.languages!.count != 0 {
+            let languages_str = self.languages!.joined(separator: ", ")
+            des += pronouns[0] + " is proficient in \(languages_str). "
         }
         // email
         if self.email != nil && self.email != "" {
