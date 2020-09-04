@@ -187,8 +187,8 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         }
         // if not in the database, create a new record
         let newPerson = DukePerson(context: self.context)
-        newPerson.firstName = first_input.text
-        newPerson.lastName = last_input.text
+        newPerson.firstName = first_input.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        newPerson.lastName = last_input.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         newPerson.whereFrom = whereFrom
         newPerson.program = program
         newPerson.hobbies = hobbies.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
