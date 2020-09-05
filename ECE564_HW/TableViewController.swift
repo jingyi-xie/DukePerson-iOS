@@ -98,15 +98,18 @@ class TableViewController: UITableViewController {
     }
     */
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        let dest = segue.destination as! InformationViewController
+        if(segue.identifier == "clickCell"){
+            dest.saveBtn.title = "Edit"
+        }
+        else if(segue.identifier == "clickAdd"){
+            dest.saveBtn.title = "Add"
+        }
     }
-    */
     
     func prePopulate() {
         fetchData()

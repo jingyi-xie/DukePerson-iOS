@@ -62,7 +62,7 @@
                                     <outlet property="desLabel" destination="tms-ql-faS" id="LvK-68-eXN"/>
                                     <outlet property="nameLabel" destination="f24-2h-Qs6" id="jW9-d0-JGs"/>
                                     <outlet property="profile" destination="HYc-DK-AnC" id="2kz-Iu-aYC"/>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="toz-xq-uF3"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" identifier="clickCell" id="toz-xq-uF3"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -74,7 +74,7 @@
                     <navigationItem key="navigationItem" title="ECE 564" id="cYC-7b-W9D">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="tTU-Th-RMR">
                             <connections>
-                                <segue destination="BYZ-38-t0r" kind="show" id="Vbm-ni-Zqu"/>
+                                <segue destination="BYZ-38-t0r" kind="show" identifier="clickAdd" id="Vbm-ni-Zqu"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -315,8 +315,12 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Person" id="HcL-hU-LD2">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="FYT-YT-XAy"/>
-                        <barButtonItem key="rightBarButtonItem" title="Add" id="CsP-VK-pLV">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="FYT-YT-XAy">
+                            <connections>
+                                <segue destination="CvI-kL-cmV" kind="unwind" unwindAction="returnFromInformation:" id="AgA-c1-ERb"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="CsP-VK-pLV">
                             <connections>
                                 <action selector="clickBtn:" destination="BYZ-38-t0r" id="7hO-Wy-3kg"/>
                             </connections>
@@ -382,6 +386,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="toz-xq-uF3"/>
+        <segue reference="Vbm-ni-Zqu"/>
     </inferredMetricsTieBreakers>
 </document>

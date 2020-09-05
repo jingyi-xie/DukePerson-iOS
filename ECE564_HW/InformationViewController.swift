@@ -104,6 +104,9 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         if (title == "Add") {
             self.clickAdd()
         }
+        else if (title == "Edit") {
+            self.saveBtn.title = "Update/Add"
+        }
     }
     
     func clickAdd() {
