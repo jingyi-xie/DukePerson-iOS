@@ -13,6 +13,7 @@ class TableViewController: UITableViewController {
     var people_list : [[DukePerson]] = []
 
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var selectedPerson: DukePerson? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,16 +53,11 @@ class TableViewController: UITableViewController {
 
         return cell
     }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.selectedPerson = self.people_list[indexPath.section][indexPath.row]
+        performSegue(withIdentifier: "clickCell", sender: self)
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.
@@ -105,6 +101,7 @@ class TableViewController: UITableViewController {
         let dest = segue.destination as! InformationViewController
         if(segue.identifier == "clickCell"){
             dest.saveBtn.title = "Edit"
+            dest.currentPerson = self.selectedPerson
         }
         else if(segue.identifier == "clickAdd"){
             dest.saveBtn.title = "Add"
@@ -209,7 +206,6 @@ class TableViewController: UITableViewController {
         //self.people_list = new_list
         self.fetchData()
         self.tableView.reloadData()
-        print("I'm back!!")
     }
 
 }

@@ -62,7 +62,6 @@
                                     <outlet property="desLabel" destination="tms-ql-faS" id="LvK-68-eXN"/>
                                     <outlet property="nameLabel" destination="f24-2h-Qs6" id="jW9-d0-JGs"/>
                                     <outlet property="profile" destination="HYc-DK-AnC" id="2kz-Iu-aYC"/>
-                                    <segue destination="BYZ-38-t0r" kind="show" identifier="clickCell" id="toz-xq-uF3"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -78,6 +77,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="clickCell" id="bbz-Sx-A7R"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GkR-rW-vZD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -386,6 +388,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Vbm-ni-Zqu"/>
+        <segue reference="bbz-Sx-A7R"/>
     </inferredMetricsTieBreakers>
 </document>

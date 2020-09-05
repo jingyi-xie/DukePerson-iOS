@@ -26,6 +26,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
     @IBOutlet weak var saveBtn: UIBarButtonItem!
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var currentPerson : DukePerson? = nil
     
     let genders = ["Male", "Female"]
     var genderPickerView = UIPickerView()
@@ -57,7 +58,43 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         gender_input.delegate = self
         role_input.delegate = self
         
-        self.clearInput()
+        //self.clearInput()
+        
+        if self.saveBtn.title == "Edit" {
+            print("in edit!!!!")
+            autoPopulate()
+        }
+    }
+    
+    func autoPopulate() {
+        if (self.currentPerson == nil) {
+            return
+        }
+        let person = self.currentPerson!
+        first_input.text = person.firstName
+        last_input.text = person.lastName
+        from_input.text = person.whereFrom
+        program_input.text = person.program
+        hobbies_input.text = person.hobbies == nil ? "" : person.hobbies!.joined(separator: ", ")
+        languages_input.text = person.languages == nil ? "" : person.languages!.joined(separator: ", ")
+        team_input.text = person.team
+        email_input.text = person.email
+        switch (person.gender) {
+        case Gender.Male:
+            gender_input.text = "Male"
+        case Gender.Female:
+            gender_input.text = "Female"
+
+        }
+        switch (person.role) {
+        case DukeRole.Professor:
+            role_input.text = "Professor"
+        case DukeRole.TA:
+            role_input.text = "TA"
+        case DukeRole.Student:
+            role_input.text = "Student"
+        }
+
     }
     
     func isValidEmail() -> Bool {
