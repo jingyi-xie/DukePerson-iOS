@@ -44,9 +44,12 @@ class TableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PersonCell", for: indexPath)
-        let temp:DukePerson = self.people_list[indexPath.section][indexPath.row]
-        cell.textLabel?.text = temp.firstName! + " " + temp.lastName!
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PersonCell", for: indexPath) as! PersonCell
+        let person:DukePerson = self.people_list[indexPath.section][indexPath.row]
+        cell.nameLabel.text = person.firstName! + " " + person.lastName!
+        cell.desLabel.text = person.description
+        cell.profile.image = UIImage(named: "default.jpeg")
+
         return cell
     }
 
