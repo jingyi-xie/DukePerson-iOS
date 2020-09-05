@@ -48,7 +48,7 @@ class TableViewController: UITableViewController {
         let person:DukePerson = self.people_list[indexPath.section][indexPath.row]
         cell.nameLabel.text = person.firstName! + " " + person.lastName!
         cell.desLabel.text = person.description
-        cell.profile.image = UIImage(named: "default.jpeg")
+        cell.profile.image = UIImage(named: "default.png")
 
         return cell
     }
@@ -204,7 +204,9 @@ class TableViewController: UITableViewController {
         //let source:InformationViewController = sender.source as! InformationViewController
         //let new_list:[DukePerson] = source.people_list
         //self.people_list = new_list
+        self.fetchData()
         self.tableView.reloadData()
+        print("I'm back!!")
     }
 
 }

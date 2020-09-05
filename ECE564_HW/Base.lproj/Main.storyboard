@@ -62,6 +62,7 @@
                                     <outlet property="desLabel" destination="tms-ql-faS" id="LvK-68-eXN"/>
                                     <outlet property="nameLabel" destination="f24-2h-Qs6" id="jW9-d0-JGs"/>
                                     <outlet property="profile" destination="HYc-DK-AnC" id="2kz-Iu-aYC"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" id="toz-xq-uF3"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -82,7 +83,7 @@
             </objects>
             <point key="canvasLocation" x="-1748" y="43.628185907046479"/>
         </scene>
-        <!--Add New Person-->
+        <!--Person-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="InformationViewController" customModule="ECE564_HW" customModuleProvider="target" sceneMemberID="viewController">
@@ -313,15 +314,11 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Add New Person" id="HcL-hU-LD2">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="FYT-YT-XAy">
+                    <navigationItem key="navigationItem" title="Person" id="HcL-hU-LD2">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="FYT-YT-XAy"/>
+                        <barButtonItem key="rightBarButtonItem" title="Add" id="CsP-VK-pLV">
                             <connections>
-                                <segue destination="CvI-kL-cmV" kind="unwind" unwindAction="returnFromInformation:" id="PT6-Eh-rWa"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="CsP-VK-pLV">
-                            <connections>
-                                <segue destination="CvI-kL-cmV" kind="unwind" unwindAction="returnFromInformation:" id="gOR-9D-PQl"/>
+                                <action selector="clickBtn:" destination="BYZ-38-t0r" id="7hO-Wy-3kg"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -336,13 +333,15 @@
                         <outlet property="last_input" destination="lIt-S7-kDe" id="HwN-jx-JxM"/>
                         <outlet property="program_input" destination="9az-EW-LTI" id="P3K-OS-5Nw"/>
                         <outlet property="role_input" destination="VnX-7i-UTV" id="uuT-KR-TpM"/>
+                        <outlet property="saveBtn" destination="CsP-VK-pLV" id="Wug-6i-tne"/>
                         <outlet property="team_input" destination="4O5-Hw-bU0" id="MPC-Ku-XfM"/>
+                        <segue destination="CvI-kL-cmV" kind="unwind" identifier="returnFromInformation" unwindAction="returnFromInformation:" id="dGp-Pd-4je"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <exit id="CvI-kL-cmV" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="20" y="44.527736131934034"/>
+            <point key="canvasLocation" x="49" y="44"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="YBW-i7-7Z9">
@@ -383,6 +382,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Vbm-ni-Zqu"/>
+        <segue reference="toz-xq-uF3"/>
     </inferredMetricsTieBreakers>
 </document>
