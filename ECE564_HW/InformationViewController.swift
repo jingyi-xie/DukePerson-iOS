@@ -24,6 +24,8 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
     @IBOutlet weak var result_label: UILabel!
     @IBOutlet weak var image: UIImageView!
     
+    var people_list = [DukePerson]()
+
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     let genders = ["Male", "Female"]
@@ -253,6 +255,15 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         else if pickerView.tag == 1 {
             role_input.text = roles[row]
             role_input.resignFirstResponder()
+        }
+    }
+    
+    func fetchData() {
+        do {
+            self.people_list = try context.fetch(DukePerson.fetchRequest())
+        }
+        catch {
+            print("Error: fetch data")
         }
     }
 }

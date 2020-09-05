@@ -2,7 +2,7 @@
 //  TableViewController.swift
 //  ECE564_HW
 //
-//  Created by Jaryn on 2020/9/4.
+//  Created by Jingyi on 2020/9/4.
 //  Copyright © 2020 ECE564. All rights reserved.
 //
 
@@ -10,7 +10,7 @@ import UIKit
 
 class TableViewController: UITableViewController {
 
-    var people_list = [DukePerson]()
+    var people_list : [[DukePerson]] = []
 
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -27,13 +27,27 @@ class TableViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        let names = ["  Professor", "  TA", "  Student"]
+        label.text = names[section]
+        label.backgroundColor = UIColor.lightGray
+        return label
+    }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 3
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.people_list.count;
+        return self.people_list[section].count;
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PersonCell", for: indexPath)
+        let temp:DukePerson = self.people_list[indexPath.section][indexPath.row]
+        cell.textLabel?.text = temp.firstName! + " " + temp.lastName!
+        return cell
     }
 
     /*
@@ -156,7 +170,26 @@ class TableViewController: UITableViewController {
     
     func fetchData() {
         do {
-            self.people_list = try context.fetch(DukePerson.fetchRequest())
+            let raw_list = try context.fetch(DukePerson.fetchRequest())
+            var temp_list = [[DukePerson]]()
+            var professor_list = [DukePerson]()
+            var ta_list = [DukePerson]()
+            var student_list = [DukePerson]()
+            for case let person as DukePerson in raw_list {
+                if person.role == DukeRole.Professor {
+                    professor_list.append(person)
+                }
+                else if person.role == DukeRole.TA {
+                    ta_list.append(person)
+                }
+                else {
+                    student_list.append(person)
+                }
+            }
+            temp_list.append(professor_list)
+            temp_list.append(ta_list)
+            temp_list.append(student_list)
+            self.people_list = temp_list
         }
         catch {
             print("Error: fetch data")
@@ -165,7 +198,10 @@ class TableViewController: UITableViewController {
     
     
     @IBAction func returnFromInformation(_ sender: UIStoryboardSegue) {
-        print("return !!!")
+        //let source:InformationViewController = sender.source as! InformationViewController
+        //let new_list:[DukePerson] = source.people_list
+        //self.people_list = new_list
+        self.tableView.reloadData()
     }
 
 }
