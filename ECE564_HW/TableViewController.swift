@@ -201,9 +201,6 @@ class TableViewController: UITableViewController {
     
     
     @IBAction func returnFromInformation(_ sender: UIStoryboardSegue) {
-        //let source:InformationViewController = sender.source as! InformationViewController
-        //let new_list:[DukePerson] = source.people_list
-        //self.people_list = new_list
         self.fetchData()
         self.tableView.reloadData()
     }

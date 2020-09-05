@@ -61,8 +61,8 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         //self.clearInput()
         
         if self.saveBtn.title == "Edit" {
-            print("in edit!!!!")
             autoPopulate()
+            changeMode(canEdit: false)
         }
     }
     
@@ -94,17 +94,49 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         case DukeRole.Student:
             role_input.text = "Student"
         }
-
     }
     
-    func isValidEmail() -> Bool {
+    func changeMode(canEdit: Bool) {
+        first_input.isEnabled = canEdit
+        last_input.isEnabled = canEdit
+        from_input.isEnabled = canEdit
+        program_input.isEnabled = canEdit
+        hobbies_input.isEnabled = canEdit
+        languages_input.isEnabled = canEdit
+        team_input.isEnabled = canEdit
+        email_input.isEnabled = canEdit
+        gender_input.isEnabled = canEdit
+        role_input.isEnabled = canEdit
+    }
+    
+    func checkEmail() -> Bool {
         if email_input.text == nil || email_input.text == "" {
             return true
         }
         let email = email_input.text
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailPred.evaluate(with: email)
+        if !emailPred.evaluate(with: email) {
+            let alert = UIAlertController(title: "Error", message: "Please provide a valid email.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+                alert.dismiss(animated: true, completion: nil)
+            }))
+            self.present(alert, animated: true, completion: nil)
+            return false
+        }
+        return true
+    }
+    
+    func checkName() -> Bool {
+        if first_input.text == "" || last_input.text == "" || gender_input.text == "" {
+            let alert = UIAlertController(title: "Error", message: "Please provide first name, last name and gender.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+                alert.dismiss(animated: true, completion: nil)
+            }))
+            self.present(alert, animated: true, completion: nil)
+            return false
+        }
+        return true
     }
 
     func addPerson(first: String, last: String, whereFrom: String, program: String, hobbies: String, languages: String, team: String, email: String, gender: String, role: String) {
@@ -138,32 +170,40 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
 
     @IBAction func clickBtn(_ sender: Any) {
         let title = (sender as! UIBarButtonItem).title
-        if (title == "Add") {
+        if title == "Add" {
             self.clickAdd()
         }
-        else if (title == "Edit") {
+        else if title == "Edit" {
             self.saveBtn.title = "Update/Add"
+            changeMode(canEdit: true)
+        }
+        else if title == "Update/Add" {
+            self.clickEdit()
         }
     }
     
     func clickAdd() {
-        if first_input.text == "" || last_input.text == "" || gender_input.text == "" {
-            let alert = UIAlertController(title: "Error", message: "Please provide first name, last name and gender.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
-                alert.dismiss(animated: true, completion: nil)
-            }))
-            self.present(alert, animated: true, completion: nil)
+        if !self.checkName() || !self.checkEmail() {
+            return
         }
-        else if !self.isValidEmail() {
-            let alert = UIAlertController(title: "Error", message: "Please provide a valid email.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
-                alert.dismiss(animated: true, completion: nil)
-            }))
-            self.present(alert, animated: true, completion: nil)
+        addPerson(first: first_input.text!, last: last_input.text!, whereFrom: from_input.text!, program: program_input.text!, hobbies: hobbies_input.text!, languages: languages_input.text!, team: team_input.text!, email: email_input.text!, gender: gender_input.text!, role: role_input.text!)
+        self.performSegue(withIdentifier: "returnFromInformation", sender: self)
+    }
+    
+    func clickEdit() {
+        if first_input.text == self.currentPerson?.firstName && last_input.text == self.currentPerson?.lastName {
+            // update person
+            return
         }
-        else {
+        // if change the name, add a new person
+        if self.checkName() && self.checkEmail() {
             addPerson(first: first_input.text!, last: last_input.text!, whereFrom: from_input.text!, program: program_input.text!, hobbies: hobbies_input.text!, languages: languages_input.text!, team: team_input.text!, email: email_input.text!, gender: gender_input.text!, role: role_input.text!)
-            performSegue(withIdentifier: "returnFromInformation", sender: self)
+            let alert = UIAlertController(title: "Message", message: "You changed the name field, a new person is added!", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                alert.dismiss(animated: true, completion: nil)
+                self.performSegue(withIdentifier: "returnFromInformation", sender: self)
+            }))
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
