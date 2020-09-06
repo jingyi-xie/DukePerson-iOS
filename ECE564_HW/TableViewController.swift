@@ -32,7 +32,16 @@ class TableViewController: UITableViewController {
         let label = UILabel()
         let names = ["  Professor", "  TA", "  Student"]
         label.text = names[section]
-        label.backgroundColor = UIColor.lightGray
+        label.font = UIFont(name: "Avenir Next Bold", size: 15)
+        if section == 0 {
+            label.textColor = UIColor(red: 0/255, green: 158/255, blue: 249/255, alpha: 1.00)
+        }
+        else if section == 1 {
+            label.textColor = UIColor(red: 92/255, green: 168/255, blue: 148/255, alpha: 1.00)
+        }
+        else {
+            label.textColor = UIColor(red: 140/255, green: 63/255, blue: 177/255, alpha: 1.00)
+        }
         return label
     }
 
@@ -50,6 +59,18 @@ class TableViewController: UITableViewController {
         cell.nameLabel.text = person.firstName! + " " + person.lastName!
         cell.desLabel.text = person.description
         cell.profile.image = UIImage(named: "default.png")
+        cell.personView.layer.cornerRadius = 15
+        if indexPath.section == 0 {
+            cell.personView.layer.borderColor = UIColor(red: 0/255, green: 158/255, blue: 249/255, alpha: 1.00).cgColor
+        }
+        else if indexPath.section == 1 {
+            cell.personView.layer.borderColor = UIColor(red: 92/255, green: 168/255, blue: 148/255, alpha: 1.00).cgColor
+        }
+        else {
+            cell.personView.layer.borderColor = UIColor(red: 140/255, green: 63/255, blue: 177/255, alpha: 1.00).cgColor
+
+        }
+        cell.personView.layer.borderWidth = 1.5
 
         return cell
     }

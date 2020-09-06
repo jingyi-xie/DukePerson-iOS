@@ -10,6 +10,7 @@ import UIKit
 
 class PersonCell: UITableViewCell {
 
+    @IBOutlet weak var personView: UIView!
     @IBOutlet weak var profile: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var desLabel: UILabel!
