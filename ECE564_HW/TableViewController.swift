@@ -68,7 +68,6 @@ class TableViewController: UITableViewController {
         }
         else {
             cell.personView.layer.borderColor = UIColor(red: 140/255, green: 63/255, blue: 177/255, alpha: 1.00).cgColor
-
         }
         cell.personView.layer.borderWidth = 1.5
 

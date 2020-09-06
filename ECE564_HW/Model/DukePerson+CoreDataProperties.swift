@@ -2,7 +2,7 @@
 //  DukePerson+CoreDataProperties.swift
 //  ECE564_HW
 //
-//  Created by Jingyi on 2020/9/3.
+//  Created by Jingyi on 2020/9/6.
 //  Copyright © 2020 ECE564. All rights reserved.
 //
 //
@@ -12,6 +12,7 @@ import CoreData
 
 
 extension DukePerson : ECE564 {
+    
     @nonobjc public class func fetchRequest() -> NSFetchRequest<DukePerson> {
         return NSFetchRequest<DukePerson>(entityName: "DukePerson")
     }
@@ -26,5 +27,6 @@ extension DukePerson : ECE564 {
     @NSManaged public var roleValue: String?
     @NSManaged public var team: String?
     @NSManaged public var whereFrom: String?
+    @NSManaged public var img: Data?
 
 }

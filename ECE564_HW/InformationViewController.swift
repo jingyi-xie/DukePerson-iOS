@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class InformationViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class InformationViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var first_input: UITextField!
     @IBOutlet weak var last_input: UITextField!
@@ -23,6 +23,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
     @IBOutlet weak var role_input: UITextField!
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var saveBtn: UIBarButtonItem!
+    @IBOutlet weak var imgBtn: UIButton!
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var currentPerson : DukePerson? = nil
@@ -56,6 +57,12 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         email_input.delegate = self
         gender_input.delegate = self
         role_input.delegate = self
+        if self.saveBtn.title == "Add" {
+            image.image = UIImage(named: "default.png")
+        }
+        else {
+            // show profile image
+        }
                 
         if self.saveBtn.title == "Edit" {
             autoPopulate()
@@ -104,6 +111,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         email_input.isEnabled = canEdit
         gender_input.isEnabled = canEdit
         role_input.isEnabled = canEdit
+        imgBtn.isHidden = !canEdit
     }
     
     func checkEmail() -> Bool {
@@ -191,6 +199,33 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         }
     }
     
+    @IBAction func clickImgBtn(_ sender: Any) {
+        let imgPickerController = UIImagePickerController()
+        imgPickerController.delegate = self
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (action:UIAlertAction) in
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                imgPickerController.sourceType = .camera
+                self.present(imgPickerController, animated: true, completion: nil)
+            }
+            else {
+                let camera_alert = UIAlertController(title: "Error", message: "No camera found", preferredStyle: .alert)
+                camera_alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                    camera_alert.dismiss(animated: true, completion: nil)
+                }))
+                self.present(camera_alert, animated: true, completion: nil)
+            }
+            
+        }))
+        alert.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { (action:UIAlertAction) in
+            imgPickerController.sourceType = .photoLibrary
+            self.present(imgPickerController, animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     func clickAdd() {
         if !self.checkName() || !self.checkEmail() {
             return
@@ -257,5 +292,15 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
             role_input.text = roles[row]
             role_input.resignFirstResponder()
         }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let source = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+        self.image.image = source
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
 }

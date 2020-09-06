@@ -5,6 +5,7 @@
         <attribute name="firstName" optional="YES" attributeType="String"/>
         <attribute name="genderValue" optional="YES" attributeType="String"/>
         <attribute name="hobbies" optional="YES" attributeType="Transformable" customClassName="[String]"/>
+        <attribute name="img" optional="YES" attributeType="Binary"/>
         <attribute name="languages" optional="YES" attributeType="Transformable" customClassName="[String]"/>
         <attribute name="lastName" optional="YES" attributeType="String"/>
         <attribute name="program" optional="YES" attributeType="String"/>
@@ -13,6 +14,6 @@
         <attribute name="whereFrom" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="DukePerson" positionX="-63" positionY="-18" width="128" height="193"/>
+        <element name="DukePerson" positionX="-63" positionY="-18" width="128" height="208"/>
     </elements>
 </model>

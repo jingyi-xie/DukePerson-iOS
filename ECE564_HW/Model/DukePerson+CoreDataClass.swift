@@ -2,7 +2,7 @@
 //  DukePerson+CoreDataClass.swift
 //  ECE564_HW
 //
-//  Created by Jingyi on 2020/9/3.
+//  Created by Jingyi on 2020/9/6.
 //  Copyright © 2020 ECE564. All rights reserved.
 //
 //
@@ -21,10 +21,7 @@ public class DukePerson: NSManagedObject {
             pronouns = ["She", "Her"]
         }
         var des : String = ""
-//        if self.firstName != nil && self.lastName != nil {
-//            des = "\(self.firstName!) \(self.lastName!). "
-//        }
-        // where from
+        
         if self.whereFrom != nil && self.whereFrom != "" {
             des += pronouns[0] + " is from \(self.whereFrom!). "
         }
