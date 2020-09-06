@@ -134,7 +134,7 @@ class TableViewController: UITableViewController {
         me.program = "Grad"
         me.whereFrom = "China"
         me.hobbies = ["Movies", "Music"]
-        me.languages = ["Python", "Javascript", "Java", "C/C++"]
+        me.languages = ["Python", "Java"]
         me.team = ""
         me.email = "jx95@duke.edu"
         

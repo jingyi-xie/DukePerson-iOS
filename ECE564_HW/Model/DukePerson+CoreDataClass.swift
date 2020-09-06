@@ -35,13 +35,13 @@ public class DukePerson: NSManagedObject {
             des += pronouns[0] + " is working on the \(self.program!) degree. "
         }
         // hobbies
-        if self.hobbies != nil && self.hobbies!.count != 0 {
-            let hobbies_str = self.hobbies!.joined(separator: ", ")
+        if self.hobbies != nil && self.hobbies!.count != 0 && self.hobbies?[0] != "" {
+            let hobbies_str = self.hobbies!.count >= 2 ? self.hobbies!.dropLast().joined(separator: ", ") + " and " + self.hobbies!.last! : self.hobbies![0]
             des += pronouns[0] + " likes \(hobbies_str). "
         }
         // languages
-        if self.languages != nil && self.languages!.count != 0 {
-            let languages_str = self.languages!.joined(separator: ", ")
+        if self.languages != nil && self.languages!.count != 0 && self.languages?[0] != "" {
+            let languages_str = self.languages!.count >= 2 ? self.languages!.dropLast().joined(separator: ", ") + " and " + self.languages!.last! : self.languages![0]
             des += pronouns[0] + " is proficient in \(languages_str). "
         }
         // email
