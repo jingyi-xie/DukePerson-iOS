@@ -110,7 +110,7 @@ class TableViewController: UITableViewController {
     
     func prePopulate() {
         fetchData()
-        if people_list.count != 0 {
+        if people_list[0].count != 0 {
             print("Found core data, no need to prepopulate")
             return
         }

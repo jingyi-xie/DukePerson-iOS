@@ -21,7 +21,6 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
     @IBOutlet weak var email_input: UITextField!
     @IBOutlet weak var gender_input: UITextField!
     @IBOutlet weak var role_input: UITextField!
-    @IBOutlet weak var result_label: UILabel!
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var saveBtn: UIBarButtonItem!
     
@@ -57,9 +56,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         email_input.delegate = self
         gender_input.delegate = self
         role_input.delegate = self
-        
-        //self.clearInput()
-        
+                
         if self.saveBtn.title == "Edit" {
             autoPopulate()
             changeMode(canEdit: false)
@@ -154,6 +151,18 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         try! self.context.save()
     }
     
+    func updatePerson(person: DukePerson,first: String, last: String, whereFrom: String, program: String, hobbies: String, languages: String, team: String, email: String, gender: String, role: String) {
+        person.whereFrom = whereFrom
+        person.program = program
+        person.hobbies = hobbies.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
+        person.languages = languages.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
+        person.team = team
+        person.email = email
+        person.gender = gender == "Male" ? Gender.Male : Gender.Female
+        person.role = role == "Professor" ? DukeRole.Professor : (role == "TA" ? DukeRole.TA : DukeRole.Student)
+        try! self.context.save()
+    }
+    
     func clearInput() {
         first_input.text = ""
         last_input.text = ""
@@ -178,7 +187,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
             changeMode(canEdit: true)
         }
         else if title == "Update/Add" {
-            self.clickEdit()
+            self.clickUpdateOrAdd()
         }
     }
     
@@ -190,69 +199,25 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         self.performSegue(withIdentifier: "returnFromInformation", sender: self)
     }
     
-    func clickEdit() {
-        if first_input.text == self.currentPerson?.firstName && last_input.text == self.currentPerson?.lastName {
+    func clickUpdateOrAdd() {
+        var message : String = ""
+        if self.currentPerson != nil && first_input.text == self.currentPerson!.firstName && last_input.text == self.currentPerson!.lastName {
             // update person
-            return
+            updatePerson(person: self.currentPerson!, first: first_input.text!, last: last_input.text!, whereFrom: from_input.text!, program: program_input.text!, hobbies: hobbies_input.text!, languages: languages_input.text!, team: team_input.text!, email: email_input.text!, gender: gender_input.text!, role: role_input.text!)
+            message = "Person is updated!"
         }
         // if change the name, add a new person
-        if self.checkName() && self.checkEmail() {
+        else if self.checkName() && self.checkEmail() {
             addPerson(first: first_input.text!, last: last_input.text!, whereFrom: from_input.text!, program: program_input.text!, hobbies: hobbies_input.text!, languages: languages_input.text!, team: team_input.text!, email: email_input.text!, gender: gender_input.text!, role: role_input.text!)
-            let alert = UIAlertController(title: "Message", message: "You changed the name field, a new person is added!", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
-                alert.dismiss(animated: true, completion: nil)
-                self.performSegue(withIdentifier: "returnFromInformation", sender: self)
-            }))
-            self.present(alert, animated: true, completion: nil)
+            message = "You changed the name field, a new person is added!"
         }
+        let alert = UIAlertController(title: "Message", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+            self.performSegue(withIdentifier: "returnFromInformation", sender: self)
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
-    
-//    @IBAction func clickFind(_ sender: Any) {
-//        if first_input.text == nil || last_input.text == nil || first_input.text == "" || last_input.text == "" {
-//            result_label.text = "Error: Please provide a first name and last name"
-//            result_label.textColor = .red
-//        }
-//        else {
-//            let result = findPerson(first: first_input.text!, last: last_input.text!)
-//            result_label.text = result.0
-//            result_label.textColor = UIColor(red: 0/255.0, green: 255/255.0, blue: 0/255.0, alpha: 1)
-//            if (result.1 == nil) {
-//                image.image = UIImage()
-//                result_label.textColor = .red
-//                return
-//            }
-//            let person = result.1!
-//            from_input.text = person.whereFrom
-//            program_input.text = person.program
-//            hobbies_input.text = person.hobbies == nil ? "" : person.hobbies!.joined(separator: ", ")
-//            languages_input.text = person.languages == nil ? "" : person.languages!.joined(separator: ", ")
-//            team_input.text = person.team
-//            email_input.text = person.email
-//            switch (person.gender) {
-//            case Gender.Male:
-//                gender_input.text = "Male"
-//            case Gender.Female:
-//                gender_input.text = "Female"
-//
-//            }
-//            switch (person.role) {
-//            case DukeRole.Professor:
-//                role_input.text = "Professor"
-//            case DukeRole.TA:
-//                role_input.text = "TA"
-//            case DukeRole.Student:
-//                role_input.text = "Student"
-//            }
-//            if person.firstName == "Jingyi" && person.lastName == "Xie" {
-//                image.image = UIImage(named: "jingyi.jpeg")
-//            }
-//            else {
-//                image.image = UIImage()
-//            }
-//
-//        }
-//
-//    }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
