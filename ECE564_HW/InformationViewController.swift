@@ -72,8 +72,8 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         last_input.text = person.lastName
         from_input.text = person.whereFrom
         program_input.text = person.program
-        hobbies_input.text = person.hobbies == nil ? "" : person.hobbies!.joined(separator: ", ")
-        languages_input.text = person.languages == nil ? "" : person.languages!.joined(separator: ", ")
+        hobbies_input.text = person.hobbies.joined(separator: ", ")
+        languages_input.text = person.languages.joined(separator: ", ")
         team_input.text = person.team
         email_input.text = person.email
         switch (person.gender) {
