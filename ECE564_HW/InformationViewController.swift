@@ -60,8 +60,11 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         if self.saveBtn.title == "Add" {
             image.image = UIImage(named: "default.png")
         }
+        else if self.currentPerson != nil && self.currentPerson?.img != nil {
+            image.image = UIImage(data: self.currentPerson!.img!)
+        }
         else {
-            // show profile image
+            image.image = UIImage(named: "default.png")
         }
                 
         if self.saveBtn.title == "Edit" {
@@ -156,6 +159,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         newPerson.email = email
         newPerson.gender = gender == "Male" ? Gender.Male : Gender.Female
         newPerson.role = role == "Professor" ? DukeRole.Professor : (role == "TA" ? DukeRole.TA : DukeRole.Student)
+        newPerson.img = self.image.image?.jpegData(compressionQuality: 0.75)
         try! self.context.save()
     }
     
@@ -168,6 +172,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         person.email = email
         person.gender = gender == "Male" ? Gender.Male : Gender.Female
         person.role = role == "Professor" ? DukeRole.Professor : (role == "TA" ? DukeRole.TA : DukeRole.Student)
+        person.img = self.image.image?.jpegData(compressionQuality: 0.75)
         try! self.context.save()
     }
     

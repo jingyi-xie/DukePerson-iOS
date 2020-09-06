@@ -58,7 +58,12 @@ class TableViewController: UITableViewController {
         let person:DukePerson = self.people_list[indexPath.section][indexPath.row]
         cell.nameLabel.text = person.firstName! + " " + person.lastName!
         cell.desLabel.text = person.description
-        cell.profile.image = UIImage(named: "default.png")
+        if person.img != nil {
+            cell.profile.image = UIImage(data: person.img!)
+        }
+        else {
+            cell.profile.image = UIImage(named: "default.png")
+        }
         cell.personView.layer.cornerRadius = 15
         if indexPath.section == 0 {
             cell.personView.layer.borderColor = UIColor(red: 0/255, green: 158/255, blue: 249/255, alpha: 1.00).cgColor
