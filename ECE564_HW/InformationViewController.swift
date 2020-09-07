@@ -160,7 +160,12 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         newPerson.gender = gender == "Male" ? Gender.Male : Gender.Female
         newPerson.role = role == "Professor" ? DukeRole.Professor : (role == "TA" ? DukeRole.TA : DukeRole.Student)
         newPerson.img = self.image.image?.jpegData(compressionQuality: 0.75)
-        try! self.context.save()
+        do {
+            try self.context.save()
+        }
+        catch {
+            print(error.localizedDescription)
+        }
     }
     
     func updatePerson(person: DukePerson,first: String, last: String, whereFrom: String, program: String, hobbies: String, languages: String, team: String, email: String, gender: String, role: String) {
@@ -173,7 +178,12 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         person.gender = gender == "Male" ? Gender.Male : Gender.Female
         person.role = role == "Professor" ? DukeRole.Professor : (role == "TA" ? DukeRole.TA : DukeRole.Student)
         person.img = self.image.image?.jpegData(compressionQuality: 0.75)
-        try! self.context.save()
+        do {
+            try self.context.save()
+        }
+        catch {
+            print(error.localizedDescription)
+        }
     }
     
     func clearInput() {

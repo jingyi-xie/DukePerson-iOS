@@ -192,7 +192,7 @@ class TableViewController: UITableViewController {
             try self.context.save()
         }
         catch {
-            print("Error: prepopulate data")
+            print(error.localizedDescription)
         }
     }
     
@@ -220,7 +220,7 @@ class TableViewController: UITableViewController {
             self.people_list = temp_list
         }
         catch {
-            print("Error: fetch data")
+            print(error.localizedDescription)
         }
     }
     
