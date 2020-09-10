@@ -177,7 +177,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         person.email = email
         person.gender = gender == "Male" ? Gender.Male : Gender.Female
         person.role = role == "Professor" ? DukeRole.Professor : (role == "TA" ? DukeRole.TA : DukeRole.Student)
-        person.img = self.image.image?.jpegData(compressionQuality: 0.75)
+        person.img = self.image.image?.jpegData(compressionQuality: 0.25)
         do {
             try self.context.save()
         }
