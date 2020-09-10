@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class InformationViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class InformationViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var first_input: UITextField!
     @IBOutlet weak var last_input: UITextField!
@@ -21,19 +21,19 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
     @IBOutlet weak var email_input: UITextField!
     @IBOutlet weak var gender_input: UITextField!
     @IBOutlet weak var role_input: UITextField!
-    @IBOutlet weak var result_label: UILabel!
     @IBOutlet weak var image: UIImageView!
+    @IBOutlet weak var saveBtn: UIBarButtonItem!
+    @IBOutlet weak var imgBtn: UIButton!
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var currentPerson : DukePerson? = nil
     
     let genders = ["Male", "Female"]
     var genderPickerView = UIPickerView()
     
     let roles = ["Professor", "TA", "Student"]
     var rolePickerView = UIPickerView()
-    
-    var people_list = [DukePerson]()
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -57,138 +57,100 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         email_input.delegate = self
         gender_input.delegate = self
         role_input.delegate = self
-        
-        self.prePopulate()
-        self.fetchData()
-        self.clearInput()
-        
-        var people_list:[DukePerson]?
-        try! people_list = context.fetch(DukePerson.fetchRequest())
-        print(people_list!)
-        
+        if self.saveBtn.title == "Add" {
+            image.image = UIImage(named: "default.png")
+        }
+        else if self.currentPerson != nil && self.currentPerson?.img != nil {
+            image.image = UIImage(data: self.currentPerson!.img!)
+        }
+        else {
+            image.image = UIImage(named: "default.png")
+        }
+                
+        if self.saveBtn.title == "Edit" {
+            autoPopulate()
+            changeMode(canEdit: false)
+        }
     }
     
-    func prePopulate() {
-        fetchData()
-        if people_list.count != 0 {
-            print("Found core data, no need to prepopulate")
+    func autoPopulate() {
+        if (self.currentPerson == nil) {
             return
         }
-        let prof = DukePerson(context: self.context)
-        prof.firstName = "Ric"
-        prof.lastName = "Telford"
-        prof.gender = Gender.Male
-        prof.role = DukeRole.Professor
-        prof.program = "NA"
-        prof.whereFrom = "Chatham County, NC"
-        prof.hobbies = ["Hiking", "Swimming", "Biking"]
-        prof.languages = ["Swift", "C", "C++"]
-        prof.team = "None"
-        prof.email = "rt113@duke.edu"
-        
-        let me = DukePerson(context: self.context)
-        me.firstName = "Jingyi"
-        me.lastName = "Xie"
-        me.gender = Gender.Male
-        me.role = DukeRole.Student
-        me.program = "Grad"
-        me.whereFrom = "China"
-        me.hobbies = ["Movies", "Music"]
-        me.languages = ["Python", "Javascript", "Java", "C/C++"]
-        me.team = ""
-        me.email = "jx95@duke.edu"
-        
-        let ta_1 = DukePerson(context: self.context)
-        ta_1.firstName = "Haohong"
-        ta_1.lastName = "Zhao"
-        ta_1.gender = Gender.Male
-        ta_1.role = DukeRole.TA
-        ta_1.program = "Grad"
-        ta_1.whereFrom = "China"
-        ta_1.hobbies = ["reading books", "jogging"]
-        ta_1.languages = ["swift", "java"]
-        ta_1.team = ""
-        ta_1.email = "haohong.zhao@duke.edu"
-        
-        
-        let ta_2 = DukePerson(context: self.context)
-        ta_2.firstName = "Yuchen"
-        ta_2.lastName = "Yang"
-        ta_2.gender = Gender.Female
-        ta_2.role = DukeRole.TA
-        ta_2.program = "Grad"
-        ta_2.whereFrom = "China"
-        ta_2.hobbies = ["Dancing"]
-        ta_2.languages = ["Java", "cpp"]
-        ta_2.team = ""
-        ta_2.email = "yy227@duke.edu"
-        
-        do {
-            try self.context.save()
+        let person = self.currentPerson!
+        first_input.text = person.firstName
+        last_input.text = person.lastName
+        from_input.text = person.whereFrom
+        program_input.text = person.program
+        hobbies_input.text = person.hobbies.joined(separator: ", ")
+        languages_input.text = person.languages.joined(separator: ", ")
+        team_input.text = person.team
+        email_input.text = person.email
+        switch (person.gender) {
+        case Gender.Male:
+            gender_input.text = "Male"
+        case Gender.Female:
+            gender_input.text = "Female"
+
         }
-        catch {
-            print("Error: prepopulate data")
+        switch (person.role) {
+        case DukeRole.Professor:
+            role_input.text = "Professor"
+        case DukeRole.TA:
+            role_input.text = "TA"
+        case DukeRole.Student:
+            role_input.text = "Student"
         }
     }
     
-    func fetchData() {
-        do {
-            self.people_list = try context.fetch(DukePerson.fetchRequest())
-        }
-        catch {
-            print("Error: fetch data")
-        }
+    func changeMode(canEdit: Bool) {
+        first_input.isEnabled = canEdit
+        last_input.isEnabled = canEdit
+        from_input.isEnabled = canEdit
+        program_input.isEnabled = canEdit
+        hobbies_input.isEnabled = canEdit
+        languages_input.isEnabled = canEdit
+        team_input.isEnabled = canEdit
+        email_input.isEnabled = canEdit
+        gender_input.isEnabled = canEdit
+        role_input.isEnabled = canEdit
+        imgBtn.isHidden = !canEdit
     }
     
-    func findPerson(first: String, last: String) -> (String, DukePerson?) {
-        let firstName = first.trimmingCharacters(in: .whitespacesAndNewlines)
-        let lastName = last.trimmingCharacters(in: .whitespacesAndNewlines)
-        for person in people_list {
-            if person.firstName != nil && person.firstName!.lowercased() == firstName.lowercased() && person.lastName != nil && person.lastName!.lowercased() == lastName.lowercased() {
-                return (person.description, person)
-            }
-        }
-        return ("The person was not found", nil)
-    }
-    
-    func isValidEmail() -> Bool {
+    func checkEmail() -> Bool {
         if email_input.text == nil || email_input.text == "" {
             return true
         }
         let email = email_input.text
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailPred.evaluate(with: email)
+        if !emailPred.evaluate(with: email) {
+            let alert = UIAlertController(title: "Error", message: "Please provide a valid email.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+                alert.dismiss(animated: true, completion: nil)
+            }))
+            self.present(alert, animated: true, completion: nil)
+            return false
+        }
+        return true
+    }
+    
+    func checkName() -> Bool {
+        if first_input.text == "" || last_input.text == "" || gender_input.text == "" {
+            let alert = UIAlertController(title: "Error", message: "Please provide first name, last name and gender.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+                alert.dismiss(animated: true, completion: nil)
+            }))
+            self.present(alert, animated: true, completion: nil)
+            return false
+        }
+        return true
     }
 
-    func addOrUpdatePerson(first: String, last: String, whereFrom: String, program: String, hobbies: String, languages: String, team: String, email: String, gender: String, role: String) -> String {
-        var found : Bool = false
-        let firstName = first.trimmingCharacters(in: .whitespacesAndNewlines)
-        let lastName = last.trimmingCharacters(in: .whitespacesAndNewlines)
-        for person in people_list {
-            // if in the database, update the current record
-            if person.firstName!.lowercased() == firstName.lowercased() && person.lastName!.lowercased() == lastName.lowercased() {
-                person.whereFrom = whereFrom
-                person.program = program
-                person.hobbies = hobbies.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
-                person.languages = languages.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
-                person.team = team
-                person.email = email
-                person.gender = gender == "Male" ? Gender.Male : Gender.Female
-                person.role = role == "Professor" ? DukeRole.Professor : (role == "TA" ? DukeRole.TA : DukeRole.Student)
-                found = true
-                break
-            }
-        }
-        if found {
-            try! self.context.save()
-            fetchData()
-            return "The person has been updated"
-        }
-        // if not in the database, create a new record
+    func addPerson(first: String, last: String, whereFrom: String, program: String, hobbies: String, languages: String, team: String, email: String, gender: String, role: String) {
         let newPerson = DukePerson(context: self.context)
-        newPerson.firstName = first_input.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        newPerson.lastName = last_input.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        newPerson.firstName = first.trimmingCharacters(in: .whitespacesAndNewlines)
+        newPerson.lastName = last.trimmingCharacters(in: .whitespacesAndNewlines)
         newPerson.whereFrom = whereFrom
         newPerson.program = program
         newPerson.hobbies = hobbies.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
@@ -197,9 +159,31 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         newPerson.email = email
         newPerson.gender = gender == "Male" ? Gender.Male : Gender.Female
         newPerson.role = role == "Professor" ? DukeRole.Professor : (role == "TA" ? DukeRole.TA : DukeRole.Student)
-        try! self.context.save()
-        fetchData()
-        return "The person has been added"
+        newPerson.img = self.image.image?.jpegData(compressionQuality: 0.75)
+        do {
+            try self.context.save()
+        }
+        catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func updatePerson(person: DukePerson,first: String, last: String, whereFrom: String, program: String, hobbies: String, languages: String, team: String, email: String, gender: String, role: String) {
+        person.whereFrom = whereFrom
+        person.program = program
+        person.hobbies = hobbies.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
+        person.languages = languages.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
+        person.team = team
+        person.email = email
+        person.gender = gender == "Male" ? Gender.Male : Gender.Female
+        person.role = role == "Professor" ? DukeRole.Professor : (role == "TA" ? DukeRole.TA : DukeRole.Student)
+        person.img = self.image.image?.jpegData(compressionQuality: 0.25)
+        do {
+            try self.context.save()
+        }
+        catch {
+            print(error.localizedDescription)
+        }
     }
     
     func clearInput() {
@@ -216,80 +200,73 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-    @IBAction func clickAdd(_ sender: Any) {
-        if first_input.text == "" || last_input.text == "" || gender_input.text == "" {
-            result_label.text = "Error: Please provide first name, last name and gender. "
-            result_label.textColor = .red
+    @IBAction func clickBtn(_ sender: Any) {
+        let title = (sender as! UIBarButtonItem).title
+        if title == "Add" {
+            self.clickAdd()
         }
-        else {
-            if !self.isValidEmail() {
-                result_label.text = "Error: Please provide a valid email. "
-                result_label.textColor = .red
-                return
-            }
-            let result = addOrUpdatePerson(first: first_input.text!, last: last_input.text!, whereFrom: from_input.text!, program: program_input.text!, hobbies: hobbies_input.text!, languages: languages_input.text!, team: team_input.text!, email: email_input.text!, gender: gender_input.text!, role: role_input.text!)
-            result_label.text = result
-            result_label.textColor = .green
-            clearInput()
+        else if title == "Edit" {
+            self.saveBtn.title = "Update/Add"
+            changeMode(canEdit: true)
         }
-        image.image = UIImage()
+        else if title == "Update/Add" {
+            self.clickUpdateOrAdd()
+        }
     }
     
-    @IBAction func clickFind(_ sender: Any) {
-        if first_input.text == nil || last_input.text == nil || first_input.text == "" || last_input.text == "" {
-            result_label.text = "Error: Please provide a first name and last name"
-            result_label.textColor = .red
-        }
-        else {
-            let result = findPerson(first: first_input.text!, last: last_input.text!)
-            result_label.text = result.0
-            result_label.textColor = UIColor(red: 0/255.0, green: 255/255.0, blue: 0/255.0, alpha: 1)
-            if (result.1 == nil) {
-                image.image = UIImage()
-                result_label.textColor = .red
-                return
-            }
-            let person = result.1!
-            from_input.text = person.whereFrom
-            program_input.text = person.program
-            hobbies_input.text = person.hobbies == nil ? "" : person.hobbies!.joined(separator: ", ")
-            languages_input.text = person.languages == nil ? "" : person.languages!.joined(separator: ", ")
-            team_input.text = person.team
-            email_input.text = person.email
-            switch (person.gender) {
-            case Gender.Male:
-                gender_input.text = "Male"
-            case Gender.Female:
-                gender_input.text = "Female"
-
-            }
-            switch (person.role) {
-            case DukeRole.Professor:
-                role_input.text = "Professor"
-            case DukeRole.TA:
-                role_input.text = "TA"
-            case DukeRole.Student:
-                role_input.text = "Student"
-            }
-            if person.firstName == "Jingyi" && person.lastName == "Xie" {
-                image.image = UIImage(named: "jingyi.jpeg")
+    @IBAction func clickImgBtn(_ sender: Any) {
+        let imgPickerController = UIImagePickerController()
+        imgPickerController.delegate = self
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (action:UIAlertAction) in
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                imgPickerController.sourceType = .camera
+                self.present(imgPickerController, animated: true, completion: nil)
             }
             else {
-                image.image = UIImage()
+                let camera_alert = UIAlertController(title: "Error", message: "No camera found", preferredStyle: .alert)
+                camera_alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                    camera_alert.dismiss(animated: true, completion: nil)
+                }))
+                self.present(camera_alert, animated: true, completion: nil)
             }
             
+        }))
+        alert.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { (action:UIAlertAction) in
+            imgPickerController.sourceType = .photoLibrary
+            self.present(imgPickerController, animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func clickAdd() {
+        if !self.checkName() || !self.checkEmail() {
+            return
         }
-        
+        addPerson(first: first_input.text!, last: last_input.text!, whereFrom: from_input.text!, program: program_input.text!, hobbies: hobbies_input.text!, languages: languages_input.text!, team: team_input.text!, email: email_input.text!, gender: gender_input.text!, role: role_input.text!)
+        self.performSegue(withIdentifier: "returnFromInformation", sender: self)
+    }
+    
+    func clickUpdateOrAdd() {
+        var message : String = ""
+        if self.currentPerson != nil && first_input.text == self.currentPerson!.firstName && last_input.text == self.currentPerson!.lastName {
+            // update person
+            updatePerson(person: self.currentPerson!, first: first_input.text!, last: last_input.text!, whereFrom: from_input.text!, program: program_input.text!, hobbies: hobbies_input.text!, languages: languages_input.text!, team: team_input.text!, email: email_input.text!, gender: gender_input.text!, role: role_input.text!)
+            message = "Person is updated!"
+        }
+        // if change the name, add a new person
+        else if self.checkName() && self.checkEmail() {
+            addPerson(first: first_input.text!, last: last_input.text!, whereFrom: from_input.text!, program: program_input.text!, hobbies: hobbies_input.text!, languages: languages_input.text!, team: team_input.text!, email: email_input.text!, gender: gender_input.text!, role: role_input.text!)
+            message = "You changed the name field, a new person is added!"
+        }
+        let alert = UIAlertController(title: "Message", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+            self.performSegue(withIdentifier: "returnFromInformation", sender: self)
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -330,5 +307,15 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
             role_input.text = roles[row]
             role_input.resignFirstResponder()
         }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let source = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+        self.image.image = source
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
 }

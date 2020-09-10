@@ -2,7 +2,7 @@
 //  DukePerson+CoreDataClass.swift
 //  ECE564_HW
 //
-//  Created by Jaryn on 2020/9/3.
+//  Created by Jingyi on 2020/9/6.
 //  Copyright © 2020 ECE564. All rights reserved.
 //
 //
@@ -21,10 +21,7 @@ public class DukePerson: NSManagedObject {
             pronouns = ["She", "Her"]
         }
         var des : String = ""
-        if self.firstName != nil && self.lastName != nil {
-            des = "\(self.firstName!) \(self.lastName!). "
-        }
-        // where from
+        
         if self.whereFrom != nil && self.whereFrom != "" {
             des += pronouns[0] + " is from \(self.whereFrom!). "
         }
@@ -35,13 +32,13 @@ public class DukePerson: NSManagedObject {
             des += pronouns[0] + " is working on the \(self.program!) degree. "
         }
         // hobbies
-        if self.hobbies != nil && self.hobbies!.count != 0 {
-            let hobbies_str = self.hobbies!.joined(separator: ", ")
+        if self.hobbies.count != 0 && self.hobbies[0] != "" {
+            let hobbies_str = self.hobbies.count >= 2 ? self.hobbies.dropLast().joined(separator: ", ") + " and " + self.hobbies.last! : self.hobbies[0]
             des += pronouns[0] + " likes \(hobbies_str). "
         }
         // languages
-        if self.languages != nil && self.languages!.count != 0 {
-            let languages_str = self.languages!.joined(separator: ", ")
+        if self.languages.count != 0 && self.languages[0] != "" {
+            let languages_str = self.languages.count >= 2 ? self.languages.dropLast().joined(separator: ", ") + " and " + self.languages.last! : self.languages[0]
             des += pronouns[0] + " is proficient in \(languages_str). "
         }
         // email
