@@ -31,7 +31,10 @@ Extra Features:
     * Email validation in add/update. If email format is invalid, you can see an error message
 
 ## HW3
-add text here
+* Use UIAlert to show results or error messages when add and update
+* When add a new person, disable team field when select Professor or TA as role
+* Customized UI and table cell
+* Take a photo as picture source (disabled on the simulator)
 
 ## HW4
 add text here
