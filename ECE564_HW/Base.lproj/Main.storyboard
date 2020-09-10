@@ -155,6 +155,9 @@
                                                 <rect key="frame" x="100" y="0.0" width="235" height="25"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <action selector="changeGender:" destination="BYZ-38-t0r" eventType="valueChanged" id="vI3-he-8ni"/>
+                                                </connections>
                                             </textField>
                                         </subviews>
                                         <constraints>
@@ -175,6 +178,9 @@
                                                 <rect key="frame" x="100" y="0.0" width="235" height="25"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <action selector="changeRole:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="nEd-IN-TMD"/>
+                                                </connections>
                                             </textField>
                                         </subviews>
                                         <constraints>

@@ -241,6 +241,18 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         self.present(alert, animated: true, completion: nil)
     }
     
+    @IBAction func changeRole(_ sender: Any) {
+        if self.saveBtn.title == "Add" {
+            if role_input.text! == "Professor" || role_input.text! == "TA" {
+                self.team_input.isEnabled = false
+            }
+            else {
+                self.team_input.isEnabled = true
+            }
+        }
+    }
+    
+    
     func clickAdd() {
         if !self.checkName() || !self.checkEmail() {
             return
