@@ -71,6 +71,13 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
             autoPopulate()
             changeMode(canEdit: false)
         }
+        
+        let Tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(Tap);
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
     }
     
     func autoPopulate() {
