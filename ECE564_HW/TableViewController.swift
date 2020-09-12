@@ -99,7 +99,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     
     func prePopulate() {
         fetchData()
-        if people_list[0].count != 0 {
+        if people_list[0].count != 0  || people_list[1].count != 0 || people_list[2].count != 0{
             print("Found core data, no need to prepopulate")
             return
         }
@@ -251,6 +251,42 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     @IBAction func returnFromInformation(_ sender: UIStoryboardSegue) {
         self.fetchData()
         self.tableView.reloadData()
+    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = createDeleteAction(at: indexPath)
+        let view = createViewAction(at: indexPath)
+        return UISwipeActionsConfiguration(actions: [delete, view])
+    }
+    
+    func createDeleteAction(at indexPath: IndexPath) -> UIContextualAction {
+        let person = people_list[indexPath.section][indexPath.row]
+        let action = UIContextualAction(style: .normal, title: "Delete", handler: {(action, view, completion) in
+            self.context.delete(person)
+            do {
+                try self.context.save()
+            }
+            catch {
+                print(error.localizedDescription)
+            }
+            self.fetchData()
+            self.tableView.reloadData()
+            completion(true)
+        })
+        action.image = UIImage(named: "delete.png")
+        action.backgroundColor = .white
+        return action
+    }
+    
+    func createViewAction(at indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .normal, title: "View", handler: {(action, view, completion) in
+            self.selectedPerson = self.people_list[indexPath.section][indexPath.row]
+            self.performSegue(withIdentifier: "clickCell", sender: self)
+            completion(true)
+        })
+        action.image = UIImage(named: "view.png")
+        action.backgroundColor = .white
+        return action
     }
 
 }
