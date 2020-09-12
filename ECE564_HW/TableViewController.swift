@@ -8,7 +8,14 @@
 
 import UIKit
 
-class TableViewController: UITableViewController {
+enum searchBarScope: Int {
+    case description = 0
+    case hobbies = 1
+    case languages = 2
+}
+
+class TableViewController: UITableViewController, UISearchBarDelegate {
+    let searchBar = UISearchBar()
 
     var people_list : [[DukePerson]] = []
 
@@ -19,6 +26,7 @@ class TableViewController: UITableViewController {
         super.viewDidLoad()
         self.prePopulate()
         self.fetchData()
+        self.setupSearchbar()
     }
 
     // MARK: - Table view data source
@@ -177,6 +185,65 @@ class TableViewController: UITableViewController {
         }
         catch {
             print(error.localizedDescription)
+        }
+    }
+    
+    func setupSearchbar() {
+        searchBar.showsScopeBar = true
+        searchBar.scopeButtonTitles = ["Description", "Hobbies", "Languages"]
+        searchBar.selectedScopeButtonIndex = 0
+        searchBar.delegate = self
+        self.tableView.tableHeaderView = searchBar
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            self.fetchData()
+            self.tableView.reloadData()
+        }
+        else {
+            filterPeople(index: searchBar.selectedScopeButtonIndex, text: searchText)
+        }
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        self.fetchData()
+        self.tableView.reloadData()
+        searchBar.text = nil
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.endEditing(true)
+    }
+    
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        searchBar.endEditing(true)
+    }
+    
+    func filterPeople(index: Int, text: String) {
+        
+        switch index {
+        case searchBarScope.description.rawValue:
+            people_list = people_list.map{
+                return $0.filter({(person) -> Bool in
+                    return person.description.lowercased().contains(text.lowercased()) || person.firstName!.lowercased().contains(text.lowercased()) || person.lastName!.lowercased().contains(text.lowercased())})
+            }
+            self.tableView.reloadData()
+
+        case searchBarScope.hobbies.rawValue:
+            people_list = people_list.map{
+                return $0.filter({(person) -> Bool in
+                    return person.getHobbiesString().lowercased().contains(text.lowercased())})
+            }
+            self.tableView.reloadData()
+        case searchBarScope.languages.rawValue:
+            people_list = people_list.map{
+                return $0.filter({(person) -> Bool in
+                    return person.getLanguagesString().lowercased().contains(text.lowercased())})
+            }
+            self.tableView.reloadData()
+        default:
+            print("Scope not found")
         }
     }
     

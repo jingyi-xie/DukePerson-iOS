@@ -65,4 +65,12 @@ public class DukePerson: NSManagedObject {
             self.roleValue = newValue.rawValue
         }
     }
+    
+    func getLanguagesString() -> String {
+        return self.languages.dropLast().joined(separator: ", ")
+    }
+    
+    func getHobbiesString() -> String {
+        return self.hobbies.dropLast().joined(separator: ", ")
+    }
 }
