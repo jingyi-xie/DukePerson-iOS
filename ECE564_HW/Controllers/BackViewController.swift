@@ -2,7 +2,7 @@
 //  BackViewController.swift
 //  ECE564_HW
 //
-//  Created by Jaryn on 2020/9/12.
+//  Created by Jingyi on 2020/9/12.
 //  Copyright © 2020 ECE564. All rights reserved.
 //
 

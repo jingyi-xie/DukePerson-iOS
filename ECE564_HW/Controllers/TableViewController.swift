@@ -127,6 +127,8 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         me.languages = ["Python", "Java"]
         me.team = ""
         me.email = "jx95@duke.edu"
+        me.img =  UIImage(named: "jingyi.png")?.jpegData(compressionQuality: 0.25)
+
         
         let ta_1 = DukePerson(context: self.context)
         ta_1.firstName = "Haohong"
