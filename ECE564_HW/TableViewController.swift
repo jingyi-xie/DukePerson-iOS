@@ -87,7 +87,8 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let dest = segue.destination as! InformationViewController
+        let navController = segue.destination as! UINavigationController
+        let dest = navController.topViewController as! InformationViewController
         if(segue.identifier == "clickCell"){
             dest.saveBtn.title = "Edit"
             dest.currentPerson = self.selectedPerson

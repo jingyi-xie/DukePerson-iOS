@@ -20,6 +20,7 @@
 		91A263E624FB62F100DABD2A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 91A263E424FB62F100DABD2A /* Model.xcdatamodeld */; };
 		91A2642724FB6E6C00DABD2A /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A2642624FB6E6C00DABD2A /* InformationViewController.swift */; };
 		91A2642E24FB71E900DABD2A /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A2642D24FB71E900DABD2A /* DataModel.swift */; };
+		91A3ADD1250DAB5C00DCF394 /* BackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A3ADD0250DAB5C00DCF394 /* BackViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 		91A263E524FB62F100DABD2A /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		91A2642624FB6E6C00DABD2A /* InformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationViewController.swift; sourceTree = "<group>"; };
 		91A2642D24FB71E900DABD2A /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
+		91A3ADD0250DAB5C00DCF394 /* BackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 				8734816D2469DEE9000B9A79 /* Info.plist */,
 				91A263E424FB62F100DABD2A /* Model.xcdatamodeld */,
 				91A2642624FB6E6C00DABD2A /* InformationViewController.swift */,
+				91A3ADD0250DAB5C00DCF394 /* BackViewController.swift */,
 			);
 			path = ECE564_HW;
 			sourceTree = "<group>";
@@ -181,6 +184,7 @@
 				919303052504A2C6007CF865 /* DukePerson+CoreDataClass.swift in Sources */,
 				9193030225047C80007CF865 /* ECE564.swift in Sources */,
 				91A263E624FB62F100DABD2A /* Model.xcdatamodeld in Sources */,
+				91A3ADD1250DAB5C00DCF394 /* BackViewController.swift in Sources */,
 				919303062504A2C6007CF865 /* DukePerson+CoreDataProperties.swift in Sources */,
 				91A2642724FB6E6C00DABD2A /* InformationViewController.swift in Sources */,
 			);
