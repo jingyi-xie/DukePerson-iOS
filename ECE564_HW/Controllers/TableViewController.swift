@@ -115,6 +115,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         prof.languages = ["Swift", "C", "C++"]
         prof.team = "None"
         prof.email = "rt113@duke.edu"
+        prof.img =  UIImage(named: "ric.jpg")?.jpegData(compressionQuality: 0.25)
         
         let me = DukePerson(context: self.context)
         me.firstName = "Jingyi"
@@ -127,7 +128,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         me.languages = ["Python", "Java"]
         me.team = ""
         me.email = "jx95@duke.edu"
-        me.img =  UIImage(named: "jingyi.png")?.jpegData(compressionQuality: 0.25)
+        me.img =  UIImage(named: "jingyi.jpeg")?.jpegData(compressionQuality: 0.25)
 
         
         let ta_1 = DukePerson(context: self.context)
@@ -141,6 +142,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         ta_1.languages = ["swift", "java"]
         ta_1.team = ""
         ta_1.email = "haohong.zhao@duke.edu"
+        ta_1.img =  UIImage(named: "haohong.png")?.jpegData(compressionQuality: 0.25)
         
         
         let ta_2 = DukePerson(context: self.context)
@@ -154,6 +156,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         ta_2.languages = ["Java", "cpp"]
         ta_2.team = ""
         ta_2.email = "yy227@duke.edu"
+        ta_2.img =  UIImage(named: "yuchen.jpg")?.jpegData(compressionQuality: 0.25)
         
         do {
             try self.context.save()
