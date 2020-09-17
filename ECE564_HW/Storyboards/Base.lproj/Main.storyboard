@@ -79,12 +79,12 @@
                     <navigationItem key="navigationItem" title="ECE 564" id="cYC-7b-W9D">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="tTU-Th-RMR">
                             <connections>
-                                <segue destination="BYZ-38-t0r" kind="show" identifier="clickAdd" id="Vbm-ni-Zqu"/>
+                                <segue destination="baZ-UY-dkz" kind="presentation" identifier="clickAdd" modalPresentationStyle="fullScreen" id="Vbm-ni-Zqu"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="show" identifier="clickCell" id="bbz-Sx-A7R"/>
+                        <segue destination="baZ-UY-dkz" kind="presentation" identifier="clickCell" modalPresentationStyle="fullScreen" id="bbz-Sx-A7R"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GkR-rW-vZD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -365,12 +365,59 @@
                         <outlet property="saveBtn" destination="CsP-VK-pLV" id="Wug-6i-tne"/>
                         <outlet property="team_input" destination="4O5-Hw-bU0" id="MPC-Ku-XfM"/>
                         <segue destination="CvI-kL-cmV" kind="unwind" identifier="returnFromInformation" unwindAction="returnFromInformation:" id="dGp-Pd-4je"/>
+                        <segue destination="tmx-0R-RDQ" kind="presentation" identifier="showBack" modalPresentationStyle="fullScreen" modalTransitionStyle="flipHorizontal" id="qyH-Yz-wzT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <exit id="CvI-kL-cmV" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-764" y="44"/>
+            <point key="canvasLocation" x="175.19999999999999" y="43.628185907046479"/>
+        </scene>
+        <!--Back View Controller-->
+        <scene sceneID="QH0-eL-Hda">
+            <objects>
+                <viewController id="tmx-0R-RDQ" customClass="BackViewController" customModule="ECE564_HW" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lxI-0n-YE6">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jh3-1G-Fhy">
+                                <rect key="frame" x="166.5" y="140" width="42" height="63"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6d6-AU-usb">
+                                <rect key="frame" x="67.5" y="296" width="240" height="240"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="6gy-0s-OdJ"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="240" id="Ips-xB-lsF"/>
+                                    <constraint firstAttribute="height" constant="240" id="SOw-4V-6d0"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="240" id="yDd-2E-sT5"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.80172485113143921" green="0.94612902402877808" blue="0.81834405660629272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="6d6-AU-usb" firstAttribute="centerX" secondItem="lxI-0n-YE6" secondAttribute="centerX" id="5n3-bi-sVt"/>
+                            <constraint firstItem="Jh3-1G-Fhy" firstAttribute="top" secondItem="j4d-UA-yoE" secondAttribute="top" constant="140" id="L9g-ly-Z2y"/>
+                            <constraint firstItem="6d6-AU-usb" firstAttribute="top" secondItem="Jh3-1G-Fhy" secondAttribute="bottom" constant="93" id="eS0-8F-YAm"/>
+                            <constraint firstItem="j4d-UA-yoE" firstAttribute="bottom" secondItem="6d6-AU-usb" secondAttribute="bottom" constant="131" id="gUo-P7-7cx"/>
+                            <constraint firstItem="Jh3-1G-Fhy" firstAttribute="centerX" secondItem="lxI-0n-YE6" secondAttribute="centerX" id="paZ-wc-5sf"/>
+                            <constraint firstItem="6d6-AU-usb" firstAttribute="top" secondItem="Jh3-1G-Fhy" secondAttribute="bottom" constant="93" id="sVy-qN-PyJ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="j4d-UA-yoE"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Z99-ac-pWg"/>
+                    <connections>
+                        <outlet property="nameLabel" destination="Jh3-1G-Fhy" id="xOA-PR-kYE"/>
+                        <outlet property="profileImg" destination="6d6-AU-usb" id="iOc-gE-NyJ"/>
+                        <segue destination="baZ-UY-dkz" kind="presentation" identifier="showFront" modalPresentationStyle="fullScreen" modalTransitionStyle="flipHorizontal" id="j7F-FZ-eCA"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wqI-mW-bql" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="932" y="43.628185907046479"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="YBW-i7-7Z9">
@@ -390,8 +437,28 @@
             </objects>
             <point key="canvasLocation" x="-2687.1999999999998" y="43.628185907046479"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="MbI-Gf-erB">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="baZ-UY-dkz" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="tu2-Dw-UlH"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="JLE-0T-yCL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="JtT-W8-fHB"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4KM-r3-8s1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-764" y="43.628185907046479"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="bbz-Sx-A7R"/>
+        <segue reference="qyH-Yz-wzT"/>
+        <segue reference="j7F-FZ-eCA"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -8,7 +8,14 @@
 
 import UIKit
 
-class TableViewController: UITableViewController {
+enum searchBarScope: Int {
+    case description = 0
+    case hobbies = 1
+    case languages = 2
+}
+
+class TableViewController: UITableViewController, UISearchBarDelegate {
+    let searchBar = UISearchBar()
 
     var people_list : [[DukePerson]] = []
 
@@ -17,14 +24,9 @@ class TableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
         self.prePopulate()
         self.fetchData()
+        self.setupSearchbar()
     }
 
     // MARK: - Table view data source
@@ -84,46 +86,9 @@ class TableViewController: UITableViewController {
         performSegue(withIdentifier: "clickCell", sender: self)
     }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let dest = segue.destination as! InformationViewController
+        let navController = segue.destination as! UINavigationController
+        let dest = navController.topViewController as! InformationViewController
         if(segue.identifier == "clickCell"){
             dest.saveBtn.title = "Edit"
             dest.currentPerson = self.selectedPerson
@@ -135,7 +100,7 @@ class TableViewController: UITableViewController {
     
     func prePopulate() {
         fetchData()
-        if people_list[0].count != 0 {
+        if people_list[0].count != 0  || people_list[1].count != 0 || people_list[2].count != 0{
             print("Found core data, no need to prepopulate")
             return
         }
@@ -150,6 +115,7 @@ class TableViewController: UITableViewController {
         prof.languages = ["Swift", "C", "C++"]
         prof.team = "None"
         prof.email = "rt113@duke.edu"
+        prof.img =  UIImage(named: "ric.jpg")?.jpegData(compressionQuality: 0.25)
         
         let me = DukePerson(context: self.context)
         me.firstName = "Jingyi"
@@ -162,6 +128,8 @@ class TableViewController: UITableViewController {
         me.languages = ["Python", "Java"]
         me.team = ""
         me.email = "jx95@duke.edu"
+        me.img =  UIImage(named: "jingyi.jpeg")?.jpegData(compressionQuality: 0.25)
+
         
         let ta_1 = DukePerson(context: self.context)
         ta_1.firstName = "Haohong"
@@ -174,6 +142,7 @@ class TableViewController: UITableViewController {
         ta_1.languages = ["swift", "java"]
         ta_1.team = ""
         ta_1.email = "haohong.zhao@duke.edu"
+        ta_1.img =  UIImage(named: "haohong.png")?.jpegData(compressionQuality: 0.25)
         
         
         let ta_2 = DukePerson(context: self.context)
@@ -187,6 +156,7 @@ class TableViewController: UITableViewController {
         ta_2.languages = ["Java", "cpp"]
         ta_2.team = ""
         ta_2.email = "yy227@duke.edu"
+        ta_2.img =  UIImage(named: "yuchen.jpg")?.jpegData(compressionQuality: 0.25)
         
         do {
             try self.context.save()
@@ -224,10 +194,105 @@ class TableViewController: UITableViewController {
         }
     }
     
+    func setupSearchbar() {
+        searchBar.showsScopeBar = true
+        searchBar.scopeButtonTitles = ["Description", "Hobbies", "Languages"]
+        searchBar.selectedScopeButtonIndex = 0
+        searchBar.delegate = self
+        self.tableView.tableHeaderView = searchBar
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            self.fetchData()
+            self.tableView.reloadData()
+        }
+        else {
+            filterPeople(index: searchBar.selectedScopeButtonIndex, text: searchText)
+        }
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        self.fetchData()
+        self.tableView.reloadData()
+        searchBar.text = nil
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.endEditing(true)
+    }
+    
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        searchBar.endEditing(true)
+    }
+    
+    func filterPeople(index: Int, text: String) {
+        
+        switch index {
+        case searchBarScope.description.rawValue:
+            people_list = people_list.map{
+                return $0.filter({(person) -> Bool in
+                    return person.description.lowercased().contains(text.lowercased()) || person.firstName!.lowercased().contains(text.lowercased()) || person.lastName!.lowercased().contains(text.lowercased())})
+            }
+            self.tableView.reloadData()
+
+        case searchBarScope.hobbies.rawValue:
+            people_list = people_list.map{
+                return $0.filter({(person) -> Bool in
+                    return person.getHobbiesString().lowercased().contains(text.lowercased())})
+            }
+            self.tableView.reloadData()
+        case searchBarScope.languages.rawValue:
+            people_list = people_list.map{
+                return $0.filter({(person) -> Bool in
+                    return person.getLanguagesString().lowercased().contains(text.lowercased())})
+            }
+            self.tableView.reloadData()
+        default:
+            print("Scope not found")
+        }
+    }
+    
     
     @IBAction func returnFromInformation(_ sender: UIStoryboardSegue) {
         self.fetchData()
         self.tableView.reloadData()
+    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = createDeleteAction(at: indexPath)
+        let view = createViewAction(at: indexPath)
+        return UISwipeActionsConfiguration(actions: [delete, view])
+    }
+    
+    func createDeleteAction(at indexPath: IndexPath) -> UIContextualAction {
+        let person = people_list[indexPath.section][indexPath.row]
+        let action = UIContextualAction(style: .normal, title: "Delete", handler: {(action, view, completion) in
+            self.context.delete(person)
+            do {
+                try self.context.save()
+            }
+            catch {
+                print(error.localizedDescription)
+            }
+            self.fetchData()
+            self.tableView.reloadData()
+            completion(true)
+        })
+        action.image = UIImage(named: "delete.png")
+        action.backgroundColor = .white
+        return action
+    }
+    
+    func createViewAction(at indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .normal, title: "View", handler: {(action, view, completion) in
+            self.selectedPerson = self.people_list[indexPath.section][indexPath.row]
+            self.performSegue(withIdentifier: "clickCell", sender: self)
+            completion(true)
+        })
+        action.image = UIImage(named: "view.png")
+        action.backgroundColor = .white
+        return action
     }
 
 }

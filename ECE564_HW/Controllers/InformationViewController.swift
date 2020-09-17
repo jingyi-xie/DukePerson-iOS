@@ -71,6 +71,32 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
             autoPopulate()
             changeMode(canEdit: false)
         }
+        
+        let Tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(Tap);
+        
+        let swipe : UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(showBack))
+        swipe.direction = UISwipeGestureRecognizer.Direction.left
+        view.addGestureRecognizer(swipe)
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(true)
+    }
+    
+    @objc func showBack() {
+        if self.saveBtn.title == "Add" {
+            return
+        }
+        performSegue(withIdentifier: "showBack", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "showBack"){
+            let dest = segue.destination as! BackViewController
+            //let dest = navController.topViewController as! BackViewController
+            dest.currentPerson = self.currentPerson
+        }
     }
     
     func autoPopulate() {
