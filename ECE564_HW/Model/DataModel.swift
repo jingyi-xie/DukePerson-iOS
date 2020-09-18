@@ -8,11 +8,13 @@
 
 import UIKit
 
+// enum type for gender
 enum Gender : String {
     case Male = "Male"
     case Female = "Female"
 }
 
+// enum type for duke role
 enum DukeRole : String {
     case Student = "Student"
     case Professor = "Professor"

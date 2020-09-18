@@ -17,15 +17,18 @@ class BackViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // add the swipe gesture recognizer
         let swipe : UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(showFront))
         swipe.direction = UISwipeGestureRecognizer.Direction.left
         view.addGestureRecognizer(swipe)
         
         if currentPerson != nil {
+            // Set the text in name label
             nameLabel.attributedText = NSAttributedString(string: "\(self.currentPerson!.firstName!) \(self.currentPerson!.lastName!)", attributes:
                 [.underlineStyle: NSUnderlineStyle.single.rawValue])
             nameLabel.textColor = .blue
             nameLabel.font = UIFont(name: "Marker Felt", size: 30)
+            // Display the image of the current person. If not found, display the default one
             if currentPerson?.img != nil {
                 self.profileImg.image = UIImage(data: self.currentPerson!.img!)
             }
@@ -35,6 +38,9 @@ class BackViewController: UIViewController {
         }
     }
     
+    // MARK: - Navigation
+
+    // when goes back to information view, pass the current person
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showFront" {
             let navController = segue.destination as! UINavigationController
@@ -47,17 +53,4 @@ class BackViewController: UIViewController {
     @objc func showFront() {
         performSegue(withIdentifier: "showFront", sender: self)
     }
-    
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

@@ -6,6 +6,8 @@
 //  Copyright © 2020 ECE564. All rights reserved.
 //
 
+
+// ECE 564 protocol defined in HW3 assignment
 protocol ECE564 {
     var hobbies : [String]   {get}
     var languages : [String]    {get}

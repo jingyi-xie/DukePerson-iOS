@@ -25,18 +25,23 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
     @IBOutlet weak var saveBtn: UIBarButtonItem!
     @IBOutlet weak var imgBtn: UIButton!
     
+    // context for core data
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    // store the current person
     var currentPerson : DukePerson? = nil
     
+    // picker view for gender
     let genders = ["Male", "Female"]
     var genderPickerView = UIPickerView()
     
+    // picker view for role
     let roles = ["Professor", "TA", "Student"]
     var rolePickerView = UIPickerView()
         
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // set up delegate of picker views
         genderPickerView.delegate = self
         genderPickerView.dataSource = self
         genderPickerView.tag = 0
@@ -47,6 +52,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         rolePickerView.tag = 1
         role_input.inputView = rolePickerView
         
+        // set up delegate of text fields
         first_input.delegate = self
         last_input.delegate = self
         from_input.delegate = self
@@ -57,48 +63,59 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         email_input.delegate = self
         gender_input.delegate = self
         role_input.delegate = self
+        // if click "add" button in table view, show the default image
         if self.saveBtn.title == "Add" {
             image.image = UIImage(named: "default.png")
         }
+        // if click a cell in table view, show the image of the person
         else if self.currentPerson != nil && self.currentPerson?.img != nil {
             image.image = UIImage(data: self.currentPerson!.img!)
         }
         else {
             image.image = UIImage(named: "default.png")
         }
-                
+        
+        // if click a cell in table view, populate all the text fields on this person
         if self.saveBtn.title == "Edit" {
             autoPopulate()
+            // view only mode
             changeMode(canEdit: false)
         }
         
+        // tap gesture to dismiss the keyboard
         let Tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(Tap);
         
+        // swipe gestures to flip the page
         let swipe : UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(showBack))
         swipe.direction = UISwipeGestureRecognizer.Direction.left
         view.addGestureRecognizer(swipe)
     }
     
+    // when click anywhere outside of the keyboard, dismiss the keyboard
     @objc func dismissKeyboard() {
         self.view.endEditing(true)
     }
     
+    // when swipe, perform the "show back" segue
     @objc func showBack() {
+        // if in the view to add a person, cannot flip the page
         if self.saveBtn.title == "Add" {
             return
         }
         performSegue(withIdentifier: "showBack", sender: self)
     }
     
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "showBack"){
+            // pass the person to back view
             let dest = segue.destination as! BackViewController
-            //let dest = navController.topViewController as! BackViewController
             dest.currentPerson = self.currentPerson
         }
     }
     
+    // auto populate the information of the current person in the text fields
     func autoPopulate() {
         if (self.currentPerson == nil) {
             return
@@ -129,6 +146,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         }
     }
     
+    // change the mode: ready-only or edit
     func changeMode(canEdit: Bool) {
         first_input.isEnabled = canEdit
         last_input.isEnabled = canEdit
@@ -143,6 +161,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         imgBtn.isHidden = !canEdit
     }
     
+    // use regular expression to check if the email if valid
     func checkEmail() -> Bool {
         if email_input.text == nil || email_input.text == "" {
             return true
@@ -150,6 +169,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         let email = email_input.text
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        // if email is invalid, create a alert
         if !emailPred.evaluate(with: email) {
             let alert = UIAlertController(title: "Error", message: "Please provide a valid email.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
@@ -161,6 +181,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         return true
     }
     
+    // check if the name in empty
     func checkName() -> Bool {
         if first_input.text == "" || last_input.text == "" || gender_input.text == "" {
             let alert = UIAlertController(title: "Error", message: "Please provide first name, last name and gender.", preferredStyle: .alert)
@@ -179,13 +200,15 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         newPerson.lastName = last.trimmingCharacters(in: .whitespacesAndNewlines)
         newPerson.whereFrom = whereFrom
         newPerson.program = program
+        // parse the hobbies and languages into array
         newPerson.hobbies = hobbies.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
         newPerson.languages = languages.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
         newPerson.team = team
         newPerson.email = email
         newPerson.gender = gender == "Male" ? Gender.Male : Gender.Female
         newPerson.role = role == "Professor" ? DukeRole.Professor : (role == "TA" ? DukeRole.TA : DukeRole.Student)
-        newPerson.img = self.image.image?.jpegData(compressionQuality: 0.75)
+        // store the image in binary format and compress the picture
+        newPerson.img = self.image.image?.jpegData(compressionQuality: 0.25)
         do {
             try self.context.save()
         }
@@ -212,6 +235,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         }
     }
     
+    // clear all text fields
     func clearInput() {
         first_input.text = ""
         last_input.text = ""
@@ -226,20 +250,25 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
     }
     
 
+    // when click the button
     @IBAction func clickBtn(_ sender: Any) {
         let title = (sender as! UIBarButtonItem).title
+        // if in the view to add a new person, add the person
         if title == "Add" {
             self.clickAdd()
         }
+        // if in read-only view, unlock the text fields
         else if title == "Edit" {
             self.saveBtn.title = "Update/Add"
             changeMode(canEdit: true)
         }
+        // if in edit mode, update the current person or add a new one
         else if title == "Update/Add" {
             self.clickUpdateOrAdd()
         }
     }
     
+    // when click the choose image button, get picture from camera or the photo library
     @IBAction func clickImgBtn(_ sender: Any) {
         let imgPickerController = UIImagePickerController()
         imgPickerController.delegate = self
@@ -267,6 +296,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         self.present(alert, animated: true, completion: nil)
     }
     
+    // check if the role if Professor or TA, disable the team field
     @IBAction func changeRole(_ sender: Any) {
         if self.saveBtn.title == "Add" {
             if role_input.text! == "Professor" || role_input.text! == "TA" {
@@ -278,17 +308,20 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         }
     }
     
-    
+    // when click add to add a new person
     func clickAdd() {
+        // if name is empty or email is invalid, create alert and return
         if !self.checkName() || !self.checkEmail() {
             return
         }
         addPerson(first: first_input.text!, last: last_input.text!, whereFrom: from_input.text!, program: program_input.text!, hobbies: hobbies_input.text!, languages: languages_input.text!, team: team_input.text!, email: email_input.text!, gender: gender_input.text!, role: role_input.text!)
+        // return to table view
         self.performSegue(withIdentifier: "returnFromInformation", sender: self)
     }
     
     func clickUpdateOrAdd() {
         var message : String = ""
+        // if the name is unchanged, update the person
         if self.currentPerson != nil && first_input.text == self.currentPerson!.firstName && last_input.text == self.currentPerson!.lastName {
             // update person
             updatePerson(person: self.currentPerson!, first: first_input.text!, last: last_input.text!, whereFrom: from_input.text!, program: program_input.text!, hobbies: hobbies_input.text!, languages: languages_input.text!, team: team_input.text!, email: email_input.text!, gender: gender_input.text!, role: role_input.text!)
@@ -299,6 +332,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
             addPerson(first: first_input.text!, last: last_input.text!, whereFrom: from_input.text!, program: program_input.text!, hobbies: hobbies_input.text!, languages: languages_input.text!, team: team_input.text!, email: email_input.text!, gender: gender_input.text!, role: role_input.text!)
             message = "You changed the name field, a new person is added!"
         }
+        // use alert to display the result
         let alert = UIAlertController(title: "Message", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
@@ -307,11 +341,14 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         self.present(alert, animated: true, completion: nil)
     }
     
+    // when click "return" on the keyboard, dismiss the keyboard
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
+    // MARK: - picker view
+
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
