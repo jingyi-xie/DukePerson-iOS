@@ -48,6 +48,10 @@ public class DukePerson: NSManagedObject {
         if self.email != nil && self.email != "" {
             des += pronouns[1] + " email is \(self.email!). "
         }
+        // team
+        if self.role == DukeRole.Student && self.team != nil && self.team != "" {
+            des += pronouns[1] + " team is \(self.team!). "
+        }
         return des
     }
     
