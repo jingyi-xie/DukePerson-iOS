@@ -153,7 +153,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         me.role = DukeRole.Student
         me.program = "Grad"
         me.whereFrom = "China"
-        me.hobbies = ["Movies", "Music"]
+        me.hobbies = ["Traveling", "Movies", "Music"]
         me.languages = ["Python", "Java"]
         me.team = ""
         me.email = "jx95@duke.edu"
