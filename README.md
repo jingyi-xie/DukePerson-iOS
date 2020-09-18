@@ -27,10 +27,6 @@ Extra Features:
     * Email validation in add/update. If email format is invalid, you can see an error message
 
 ## HW3
-Note: 
-* If the virtual keyboard doesn't show up, press `cmd + k`
-* It's possible that core data messes up with the database in the same simulator because of other projects. If this happens, I personally used [simMagnifier](http://www.microedition.biz/simMagnifier/) to locate the source of core data and delete all the files.
-
 Extra Features:
 * Use UIAlert to show results or error messages when add and update
 * When add a new person, disable team field when select Professor or TA as role
@@ -38,6 +34,14 @@ Extra Features:
 * Take a photo as picture source (disabled on the simulator)
 
 ## HW4
-add text here
+Note: 
+* If the virtual keyboard doesn't show up, press `cmd + k`
+* It's possible that core data messes up with the database in the same simulator because of other projects. If this happens, I personally used [simMagnifier](http://www.microedition.biz/simMagnifier/) to locate the source of core data and delete all the files.
 
+Extra Features:
+* Additional search options for hobbies and languages
+* Addition View option when swipe a cell left
+* Add image in flip
+* Dismiss keyboard when scroll on table view
+* Use camera to take pictures
 
