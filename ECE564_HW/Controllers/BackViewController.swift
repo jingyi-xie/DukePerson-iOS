@@ -95,7 +95,7 @@ class BackViewController: UIViewController {
         let attributes = [NSAttributedString.Key.font: UIFont(name: "ArialRoundedMTBold", size: 30)!]
         
         let DoBtn = UIButton()
-        DoBtn.frame = CGRect(x: 25, y: 525, width: 100, height: 100)
+        DoBtn.frame = CGRect(x: 25, y: 500, width: 100, height: 100)
         DoBtn.layer.cornerRadius = 50
         DoBtn.layer.borderWidth = 2
         DoBtn.backgroundColor = UIColor(red: 0/255, green: 158/255, blue: 249/255, alpha: 1.00)
@@ -104,7 +104,7 @@ class BackViewController: UIViewController {
 
         
         let ReBtn = UIButton()
-        ReBtn.frame = CGRect(x: 135, y: 525, width: 100, height: 100)
+        ReBtn.frame = CGRect(x: 135, y: 500, width: 100, height: 100)
         ReBtn.layer.cornerRadius = 50
         ReBtn.layer.borderWidth = 2
         ReBtn.backgroundColor = UIColor(red: 92/255, green: 168/255, blue: 148/255, alpha: 1.00)
@@ -112,17 +112,21 @@ class BackViewController: UIViewController {
         ReBtn.addTarget(self, action: #selector(clickRe(_:)), for: .touchUpInside)
         
         let MiBtn = UIButton()
-        MiBtn.frame = CGRect(x: 245, y: 525, width: 100, height: 100)
+        MiBtn.frame = CGRect(x: 245, y: 500, width: 100, height: 100)
         MiBtn.layer.cornerRadius = 50
         MiBtn.layer.borderWidth = 2
         MiBtn.backgroundColor = UIColor(red: 200/255, green: 40/255, blue: 200/255, alpha: 1.00)
         MiBtn.setAttributedTitle(NSAttributedString(string: "Mi", attributes: attributes), for: .normal)
         MiBtn.addTarget(self, action: #selector(clickMi(_:)), for: .touchUpInside)
 
+        let tipLabel = UILabel()
+        tipLabel.attributedText = NSAttributedString(string: "Click a button to play music!", attributes: [NSAttributedString.Key.font: UIFont(name: "Marker Felt", size: 20)!, .underlineStyle: NSUnderlineStyle.single.rawValue])
+        tipLabel.frame = CGRect(x: 75, y: 575, width: 300, height: 100)
         
         view.addSubview(DoBtn)
         view.addSubview(ReBtn)
         view.addSubview(MiBtn)
+        view.addSubview(tipLabel)
     }
     
     @objc func clickDo(_ btn: UIButton) {
