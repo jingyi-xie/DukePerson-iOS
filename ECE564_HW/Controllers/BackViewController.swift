@@ -17,6 +17,9 @@ class BackViewController: UIViewController {
     var audioPlayerRe = AVAudioPlayer()
     var audioPlayerMi = AVAudioPlayer()
     
+    var noteImgView = UIImageView()
+
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -33,6 +36,24 @@ class BackViewController: UIViewController {
                 showOthers()
             }
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if self.currentPerson != nil && self.currentPerson!.firstName!.lowercased() == "jingyi" && self.currentPerson!.lastName!.lowercased() == "xie" {
+            moveNoteImg()
+        }
+        
+    }
+    
+    func moveNoteImg() {
+        noteImgView.image = #imageLiteral(resourceName: "note")
+        noteImgView.frame = CGRect(x: 50, y: 30, width: 50, height: 50)
+        UIView.animate(withDuration: 2.0, delay: 0,
+                       options: [.repeat, .autoreverse], animations: {
+                        self.noteImgView.frame.origin.x += 200
+        })
     }
     
     // MARK: - Navigation
@@ -133,6 +154,7 @@ class BackViewController: UIViewController {
         view.addSubview(ReBtn)
         view.addSubview(MiBtn)
         view.addSubview(tipLabel)
+        view.addSubview(noteImgView)
     }
     
     @objc func clickDo(_ btn: UIButton) {
