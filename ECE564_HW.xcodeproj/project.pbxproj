@@ -16,6 +16,7 @@
 		91024A1A251948D100D1B633 /* mi.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 91024A17251948D100D1B633 /* mi.mp3 */; };
 		91024A1B251948D100D1B633 /* re.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 91024A18251948D100D1B633 /* re.mp3 */; };
 		91024A1C251948D100D1B633 /* do.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 91024A19251948D100D1B633 /* do.mp3 */; };
+		91024A1F25194EFE00D1B633 /* PlayerHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91024A1E25194EFE00D1B633 /* PlayerHeader.swift */; };
 		9102B8D52502E79F006D2A1E /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9102B8D42502E79F006D2A1E /* TableViewController.swift */; };
 		919302FE25033D81007CF865 /* PersonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919302FD25033D81007CF865 /* PersonCell.swift */; };
 		9193030225047C80007CF865 /* ECE564.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9193030125047C80007CF865 /* ECE564.swift */; };
@@ -42,6 +43,7 @@
 		91024A17251948D100D1B633 /* mi.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mi.mp3; sourceTree = "<group>"; };
 		91024A18251948D100D1B633 /* re.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = re.mp3; sourceTree = "<group>"; };
 		91024A19251948D100D1B633 /* do.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = do.mp3; sourceTree = "<group>"; };
+		91024A1E25194EFE00D1B633 /* PlayerHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHeader.swift; sourceTree = "<group>"; };
 		9102B8D42502E79F006D2A1E /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		919302FD25033D81007CF865 /* PersonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonCell.swift; sourceTree = "<group>"; };
 		9193030125047C80007CF865 /* ECE564.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECE564.swift; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 				8734816D2469DEE9000B9A79 /* Info.plist */,
 				91A263E424FB62F100DABD2A /* Model.xcdatamodeld */,
 				91024A0C251941FA00D1B633 /* UIButtonExtension.swift */,
+				91024A1E25194EFE00D1B633 /* PlayerHeader.swift */,
 			);
 			path = ECE564_HW;
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 				919303052504A2C6007CF865 /* DukePerson+CoreDataClass.swift in Sources */,
 				9193030225047C80007CF865 /* ECE564.swift in Sources */,
 				91A263E624FB62F100DABD2A /* Model.xcdatamodeld in Sources */,
+				91024A1F25194EFE00D1B633 /* PlayerHeader.swift in Sources */,
 				91A3ADD1250DAB5C00DCF394 /* BackViewController.swift in Sources */,
 				919303062504A2C6007CF865 /* DukePerson+CoreDataProperties.swift in Sources */,
 				91A2642724FB6E6C00DABD2A /* InformationViewController.swift in Sources */,

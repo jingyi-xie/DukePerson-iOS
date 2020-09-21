@@ -91,6 +91,11 @@ class BackViewController: UIViewController {
             print("Failed to setup audio players")
         }
         
+        // set up header
+        let header = PlayerHeader()
+        header.frame = CGRect(x: 65, y: 75, width: 350, height: 200)
+        header.backgroundColor = .clear
+        
         // set up buttons
         let attributes = [NSAttributedString.Key.font: UIFont(name: "ArialRoundedMTBold", size: 30)!]
         
@@ -123,6 +128,7 @@ class BackViewController: UIViewController {
         tipLabel.attributedText = NSAttributedString(string: "Click a button to play music!", attributes: [NSAttributedString.Key.font: UIFont(name: "Marker Felt", size: 20)!, .underlineStyle: NSUnderlineStyle.single.rawValue])
         tipLabel.frame = CGRect(x: 75, y: 575, width: 300, height: 100)
         
+        view.addSubview(header)
         view.addSubview(DoBtn)
         view.addSubview(ReBtn)
         view.addSubview(MiBtn)
