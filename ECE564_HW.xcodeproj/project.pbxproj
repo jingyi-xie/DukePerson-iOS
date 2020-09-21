@@ -12,6 +12,10 @@
 		873481672469DEE8000B9A79 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873481652469DEE8000B9A79 /* Main.storyboard */; };
 		873481692469DEE9000B9A79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 873481682469DEE9000B9A79 /* Assets.xcassets */; };
 		8734816C2469DEE9000B9A79 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8734816A2469DEE9000B9A79 /* LaunchScreen.storyboard */; };
+		91024A0D251941FA00D1B633 /* UIButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91024A0C251941FA00D1B633 /* UIButtonExtension.swift */; };
+		91024A1A251948D100D1B633 /* mi.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 91024A17251948D100D1B633 /* mi.mp3 */; };
+		91024A1B251948D100D1B633 /* re.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 91024A18251948D100D1B633 /* re.mp3 */; };
+		91024A1C251948D100D1B633 /* do.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 91024A19251948D100D1B633 /* do.mp3 */; };
 		9102B8D52502E79F006D2A1E /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9102B8D42502E79F006D2A1E /* TableViewController.swift */; };
 		919302FE25033D81007CF865 /* PersonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919302FD25033D81007CF865 /* PersonCell.swift */; };
 		9193030225047C80007CF865 /* ECE564.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9193030125047C80007CF865 /* ECE564.swift */; };
@@ -34,6 +38,10 @@
 		873481732469DFE1000B9A79 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		873481742469E31C000B9A79 /* Practice.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Practice.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		873481752469E43A000B9A79 /* HW1.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = HW1.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		91024A0C251941FA00D1B633 /* UIButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonExtension.swift; sourceTree = "<group>"; };
+		91024A17251948D100D1B633 /* mi.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mi.mp3; sourceTree = "<group>"; };
+		91024A18251948D100D1B633 /* re.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = re.mp3; sourceTree = "<group>"; };
+		91024A19251948D100D1B633 /* do.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = do.mp3; sourceTree = "<group>"; };
 		9102B8D42502E79F006D2A1E /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		919302FD25033D81007CF865 /* PersonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonCell.swift; sourceTree = "<group>"; };
 		9193030125047C80007CF865 /* ECE564.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECE564.swift; sourceTree = "<group>"; };
@@ -78,6 +86,7 @@
 		8734815E2469DEE8000B9A79 /* ECE564_HW */ = {
 			isa = PBXGroup;
 			children = (
+				91024A0F251947CD00D1B633 /* Sounds */,
 				91A3ADD3250DD76F00DCF394 /* Storyboards */,
 				91A3ADD2250DD6D100DCF394 /* Controllers */,
 				91A2642C24FB713900DABD2A /* Model */,
@@ -87,8 +96,19 @@
 				873481682469DEE9000B9A79 /* Assets.xcassets */,
 				8734816D2469DEE9000B9A79 /* Info.plist */,
 				91A263E424FB62F100DABD2A /* Model.xcdatamodeld */,
+				91024A0C251941FA00D1B633 /* UIButtonExtension.swift */,
 			);
 			path = ECE564_HW;
+			sourceTree = "<group>";
+		};
+		91024A0F251947CD00D1B633 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				91024A19251948D100D1B633 /* do.mp3 */,
+				91024A17251948D100D1B633 /* mi.mp3 */,
+				91024A18251948D100D1B633 /* re.mp3 */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 		91A2642C24FB713900DABD2A /* Model */ = {
@@ -179,9 +199,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91024A1B251948D100D1B633 /* re.mp3 in Resources */,
 				8734816C2469DEE9000B9A79 /* LaunchScreen.storyboard in Resources */,
 				873481692469DEE9000B9A79 /* Assets.xcassets in Resources */,
+				91024A1A251948D100D1B633 /* mi.mp3 in Resources */,
 				873481672469DEE8000B9A79 /* Main.storyboard in Resources */,
+				91024A1C251948D100D1B633 /* do.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +220,7 @@
 				873481622469DEE8000B9A79 /* SceneDelegate.swift in Sources */,
 				919302FE25033D81007CF865 /* PersonCell.swift in Sources */,
 				9102B8D52502E79F006D2A1E /* TableViewController.swift in Sources */,
+				91024A0D251941FA00D1B633 /* UIButtonExtension.swift in Sources */,
 				919303052504A2C6007CF865 /* DukePerson+CoreDataClass.swift in Sources */,
 				9193030225047C80007CF865 /* ECE564.swift in Sources */,
 				91A263E624FB62F100DABD2A /* Model.xcdatamodeld in Sources */,
