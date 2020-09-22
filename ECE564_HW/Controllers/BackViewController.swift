@@ -49,7 +49,7 @@ class BackViewController: UIViewController {
     
     func moveNoteImg() {
         noteImgView.image = #imageLiteral(resourceName: "note")
-        noteImgView.frame = CGRect(x: 50, y: 30, width: 50, height: 50)
+        noteImgView.frame = CGRect(x: 50, y: 165, width: 50, height: 50)
         UIView.animate(withDuration: 2.0, delay: 0,
                        options: [.repeat, .autoreverse], animations: {
                         self.noteImgView.frame.origin.x += 200
@@ -114,14 +114,39 @@ class BackViewController: UIViewController {
         
         // set up header
         let header = PlayerHeader()
-        header.frame = CGRect(x: 65, y: 75, width: 350, height: 200)
+        header.frame = CGRect(x: 65, y: 45, width: 350, height: 200)
         header.backgroundColor = .clear
+        
+        // set up chat bubble: graphic context
+        let gcv2Frame = CGRect(x: 25, y: 265, width: 350, height: 300)
+        
+        UIGraphicsBeginImageContextWithOptions(gcv2Frame.size, false, 0.0)
+        
+        let leftPath:UIBezierPath = UIBezierPath(roundedRect: CGRect(x: 10, y: 10, width: 300, height: 50), byRoundingCorners: [.topLeft, .topRight, .bottomRight], cornerRadii: CGSize(width: 20, height: 20))
+        UIColor(red: 60/255, green: 240/255, blue: 200/255, alpha: 0.50).set()
+        leftPath.fill()
+        let leftChat = NSAttributedString(string: "You can click a button to play music!", attributes: [NSAttributedString.Key.font: UIFont(name: "Avenir Next Bold", size: 15)!, .underlineStyle: NSUnderlineStyle.single.rawValue])
+        leftChat.draw(at: CGPoint(x: 30,y: 25))
+        
+        let rightPath:UIBezierPath = UIBezierPath(roundedRect: CGRect(x: 200, y: 85, width: 100, height: 50), byRoundingCorners: [.topLeft, .topRight, .bottomLeft], cornerRadii: CGSize(width: 20, height: 20))
+        UIColor(red: 66/255, green: 120/255, blue: 240/255, alpha: 0.50).set()
+        rightPath.fill()
+        let rightChat = NSAttributedString(string: "Great!", attributes: [NSAttributedString.Key.font: UIFont(name: "Avenir Next Bold", size: 15)!, .underlineStyle: NSUnderlineStyle.single.rawValue])
+        rightChat.draw(at: CGPoint(x: 225,y: 100))
+        
+        
+        let saveImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        let chatImgView = UIImageView()
+        chatImgView.frame = gcv2Frame
+        chatImgView.image = saveImage
         
         // set up buttons
         let attributes = [NSAttributedString.Key.font: UIFont(name: "ArialRoundedMTBold", size: 30)!]
         
         let DoBtn = UIButton()
-        DoBtn.frame = CGRect(x: 25, y: 500, width: 100, height: 100)
+        DoBtn.frame = CGRect(x: 25, y: 525, width: 100, height: 100)
         DoBtn.layer.cornerRadius = 50
         DoBtn.layer.borderWidth = 2
         DoBtn.backgroundColor = UIColor(red: 0/255, green: 158/255, blue: 249/255, alpha: 1.00)
@@ -130,7 +155,7 @@ class BackViewController: UIViewController {
 
         
         let ReBtn = UIButton()
-        ReBtn.frame = CGRect(x: 135, y: 500, width: 100, height: 100)
+        ReBtn.frame = CGRect(x: 135, y: 525, width: 100, height: 100)
         ReBtn.layer.cornerRadius = 50
         ReBtn.layer.borderWidth = 2
         ReBtn.backgroundColor = UIColor(red: 92/255, green: 168/255, blue: 148/255, alpha: 1.00)
@@ -138,23 +163,19 @@ class BackViewController: UIViewController {
         ReBtn.addTarget(self, action: #selector(clickRe(_:)), for: .touchUpInside)
         
         let MiBtn = UIButton()
-        MiBtn.frame = CGRect(x: 245, y: 500, width: 100, height: 100)
+        MiBtn.frame = CGRect(x: 245, y: 525, width: 100, height: 100)
         MiBtn.layer.cornerRadius = 50
         MiBtn.layer.borderWidth = 2
         MiBtn.backgroundColor = UIColor(red: 200/255, green: 40/255, blue: 200/255, alpha: 1.00)
         MiBtn.setAttributedTitle(NSAttributedString(string: "Mi", attributes: attributes), for: .normal)
         MiBtn.addTarget(self, action: #selector(clickMi(_:)), for: .touchUpInside)
-
-        let tipLabel = UILabel()
-        tipLabel.attributedText = NSAttributedString(string: "Click a button to play music!", attributes: [NSAttributedString.Key.font: UIFont(name: "Marker Felt", size: 20)!, .underlineStyle: NSUnderlineStyle.single.rawValue])
-        tipLabel.frame = CGRect(x: 75, y: 575, width: 300, height: 100)
         
         view.addSubview(header)
         view.addSubview(DoBtn)
         view.addSubview(ReBtn)
         view.addSubview(MiBtn)
-        view.addSubview(tipLabel)
         view.addSubview(noteImgView)
+        view.addSubview(chatImgView)
     }
     
     @objc func clickDo(_ btn: UIButton) {
