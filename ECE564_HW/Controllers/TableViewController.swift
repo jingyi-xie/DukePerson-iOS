@@ -171,7 +171,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         ta_1.languages = ["swift", "java"]
         ta_1.team = ""
         ta_1.email = "haohong.zhao@duke.edu"
-        ta_1.img =  UIImage(named: "haohong.png")?.jpegData(compressionQuality: 0.25)
+        ta_1.img =  UIImage(named: "haohong.jpeg")?.jpegData(compressionQuality: 0.25)
         
         // add the second ta
         let ta_2 = DukePerson(context: self.context)
