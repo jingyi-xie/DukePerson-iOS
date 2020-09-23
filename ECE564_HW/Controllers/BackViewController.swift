@@ -24,9 +24,13 @@ class BackViewController: UIViewController {
         super.viewDidLoad()
         
         // add the swipe gesture recognizer
-        let swipe : UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(showFront))
-        swipe.direction = UISwipeGestureRecognizer.Direction.left
-        view.addGestureRecognizer(swipe)
+        let swipeLeft : UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(showFront))
+        swipeLeft.direction = UISwipeGestureRecognizer.Direction.left
+        view.addGestureRecognizer(swipeLeft)
+        
+        let swipeRight : UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(showFront))
+        swipeRight.direction = UISwipeGestureRecognizer.Direction.right
+        view.addGestureRecognizer(swipeRight)
         
         if currentPerson != nil {
             if self.currentPerson!.firstName!.lowercased() == "jingyi" && self.currentPerson!.lastName!.lowercased() == "xie" {
@@ -112,7 +116,7 @@ class BackViewController: UIViewController {
             print("Failed to setup audio players")
         }
         
-        // set up header
+        // set up header, a UIView that has the draw method
         let header = PlayerHeader()
         header.frame = CGRect(x: 65, y: 45, width: 350, height: 200)
         header.backgroundColor = .clear
@@ -134,7 +138,6 @@ class BackViewController: UIViewController {
         let rightChat = NSAttributedString(string: "Great!", attributes: [NSAttributedString.Key.font: UIFont(name: "Avenir Next Bold", size: 15)!, .underlineStyle: NSUnderlineStyle.single.rawValue])
         rightChat.draw(at: CGPoint(x: 225,y: 100))
         
-        
         let saveImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         
@@ -153,7 +156,6 @@ class BackViewController: UIViewController {
         DoBtn.setAttributedTitle(NSAttributedString(string: "Do", attributes: attributes), for: .normal)
         DoBtn.addTarget(self, action: #selector(clickDo(_:)), for: .touchUpInside)
 
-        
         let ReBtn = UIButton()
         ReBtn.frame = CGRect(x: 135, y: 525, width: 100, height: 100)
         ReBtn.layer.cornerRadius = 50
