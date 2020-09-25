@@ -47,7 +47,7 @@ Extra Features:
 Note: 
 * If the virtual keyboard doesn't show up, press `cmd + k`
 * It's possible that core data messes up with the database in the same simulator because of other projects. If this happens, I personally used [simMagnifier](http://www.microedition.biz/simMagnifier/) to locate the source of core data and delete all the files.
-* My Xcode automatically updated to 12.0 and asked me to upload the project settings. There may be a warning on the older version of Xcode.
+* **My Xcode automatically updated to 12.0 and asked me to upload the project settings. There may be a warning on the older version of Xcode.**
 
 Description:
 * "Music Player" and the chat messages are all attributed texts
@@ -58,4 +58,5 @@ Description:
 
 Extra Features:
 * piano sound when clicks a button
+* In the feedback of my last homework, Yuchen said that my advanced search options don't work. It should've worked so there may be some misunderstanding. Take the "hobbies" for example, you can only search the hobbies in this option, like "swimming" or "reading".
 
