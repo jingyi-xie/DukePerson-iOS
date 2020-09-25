@@ -129,13 +129,13 @@ class BackViewController: UIViewController {
         let leftPath:UIBezierPath = UIBezierPath(roundedRect: CGRect(x: 10, y: 10, width: 300, height: 50), byRoundingCorners: [.topLeft, .topRight, .bottomRight], cornerRadii: CGSize(width: 20, height: 20))
         UIColor(red: 60/255, green: 240/255, blue: 200/255, alpha: 0.50).set()
         leftPath.fill()
-        let leftChat = NSAttributedString(string: "You can click a button to play music!", attributes: [NSAttributedString.Key.font: UIFont(name: "Avenir Next Bold", size: 15)!, .underlineStyle: NSUnderlineStyle.single.rawValue])
+        let leftChat = NSAttributedString(string: "You can click a button to play music!", attributes: [NSAttributedString.Key.font: UIFont(name: "Avenir Next", size: 15)!, .underlineStyle: NSUnderlineStyle.single.rawValue])
         leftChat.draw(at: CGPoint(x: 30,y: 25))
         
         let rightPath:UIBezierPath = UIBezierPath(roundedRect: CGRect(x: 200, y: 85, width: 100, height: 50), byRoundingCorners: [.topLeft, .topRight, .bottomLeft], cornerRadii: CGSize(width: 20, height: 20))
         UIColor(red: 66/255, green: 120/255, blue: 240/255, alpha: 0.50).set()
         rightPath.fill()
-        let rightChat = NSAttributedString(string: "Great!", attributes: [NSAttributedString.Key.font: UIFont(name: "Avenir Next Bold", size: 15)!, .underlineStyle: NSUnderlineStyle.single.rawValue])
+        let rightChat = NSAttributedString(string: "Great!", attributes: [NSAttributedString.Key.font: UIFont(name: "Avenir Next", size: 15)!, .underlineStyle: NSUnderlineStyle.single.rawValue])
         rightChat.draw(at: CGPoint(x: 225,y: 100))
         
         let saveImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
