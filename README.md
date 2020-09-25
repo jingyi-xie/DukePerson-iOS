@@ -52,7 +52,8 @@ Note:
 Description:
 * "Music Player" and the chat messages are all attributed texts
 * The background is an UIImage
-* The two chat bubbles and the attributed texts inside are implemented through vector graphic drawing
+* The two chat bubbles and the attributed texts inside are implemented through vector graphic drawing in a Graphic Context
+* The blue star is a vector graphic drawing in the Graphic Context
 * The Music Header (in "components" group) is a UIView subclass with a customized draw method
 * Animation: (1) the moving musical note, (2) animation when clicks the three buttons
 

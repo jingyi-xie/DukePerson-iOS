@@ -118,7 +118,7 @@ class BackViewController: UIViewController {
         
         // set up header, a UIView that has the draw method
         let header = PlayerHeader()
-        header.frame = CGRect(x: 65, y: 45, width: 350, height: 200)
+        header.frame = CGRect(x: 80, y: 35, width: 350, height: 200)
         header.backgroundColor = .clear
         
         // set up chat bubble: graphic context
@@ -144,6 +144,34 @@ class BackViewController: UIViewController {
         let chatImgView = UIImageView()
         chatImgView.frame = gcv2Frame
         chatImgView.image = saveImage
+        
+        // set up the star
+        let startFrame = CGRect(x: 25, y: 50, width: 80, height: 80)
+        
+        UIGraphicsBeginImageContextWithOptions(startFrame.size, false, 0.0)
+        
+        let star = UIBezierPath()
+        star.move(to: CGPoint(x: 0, y: 40))
+        star.addLine(to: CGPoint(x: 30, y: 30))
+        star.addLine(to: CGPoint(x: 40, y: 0))
+        star.addLine(to: CGPoint(x: 50, y: 30))
+        star.addLine(to: CGPoint(x: 80, y: 40))
+        star.addLine(to: CGPoint(x: 50, y: 50))
+        star.addLine(to: CGPoint(x: 40, y: 80))
+        star.addLine(to: CGPoint(x: 30, y: 50))
+        star.addLine(to: CGPoint(x: 0, y: 40))
+
+        UIColor(red: 50/255, green: 190/255, blue: 255/255, alpha: 1.00).setStroke()
+        star.lineWidth = 3
+        star.stroke()
+        
+        let starImg:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        let starImgView = UIImageView()
+        starImgView.frame = startFrame
+        starImgView.image = starImg
+        
         
         // set up buttons
         let attributes = [NSAttributedString.Key.font: UIFont(name: "ArialRoundedMTBold", size: 30)!]
@@ -178,6 +206,7 @@ class BackViewController: UIViewController {
         view.addSubview(MiBtn)
         view.addSubview(noteImgView)
         view.addSubview(chatImgView)
+        view.addSubview(starImgView)
     }
     
     @objc func clickDo(_ btn: UIButton) {
