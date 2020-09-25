@@ -47,6 +47,7 @@ Extra Features:
 Note: 
 * If the virtual keyboard doesn't show up, press `cmd + k`
 * It's possible that core data messes up with the database in the same simulator because of other projects. If this happens, I personally used [simMagnifier](http://www.microedition.biz/simMagnifier/) to locate the source of core data and delete all the files.
+* My Xcode automatically updated to 12.0 and asked me to upload the project settings. There may be a warning on the older version of Xcode.
 
 Description:
 * "Music Player" and the chat messages are all attributed texts
