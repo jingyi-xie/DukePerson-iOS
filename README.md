@@ -34,9 +34,6 @@ Extra Features:
 * Take a photo as picture source (disabled on the simulator)
 
 ## HW4
-Note: 
-* If the virtual keyboard doesn't show up, press `cmd + k`
-* It's possible that core data messes up with the database in the same simulator because of other projects. If this happens, I personally used [simMagnifier](http://www.microedition.biz/simMagnifier/) to locate the source of core data and delete all the files.
 
 Extra Features:
 * Additional search options for hobbies and languages
@@ -44,4 +41,20 @@ Extra Features:
 * Add image in flip
 * Dismiss keyboard when scroll on table view
 * Use camera to take pictures
+
+
+## HW5
+Note: 
+* If the virtual keyboard doesn't show up, press `cmd + k`
+* It's possible that core data messes up with the database in the same simulator because of other projects. If this happens, I personally used [simMagnifier](http://www.microedition.biz/simMagnifier/) to locate the source of core data and delete all the files.
+
+Description:
+* "Music Player" and the chat messages are all attributed texts
+* The background is an UIImage
+* The two chat bubbles and the attributed texts inside are implemented through vector graphic drawing
+* The Music Header (in "components" group) is a UIView subclass with a customized draw method
+* Animation: (1) the moving musical note, (2) animation when clicks the three buttons
+
+Extra Features:
+* piano sound when clicks a button
 

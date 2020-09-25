@@ -87,9 +87,13 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         view.addGestureRecognizer(Tap);
         
         // swipe gestures to flip the page
-        let swipe : UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(showBack))
-        swipe.direction = UISwipeGestureRecognizer.Direction.left
-        view.addGestureRecognizer(swipe)
+        let swipeLeft : UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(showBack))
+        swipeLeft.direction = UISwipeGestureRecognizer.Direction.left
+        view.addGestureRecognizer(swipeLeft)
+        
+        let swipeRight : UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(showBack))
+        swipeRight.direction = UISwipeGestureRecognizer.Direction.right
+        view.addGestureRecognizer(swipeRight)
     }
     
     // when click anywhere outside of the keyboard, dismiss the keyboard
