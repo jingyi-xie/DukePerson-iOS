@@ -22,7 +22,6 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     // 0: Professor, 1: TA, 2: Students
     var people_list : [[DukePerson]] = []
 
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var selectedPerson: DukePerson? = nil
     
     override func viewDidLoad() {
@@ -135,8 +134,8 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         let prof = DukePerson(context: self.context)
         prof.firstName = "Ric"
         prof.lastName = "Telford"
-        prof.gender = Gender.Male
-        prof.role = DukeRole.Professor
+        prof.gender = "Male"
+        prof.role = "Professor"
         prof.program = "NA"
         prof.whereFrom = "Chatham County, NC"
         prof.hobbies = ["Hiking", "Swimming", "Biking"]
@@ -149,8 +148,8 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         let me = DukePerson(context: self.context)
         me.firstName = "Jingyi"
         me.lastName = "Xie"
-        me.gender = Gender.Male
-        me.role = DukeRole.Student
+        me.gender = "Male"
+        me.role = "Student"
         me.program = "Grad"
         me.whereFrom = "China"
         me.hobbies = ["Traveling", "Movies", "Music"]
@@ -163,8 +162,8 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         let ta_1 = DukePerson(context: self.context)
         ta_1.firstName = "Haohong"
         ta_1.lastName = "Zhao"
-        ta_1.gender = Gender.Male
-        ta_1.role = DukeRole.TA
+        ta_1.gender = "Male"
+        ta_1.role = "Teaching Assistant"
         ta_1.program = "Grad"
         ta_1.whereFrom = "China"
         ta_1.hobbies = ["reading books", "jogging"]
@@ -177,8 +176,8 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         let ta_2 = DukePerson(context: self.context)
         ta_2.firstName = "Yuchen"
         ta_2.lastName = "Yang"
-        ta_2.gender = Gender.Female
-        ta_2.role = DukeRole.TA
+        ta_2.gender = "Female"
+        ta_2.role = "Teaching Assistant"
         ta_2.program = "Grad"
         ta_2.whereFrom = "China"
         ta_2.hobbies = ["Dancing"]
