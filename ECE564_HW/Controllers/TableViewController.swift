@@ -21,6 +21,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     // 2d array to store the list of people:
     // 0: Professor, 1: TA, 2: Students
     var people_list : [[DukePerson]] = []
+    var sectionHeaders : [String] = []
 
     var selectedPerson: DukePerson? = nil
     
@@ -37,8 +38,12 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     // section header for the table view
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
-        let names = ["  Professor", "  TA", "  Student"]
-        label.text = names[section]
+        if section > sectionHeaders.count - 1 {
+            label.text = "Others"
+        }
+        else {
+            label.text = sectionHeaders[section]
+        }
         label.font = UIFont(name: "Avenir Next Bold", size: 15)
         // Use different color for different headers
         if section == 0 {
@@ -55,7 +60,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
 
     // return the number of sections: professor, TA, student
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return people_list.count
     }
 
     // return the number of rows in each section
@@ -165,6 +170,8 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
             people_list.append(ta_list)
             people_list.append(student_list)
             
+            sectionHeaders = ["Professor", "TA", "Student"]
+
             if !DukePerson.saveDukePerson(rawList) {
                 print("In table view (prepopulate): failed to save data ")
             }
@@ -177,7 +184,10 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         var temp_list = [[DukePerson]]()
         var professor_list = [DukePerson]()
         var ta_list = [DukePerson]()
+        var group_list = [[DukePerson]]()
         var student_list = [DukePerson]()
+        self.sectionHeaders = ["Professor", "TA"]
+
         // add the current person to different array based on the role
         for case let person in raw_list {
             if person.role == "Professor" {
@@ -187,14 +197,38 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
                 ta_list.append(person)
             }
             else {
-                student_list.append(person)
+                let team = person.team.trimmingCharacters(in:.whitespacesAndNewlines).lowercased()
+                if team != "" && team != "none" && team != "na" {
+                    if sectionHeaders.firstIndex(of: person.team) != nil {
+                        group_list[sectionHeaders.firstIndex(of: person.team)! - 2].append(person)
+                    }
+                    else {
+                        var cur_group = [DukePerson]()
+                        cur_group.append(person)
+                        group_list.append(cur_group)
+                        sectionHeaders.append(person.team)
+                    }
+                }
+                else {
+                    student_list.append(person)
+                }
             }
         }
         temp_list.append(professor_list)
         temp_list.append(ta_list)
-        temp_list.append(student_list)
+        if group_list.reduce([], +).count != 0 {
+            for list in group_list {
+                temp_list.append(list)
+            }
+        }
+        if student_list.count != 0 {
+            sectionHeaders.append("Students")
+            temp_list.append(student_list)
+        }
         // replace the current people_list
         self.people_list = temp_list
+        
+        print(sectionHeaders)
     }
     
     
