@@ -77,7 +77,7 @@ public class DukePerson: ECE564, CustomStringConvertible, Codable {
         self.wherefrom = whereFrom
         self.gender = gender
         self.hobbies = hobbies
-        self.role = role
+        self.role = role != "" ? role : "Student"
         self.degree = degree
         self.languages = languages
         self.picture = picture
@@ -103,8 +103,7 @@ public class DukePerson: ECE564, CustomStringConvertible, Codable {
         var outputData = Data()
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(personList) {
-            if let json = String(data: encoded, encoding: .utf8) {
-                print(json)
+            if String(data: encoded, encoding: .utf8) != nil {
                 outputData = encoded
             }
             else {
@@ -136,8 +135,10 @@ public class DukePerson: ECE564, CustomStringConvertible, Codable {
             return nil
         }
         if let decoded = try? decoder.decode([DukePerson].self, from: tempData) {
-            print(decoded[0].firstname)
             personList = decoded
+        }
+        else {
+            print("cannot load data")
         }
         return personList
     }

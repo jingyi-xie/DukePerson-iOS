@@ -26,10 +26,8 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // First prepopulate the core data database if the database is empty
-        self.prePopulate()
-        // Fetch the core data and store in people_list
-        self.fetchData()
+        self.loadInitialData()
+        
         // Set up the search bar
         self.setupSearchbar()
     }
@@ -72,11 +70,12 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         // get the current people instance according to this cell
         let person:DukePerson = self.people_list[indexPath.section][indexPath.row]
         // set the name and description label on the person cell
-        cell.nameLabel.text = person.firstName! + " " + person.lastName!
+        cell.nameLabel.text = person.firstname + " " + person.lastname
         cell.desLabel.text = person.description
         // display the image of the current person. If not found, display the default one
-        if person.img != nil {
-            cell.profile.image = UIImage(data: person.img!)
+        if person.picture != "" {
+            let dataDecoded : Data = Data(base64Encoded: person.picture, options: .ignoreUnknownCharacters)!
+            cell.profile.image = UIImage(data: dataDecoded)
         }
         else {
             cell.profile.image = UIImage(named: "default.png")
@@ -115,118 +114,89 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         if(segue.identifier == "clickCell"){
             dest.saveBtn.title = "Edit"
             dest.currentPerson = self.selectedPerson
+            dest.rawList = self.people_list.reduce([], +)
         }
         // if click the add button, set the button title in the information view controller as "Add"
         else if(segue.identifier == "clickAdd"){
             dest.saveBtn.title = "Add"
+            dest.rawList = self.people_list.reduce([], +)
         }
     }
     
-    // prepopulate the core data database
-    func prePopulate() {
-        // first determine if the database is empty
-        fetchData()
-        if people_list[0].count != 0  || people_list[1].count != 0 || people_list[2].count != 0{
-            print("Found core data, no need to prepopulate")
-            return
-        }
-        // add professor
-        let prof = DukePerson(context: self.context)
-        prof.firstName = "Ric"
-        prof.lastName = "Telford"
-        prof.gender = "Male"
-        prof.role = "Professor"
-        prof.program = "NA"
-        prof.whereFrom = "Chatham County, NC"
-        prof.hobbies = ["Hiking", "Swimming", "Biking"]
-        prof.languages = ["Swift", "C", "C++"]
-        prof.team = "None"
-        prof.email = "rt113@duke.edu"
-        prof.img =  UIImage(named: "ric.jpg")?.jpegData(compressionQuality: 0.25)
-        
-        // add myself
-        let me = DukePerson(context: self.context)
-        me.firstName = "Jingyi"
-        me.lastName = "Xie"
-        me.gender = "Male"
-        me.role = "Student"
-        me.program = "Grad"
-        me.whereFrom = "China"
-        me.hobbies = ["Traveling", "Movies", "Music"]
-        me.languages = ["Python", "Java"]
-        me.team = ""
-        me.email = "jx95@duke.edu"
-        me.img =  UIImage(named: "jingyi.jpeg")?.jpegData(compressionQuality: 0.25)
-        
-        // add the first ta
-        let ta_1 = DukePerson(context: self.context)
-        ta_1.firstName = "Haohong"
-        ta_1.lastName = "Zhao"
-        ta_1.gender = "Male"
-        ta_1.role = "Teaching Assistant"
-        ta_1.program = "Grad"
-        ta_1.whereFrom = "China"
-        ta_1.hobbies = ["reading books", "jogging"]
-        ta_1.languages = ["swift", "java"]
-        ta_1.team = ""
-        ta_1.email = "haohong.zhao@duke.edu"
-        ta_1.img =  UIImage(named: "haohong.jpeg")?.jpegData(compressionQuality: 0.25)
-        
-        // add the second ta
-        let ta_2 = DukePerson(context: self.context)
-        ta_2.firstName = "Yuchen"
-        ta_2.lastName = "Yang"
-        ta_2.gender = "Female"
-        ta_2.role = "Teaching Assistant"
-        ta_2.program = "Grad"
-        ta_2.whereFrom = "China"
-        ta_2.hobbies = ["Dancing"]
-        ta_2.languages = ["Java", "cpp"]
-        ta_2.team = ""
-        ta_2.email = "yy227@duke.edu"
-        ta_2.img =  UIImage(named: "yuchen.jpg")?.jpegData(compressionQuality: 0.25)
-        
-        // save to core data
-        do {
-            try self.context.save()
-        }
-        catch {
-            print(error.localizedDescription)
-        }
-    }
-    
-    // fetch data from core data database into people_list attribute
-    func fetchData() {
-        do {
-            // get list of all people
-            let raw_list = try context.fetch(DukePerson.fetchRequest())
-            // temp 2d array to replace the current people_list
-            var temp_list = [[DukePerson]]()
+    // load initial data
+    func loadInitialData() {
+        if DukePerson.loadDukePerson() != nil {
+            updateList()
+            self.tableView.reloadData()
+        } else {
+            var rawList: [DukePerson] = []
             var professor_list = [DukePerson]()
             var ta_list = [DukePerson]()
             var student_list = [DukePerson]()
-            // add the current person to different array based on the role
-            for case let person as DukePerson in raw_list {
-                if person.role == DukeRole.Professor {
-                    professor_list.append(person)
-                }
-                else if person.role == DukeRole.TA {
-                    ta_list.append(person)
-                }
-                else {
-                    student_list.append(person)
-                }
+            // add professor
+            let prof_img = UIImage(named: "ric.jpg")?.jpegData(compressionQuality: 0.25)
+            let prof_str:String = prof_img!.base64EncodedString(options: .lineLength64Characters)
+            let prof = DukePerson(firstName: "Ric", lastName: "Telford", whereFrom: "Chatham County, NC", gender: "Male", hobbies: ["Hiking", "Swimming", "Biking"], role: "Professor", degree: "NA", languages: ["Swift", "C", "C++"], picture: prof_str, team: "None", netid: "rt113", email: "rt113@duke.edu")
+            professor_list.append(prof)
+            rawList.append(prof)
+            
+            // add myself
+            let me_img = UIImage(named: "jingyi.jpeg")?.jpegData(compressionQuality: 0.25)
+            let me_str:String = me_img!.base64EncodedString(options: .lineLength64Characters)
+            let me = DukePerson(firstName: "Jingyi", lastName: "Xie", whereFrom: "China", gender: "Male", hobbies: ["Traveling", "Movies", "Music"], role: "Student", degree: "Grad", languages: ["Python", "Java"], picture: me_str, team: "", netid: "jx95", email: "jx95@duke.edu")
+            student_list.append(me)
+            rawList.append(me)
+            
+            // add the first ta
+            let ta1_img = UIImage(named: "haohong.jpeg")?.jpegData(compressionQuality: 0.25)
+            let ta1_str:String = ta1_img!.base64EncodedString(options: .lineLength64Characters)
+            let ta1 = DukePerson(firstName: "Haohong", lastName: "Zhao", whereFrom: "China", gender: "Male", hobbies: ["reading books", "jogging"], role: "Teaching Assistant", degree: "Grad", languages: ["swift", "java"], picture: ta1_str, team: "", netid: "hz147", email: "haohong.zhao@duke.edu")
+            ta_list.append(ta1)
+            rawList.append(ta1)
+            
+            // add the second ta
+            let ta2_img = UIImage(named: "yuchen.jpg")?.jpegData(compressionQuality: 0.25)
+            let ta2_str:String = ta2_img!.base64EncodedString(options: .lineLength64Characters)
+            let ta2 = DukePerson(firstName: "Yuchen", lastName: "Yang", whereFrom: "China", gender: "Female", hobbies: ["Dancing"], role: "Teaching Assistant", degree: "Grad", languages: ["Java", "cpp"], picture: ta2_str, team: "", netid: "yy227", email: "yy227@duke.edu")
+            ta_list.append(ta2)
+            rawList.append(ta2)
+            
+            people_list.append(professor_list)
+            people_list.append(ta_list)
+            people_list.append(student_list)
+            
+            if !DukePerson.saveDukePerson(rawList) {
+                print("In table view (prepopulate): failed to save data ")
             }
-            temp_list.append(professor_list)
-            temp_list.append(ta_list)
-            temp_list.append(student_list)
-            // replace the current people_list
-            self.people_list = temp_list
-        }
-        catch {
-            print(error.localizedDescription)
+            self.tableView.reloadData()
         }
     }
+    
+    func updateList() {
+        let raw_list = DukePerson.loadDukePerson()!
+        var temp_list = [[DukePerson]]()
+        var professor_list = [DukePerson]()
+        var ta_list = [DukePerson]()
+        var student_list = [DukePerson]()
+        // add the current person to different array based on the role
+        for case let person in raw_list {
+            if person.role == "Professor" {
+                professor_list.append(person)
+            }
+            else if person.role == "Teaching Assistant" {
+                ta_list.append(person)
+            }
+            else {
+                student_list.append(person)
+            }
+        }
+        temp_list.append(professor_list)
+        temp_list.append(ta_list)
+        temp_list.append(student_list)
+        // replace the current people_list
+        self.people_list = temp_list
+    }
+    
     
     // MARK: - Table view search bar
     
@@ -242,7 +212,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
             // if delete all the text in the search bar, refetch the data
-            self.fetchData()
+            self.updateList()
             self.tableView.reloadData()
         }
         else {
@@ -253,7 +223,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     
     // if chage the search option, refetch the data
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        self.fetchData()
+        self.updateList()
         self.tableView.reloadData()
         searchBar.text = nil
     }
@@ -276,7 +246,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
             // if choose the "description" search, find the text in description and name
             people_list = people_list.map{
                 return $0.filter({(person) -> Bool in
-                    return person.description.lowercased().contains(text.lowercased()) || person.firstName!.lowercased().contains(text.lowercased()) || person.lastName!.lowercased().contains(text.lowercased())})
+                    return person.description.lowercased().contains(text.lowercased()) || person.firstname.lowercased().contains(text.lowercased()) || person.lastname.lowercased().contains(text.lowercased())})
             }
             // refresh all cells in the table view
             self.tableView.reloadData()
@@ -304,7 +274,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     
     // when return from the information view, refresh the table
     @IBAction func returnFromInformation(_ sender: UIStoryboardSegue) {
-        self.fetchData()
+        self.updateList()
         self.tableView.reloadData()
     }
     
@@ -320,17 +290,11 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     // return the delete action when swipe
     func createDeleteAction(at indexPath: IndexPath) -> UIContextualAction {
         // get the instance of the current person
-        let person = people_list[indexPath.section][indexPath.row]
         // deletde the person, then refresh the table
         let action = UIContextualAction(style: .normal, title: "Delete", handler: {(action, view, completion) in
-            self.context.delete(person)
-            do {
-                try self.context.save()
-            }
-            catch {
-                print(error.localizedDescription)
-            }
-            self.fetchData()
+            self.people_list[indexPath.section].remove(at: indexPath.row)
+            let _ = DukePerson.saveDukePerson(self.people_list.reduce([], +))
+            self.updateList()
             self.tableView.reloadData()
             completion(true)
         })
