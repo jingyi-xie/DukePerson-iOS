@@ -91,12 +91,12 @@ public class DukePerson: ECE564, CustomStringConvertible, Codable {
     
     // For table view search: get the comma separated string of languages
     func getLanguagesString() -> String {
-        return self.languages.dropLast().joined(separator: ", ")
+        return self.languages.joined(separator: ", ")
     }
     
     // For table view search: get the comma separated string of hobbies
     func getHobbiesString() -> String {
-        return self.hobbies.dropLast().joined(separator: ", ")
+        return self.hobbies.joined(separator: ", ")
     }
     
     static func saveDukePerson(_ personList: [DukePerson]) -> Bool {

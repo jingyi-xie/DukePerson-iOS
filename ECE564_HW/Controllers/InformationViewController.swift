@@ -35,7 +35,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
     var genderPickerView = UIPickerView()
     
     // picker view for role
-    let roles = ["Professor", "TA", "Student"]
+    let roles = ["Professor", "Teaching Assistant", "Student"]
     var rolePickerView = UIPickerView()
         
     override func viewDidLoad() {
@@ -135,24 +135,8 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         languages_input.text = person.languages.joined(separator: ", ")
         team_input.text = person.team
         email_input.text = person.email
-        switch (person.gender) {
-        case "Male":
-            gender_input.text = "Male"
-        case "Female":
-            gender_input.text = "Female"
-        default:
-            gender_input.text = ""
-        }
-        switch (person.role) {
-        case "Professor":
-            role_input.text = "Professor"
-        case "Teaching Assistant":
-            role_input.text = "TA"
-        case "Student":
-            role_input.text = "Student"
-        default:
-            role_input.text = ""
-        }
+        gender_input.text = person.gender
+        role_input.text = person.role
     }
     
     // change the mode: ready-only or edit
