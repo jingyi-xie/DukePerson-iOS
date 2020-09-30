@@ -12,6 +12,7 @@ import AVFoundation
 class BackViewController: UIViewController {
     
     var currentPerson : DukePerson? = nil
+    var rawList : [DukePerson] = []
     
     var audioPlayerDo = AVAudioPlayer()
     var audioPlayerRe = AVAudioPlayer()
@@ -33,7 +34,7 @@ class BackViewController: UIViewController {
         view.addGestureRecognizer(swipeRight)
         
         if currentPerson != nil {
-            if self.currentPerson!.firstName!.lowercased() == "jingyi" && self.currentPerson!.lastName!.lowercased() == "xie" {
+            if self.currentPerson!.firstname.lowercased() == "jingyi" && self.currentPerson!.lastname.lowercased() == "xie" {
                 showMine()
             }
             else {
@@ -45,7 +46,7 @@ class BackViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if self.currentPerson != nil && self.currentPerson!.firstName!.lowercased() == "jingyi" && self.currentPerson!.lastName!.lowercased() == "xie" {
+        if self.currentPerson != nil && self.currentPerson!.firstname.lowercased() == "jingyi" && self.currentPerson!.lastname.lowercased() == "xie" {
             moveNoteImg()
         }
         
@@ -69,6 +70,7 @@ class BackViewController: UIViewController {
             let dest = navController.topViewController as! InformationViewController
             dest.currentPerson = self.currentPerson
             dest.saveBtn.title = "Edit"
+            dest.rawList = self.rawList
         }
         
     }
@@ -83,13 +85,14 @@ class BackViewController: UIViewController {
         profileImg.frame = CGRect(x: 100, y: 250, width: 150, height: 150)
         
         // Set the text in name label
-        nameLabel.attributedText = NSAttributedString(string: "\(self.currentPerson!.firstName!) \(self.currentPerson!.lastName!)", attributes:
+        nameLabel.attributedText = NSAttributedString(string: "\(self.currentPerson!.firstname) \(self.currentPerson!.lastname)", attributes:
             [.underlineStyle: NSUnderlineStyle.single.rawValue])
         nameLabel.textColor = .blue
         nameLabel.font = UIFont(name: "Marker Felt", size: 30)
         // Display the image of the current person. If not found, display the default one
-        if currentPerson?.img != nil {
-            profileImg.image = UIImage(data: self.currentPerson!.img!)
+        if self.currentPerson != nil && currentPerson?.picture != "" {
+            let dataDecoded : Data = Data(base64Encoded: self.currentPerson!.picture, options: .ignoreUnknownCharacters)!
+            profileImg.image = UIImage(data: dataDecoded)
         }
         else {
             profileImg.image = UIImage(named: "default.png")

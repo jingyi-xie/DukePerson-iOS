@@ -25,17 +25,17 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
     @IBOutlet weak var saveBtn: UIBarButtonItem!
     @IBOutlet weak var imgBtn: UIButton!
     
-    // context for core data
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     // store the current person
     var currentPerson : DukePerson? = nil
+    
+    var rawList : [DukePerson] = []
     
     // picker view for gender
     let genders = ["Male", "Female"]
     var genderPickerView = UIPickerView()
     
     // picker view for role
-    let roles = ["Professor", "TA", "Student"]
+    let roles = ["Professor", "Teaching Assistant", "Student"]
     var rolePickerView = UIPickerView()
         
     override func viewDidLoad() {
@@ -68,8 +68,9 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
             image.image = UIImage(named: "default.png")
         }
         // if click a cell in table view, show the image of the person
-        else if self.currentPerson != nil && self.currentPerson?.img != nil {
-            image.image = UIImage(data: self.currentPerson!.img!)
+        else if self.currentPerson != nil && self.currentPerson?.picture != "" {
+            let dataDecoded : Data = Data(base64Encoded: self.currentPerson!.picture, options: .ignoreUnknownCharacters)!
+            image.image = UIImage(data: dataDecoded)
         }
         else {
             image.image = UIImage(named: "default.png")
@@ -116,6 +117,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
             // pass the person to back view
             let dest = segue.destination as! BackViewController
             dest.currentPerson = self.currentPerson
+            dest.rawList = self.rawList
         }
     }
     
@@ -125,29 +127,16 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
             return
         }
         let person = self.currentPerson!
-        first_input.text = person.firstName
-        last_input.text = person.lastName
-        from_input.text = person.whereFrom
-        program_input.text = person.program
+        first_input.text = person.firstname
+        last_input.text = person.lastname
+        from_input.text = person.wherefrom
+        program_input.text = person.degree
         hobbies_input.text = person.hobbies.joined(separator: ", ")
         languages_input.text = person.languages.joined(separator: ", ")
         team_input.text = person.team
         email_input.text = person.email
-        switch (person.gender) {
-        case Gender.Male:
-            gender_input.text = "Male"
-        case Gender.Female:
-            gender_input.text = "Female"
-
-        }
-        switch (person.role) {
-        case DukeRole.Professor:
-            role_input.text = "Professor"
-        case DukeRole.TA:
-            role_input.text = "TA"
-        case DukeRole.Student:
-            role_input.text = "Student"
-        }
+        gender_input.text = person.gender
+        role_input.text = person.role
     }
     
     // change the mode: ready-only or edit
@@ -199,43 +188,33 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
     }
 
     func addPerson(first: String, last: String, whereFrom: String, program: String, hobbies: String, languages: String, team: String, email: String, gender: String, role: String) {
-        let newPerson = DukePerson(context: self.context)
-        newPerson.firstName = first.trimmingCharacters(in: .whitespacesAndNewlines)
-        newPerson.lastName = last.trimmingCharacters(in: .whitespacesAndNewlines)
-        newPerson.whereFrom = whereFrom
-        newPerson.program = program
-        // parse the hobbies and languages into array
-        newPerson.hobbies = hobbies.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
-        newPerson.languages = languages.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
-        newPerson.team = team
-        newPerson.email = email
-        newPerson.gender = gender == "Male" ? Gender.Male : Gender.Female
-        newPerson.role = role == "Professor" ? DukeRole.Professor : (role == "TA" ? DukeRole.TA : DukeRole.Student)
+        let hobbies_list = hobbies.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
+        let languages_list = languages.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
         // store the image in binary format and compress the picture
-        newPerson.img = self.image.image?.jpegData(compressionQuality: 0.25)
-        do {
-            try self.context.save()
-        }
-        catch {
-            print(error.localizedDescription)
+        let img = self.image.image?.jpegData(compressionQuality: 0.25)
+        let img_str:String = img!.base64EncodedString(options: .lineLength64Characters)
+
+        let newPerson = DukePerson(firstName: first.trimmingCharacters(in: .whitespacesAndNewlines), lastName: last.trimmingCharacters(in: .whitespacesAndNewlines), whereFrom: whereFrom, gender: gender, hobbies: hobbies_list, role: role, degree: program, languages: languages_list, picture: img_str, team: team, netid: "", email: email)
+        self.rawList.append(newPerson)
+        if !DukePerson.saveDukePerson(self.rawList) {
+            print("In information view (add): failed to save people")
         }
     }
     
-    func updatePerson(person: DukePerson,first: String, last: String, whereFrom: String, program: String, hobbies: String, languages: String, team: String, email: String, gender: String, role: String) {
-        person.whereFrom = whereFrom
-        person.program = program
+    func updatePerson(person: DukePerson, first: String, last: String, whereFrom: String, program: String, hobbies: String, languages: String, team: String, email: String, gender: String, role: String) {
+        person.wherefrom = whereFrom
+        person.degree = program
         person.hobbies = hobbies.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
         person.languages = languages.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
         person.team = team
         person.email = email
-        person.gender = gender == "Male" ? Gender.Male : Gender.Female
-        person.role = role == "Professor" ? DukeRole.Professor : (role == "TA" ? DukeRole.TA : DukeRole.Student)
-        person.img = self.image.image?.jpegData(compressionQuality: 0.25)
-        do {
-            try self.context.save()
-        }
-        catch {
-            print(error.localizedDescription)
+        person.gender = gender
+        person.role = role
+        let img = self.image.image?.jpegData(compressionQuality: 0.25)
+        let img_str:String = img!.base64EncodedString(options: .lineLength64Characters)
+        person.picture = img_str
+        if !DukePerson.saveDukePerson(self.rawList) {
+            print("In information view (update): failed to save people")
         }
     }
     
@@ -326,7 +305,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
     func clickUpdateOrAdd() {
         var message : String = ""
         // if the name is unchanged, update the person
-        if self.currentPerson != nil && first_input.text == self.currentPerson!.firstName && last_input.text == self.currentPerson!.lastName {
+        if self.currentPerson != nil && first_input.text == self.currentPerson!.firstname && last_input.text == self.currentPerson!.lastname {
             // update person
             updatePerson(person: self.currentPerson!, first: first_input.text!, last: last_input.text!, whereFrom: from_input.text!, program: program_input.text!, hobbies: hobbies_input.text!, languages: languages_input.text!, team: team_input.text!, email: email_input.text!, gender: gender_input.text!, role: role_input.text!)
             message = "Person is updated!"
