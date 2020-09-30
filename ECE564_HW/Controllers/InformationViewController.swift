@@ -8,8 +8,9 @@
 
 import UIKit
 import CoreData
+import MessageUI
 
-class InformationViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class InformationViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MFMailComposeViewControllerDelegate {
 
     @IBOutlet weak var first_input: UITextField!
     @IBOutlet weak var last_input: UITextField!
@@ -37,6 +38,8 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
     // picker view for role
     let roles = ["Professor", "Teaching Assistant", "Student"]
     var rolePickerView = UIPickerView()
+    
+    var emailBtn: UIButton!
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,6 +84,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
             autoPopulate()
             // view only mode
             changeMode(canEdit: false)
+            showEmailBtn()
         }
         
         // tap gesture to dismiss the keyboard
@@ -244,6 +248,8 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         else if title == "Edit" {
             self.saveBtn.title = "Update/Add"
             changeMode(canEdit: true)
+            self.email_input.isHidden = false
+            emailBtn.removeFromSuperview()
         }
         // if in edit mode, update the current person or add a new one
         else if title == "Update/Add" {
@@ -376,4 +382,44 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
+    
+    func showEmailBtn() {
+        email_input.isHidden = true
+        let tempBtn = UIButton()
+        tempBtn.frame = CGRect(x: 120, y: 382, width: 125, height: 20)
+        tempBtn.layer.borderWidth = 1
+        tempBtn.backgroundColor = UIColor(red: 0/255, green: 158/255, blue: 249/255, alpha: 1.00)
+        tempBtn.setTitle("Send Email", for: .normal)
+        tempBtn.addTarget(self, action: #selector(clickEmail(_:)), for: .touchUpInside)
+        self.emailBtn = tempBtn
+        self.view.addSubview(emailBtn)
+    }
+    
+    @objc func clickEmail(_ btn: UIButton) {
+        if self.currentPerson == nil {
+            return
+        }
+        guard MFMailComposeViewController.canSendMail() else {
+            let alert = UIAlertController(title: "Error", message: "Cannot send email on the simulator.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+                alert.dismiss(animated: true, completion: nil)
+            }))
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        let composer = MFMailComposeViewController()
+        composer.mailComposeDelegate = self
+        var emails: [String] = []
+        emails.append(self.currentPerson!.email)
+        composer.setToRecipients(emails)
+        present(composer, animated: true)
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        if let _ = error {
+            print("error when send email")
+        }
+        controller.dismiss(animated: true)
+    }
+    
 }
