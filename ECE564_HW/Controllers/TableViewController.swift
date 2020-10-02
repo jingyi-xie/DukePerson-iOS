@@ -139,28 +139,28 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
             var ta_list = [DukePerson]()
             var student_list = [DukePerson]()
             // add professor
-            let prof_img = UIImage(named: "ric.jpg")?.jpegData(compressionQuality: 0.25)
+            let prof_img = self.resizeImage(image: UIImage(named: "ric.jpg")!, targetSize: CGSize(width:200.0, height:200.0)).jpegData(compressionQuality: 1)
             let prof_str:String = prof_img!.base64EncodedString(options: .lineLength64Characters)
             let prof = DukePerson(firstName: "Ric", lastName: "Telford", whereFrom: "Chatham County, NC", gender: "Male", hobbies: ["Hiking", "Swimming", "Biking"], role: "Professor", degree: "NA", languages: ["Swift", "C", "C++"], picture: prof_str, team: "None", netid: "rt113", email: "rt113@duke.edu")
             professor_list.append(prof)
             rawList.append(prof)
             
             // add myself
-            let me_img = UIImage(named: "jingyi.jpeg")?.jpegData(compressionQuality: 0.25)
+            let me_img = self.resizeImage(image: UIImage(named: "jingyi.jpeg")!, targetSize: CGSize(width:200.0, height:200.0)).jpegData(compressionQuality: 1)
             let me_str:String = me_img!.base64EncodedString(options: .lineLength64Characters)
             let me = DukePerson(firstName: "Jingyi", lastName: "Xie", whereFrom: "China", gender: "Male", hobbies: ["Traveling", "Movies", "Music"], role: "Student", degree: "Grad", languages: ["Python", "Java"], picture: me_str, team: "", netid: "jx95", email: "jx95@duke.edu")
             student_list.append(me)
             rawList.append(me)
             
             // add the first ta
-            let ta1_img = UIImage(named: "haohong.jpeg")?.jpegData(compressionQuality: 0.25)
+            let ta1_img = self.resizeImage(image: UIImage(named: "haohong.jpeg")!, targetSize: CGSize(width:200.0, height:200.0)).jpegData(compressionQuality: 1)
             let ta1_str:String = ta1_img!.base64EncodedString(options: .lineLength64Characters)
             let ta1 = DukePerson(firstName: "Haohong", lastName: "Zhao", whereFrom: "China", gender: "Male", hobbies: ["reading books", "jogging"], role: "Teaching Assistant", degree: "Grad", languages: ["swift", "java"], picture: ta1_str, team: "", netid: "hz147", email: "haohong.zhao@duke.edu")
             ta_list.append(ta1)
             rawList.append(ta1)
             
             // add the second ta
-            let ta2_img = UIImage(named: "yuchen.jpg")?.jpegData(compressionQuality: 0.25)
+            let ta2_img = self.resizeImage(image: UIImage(named: "yuchen.jpg")!, targetSize: CGSize(width:200.0, height:200.0)).jpegData(compressionQuality: 1)
             let ta2_str:String = ta2_img!.base64EncodedString(options: .lineLength64Characters)
             let ta2 = DukePerson(firstName: "Yuchen", lastName: "Yang", whereFrom: "China", gender: "Female", hobbies: ["Dancing"], role: "Teaching Assistant", degree: "Grad", languages: ["Java", "cpp"], picture: ta2_str, team: "", netid: "yy227", email: "yy227@duke.edu")
             ta_list.append(ta2)
@@ -348,6 +348,34 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         action.image = UIImage(named: "view.png")
         action.backgroundColor = .white
         return action
+    }
+    
+    
+    // source: homework support on piazza
+    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+        let size = image.size
+
+        let widthRatio  = targetSize.width  / size.width
+        let heightRatio = targetSize.height / size.height
+
+        // Figure out what our orientation is, and use that to form the rectangle
+        var newSize: CGSize
+        if(widthRatio > heightRatio) {
+            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+        } else {
+            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+        }
+
+        // This is the rect that we've calculated out and this is what is actually used below
+        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+
+        // Actually do the resizing to the rect using the ImageContext stuff
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return newImage!
     }
 
 }
