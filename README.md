@@ -60,13 +60,14 @@ Extra Features:
 ## HW6
 Note: 
 * If the virtual keyboard doesn't show up, press `cmd + k`
-* It's possible that core data messes up with the database in the same simulator because of other projects. If this happens, I personally used [simMagnifier](http://www.microedition.biz/simMagnifier/) to locate the source of core data and delete all the files.
 
 Extra Features:
-* Filtered search now works! Take the "hobbies" for example, you can only search the hobbies in this option, like "swimming" or "reading".
-* Use the camera to take a picture when upload the image. **Need a real device to test**. 
-* Email dialog support.  Email address is a button when in View Mode of the Information View so that it launches the iOS email View Controller. **Need a real device to test**.
-* Screenshots when test on my device
+1. **Filtered search** now works! Take the "hobbies" for example, you can only search the hobbies in this option, like "swimming" or "reading".
+2. Use the **camera to take a picture** when upload the image. <ins>Need a real device to test. </ins>
+3. **Email dialog** support.  Email address is a button when in View Mode of the Information View so that it launches the iOS email View Controller.  <ins>Need a real device to test. </ins>
+4. Change between **dark mode and light mode** in the nav bar of table view
+
+Screenshots of camera and email features when tested on my device
 
 ![](camera.PNG)
 
