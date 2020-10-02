@@ -66,3 +66,8 @@ Extra Features:
 * Filtered search now works! Take the "hobbies" for example, you can only search the hobbies in this option, like "swimming" or "reading".
 * Use the camera to take a picture when upload the image. **Need a real device to test**. 
 * Email dialog support.  Email address is a button when in View Mode of the Information View so that it launches the iOS email View Controller. **Need a real device to test**.
+* Screenshots when test on my device
+
+![](camera.PNG)
+
+![](email.PNG)
