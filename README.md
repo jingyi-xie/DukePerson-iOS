@@ -62,7 +62,7 @@ Note:
 * If the virtual keyboard doesn't show up, press `cmd + k`
 
 Extra Features:
-1. **Filtered search** now works! Take the "hobbies" for example, you can only search the hobbies in this option, like "swimming" or "reading".
+1. **Advanced search** now works! Take the "hobbies" for example, you can only search the hobbies in this option, like "swimming" or "reading".
 2. Use the **camera to take a picture** when upload the image. <ins>Need a real device to test. </ins>
 3. **Email dialog** support.  Email address is a button when in View Mode of the Information View so that it launches the iOS email View Controller.  <ins>Need a real device to test. </ins>
 4. Change between **dark mode and light mode** in the nav bar of table view
