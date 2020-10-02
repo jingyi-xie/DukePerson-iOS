@@ -16,6 +16,7 @@ enum searchBarScope: Int {
 }
 
 class TableViewController: UITableViewController, UISearchBarDelegate {
+    
     let searchBar = UISearchBar()
 
     // 2d array to store the list of people:
@@ -24,6 +25,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     var sectionHeaders : [String] = []
 
     var selectedPerson: DukePerson? = nil
+    var isDarkMode : Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +33,13 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         
         // Set up the search bar
         self.setupSearchbar()
+        // Set up dark mode
+        if isDarkMode {
+            overrideUserInterfaceStyle = .dark
+        }
+        else {
+            overrideUserInterfaceStyle = .light
+        }
     }
 
     // MARK: - Table view data source
@@ -120,11 +129,13 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
             dest.saveBtn.title = "Edit"
             dest.currentPerson = self.selectedPerson
             dest.rawList = self.people_list.reduce([], +)
+            dest.isDarkMode = self.isDarkMode
         }
         // if click the add button, set the button title in the information view controller as "Add"
         else if(segue.identifier == "clickAdd"){
             dest.saveBtn.title = "Add"
             dest.rawList = self.people_list.reduce([], +)
+            dest.isDarkMode = self.isDarkMode
         }
     }
     
@@ -377,5 +388,17 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
 
         return newImage!
     }
-
+    
+    
+    @IBAction func changeDarkMode(_ sender: Any) {
+        if !isDarkMode {
+            view.overrideUserInterfaceStyle = .dark
+            self.isDarkMode = true
+        }
+        else {
+            view.overrideUserInterfaceStyle = .light
+            self.isDarkMode = false
+        }
+    }
+    
 }

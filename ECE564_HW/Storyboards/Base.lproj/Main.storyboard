@@ -79,6 +79,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="ECE 564" id="cYC-7b-W9D">
+                        <barButtonItem key="leftBarButtonItem" title="Light/Dark" id="sdh-VA-YxZ">
+                            <connections>
+                                <action selector="changeDarkMode:" destination="Y0k-qG-ur1" id="bKi-vm-fRW"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="tTU-Th-RMR">
                             <connections>
                                 <segue destination="baZ-UY-dkz" kind="presentation" identifier="clickAdd" modalPresentationStyle="fullScreen" id="Vbm-ni-Zqu"/>
@@ -439,8 +444,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="qyH-Yz-wzT"/>
-        <segue reference="j7F-FZ-eCA"/>
+        <segue reference="Vbm-ni-Zqu"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="bkg" width="638" height="1136"/>

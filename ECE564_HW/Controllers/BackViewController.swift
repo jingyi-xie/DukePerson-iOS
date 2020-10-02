@@ -11,6 +11,8 @@ import AVFoundation
 
 class BackViewController: UIViewController {
     
+    var isDarkMode : Bool = false
+    
     var currentPerson : DukePerson? = nil
     var rawList : [DukePerson] = []
     
@@ -71,6 +73,7 @@ class BackViewController: UIViewController {
             dest.currentPerson = self.currentPerson
             dest.saveBtn.title = "Edit"
             dest.rawList = self.rawList
+            dest.isDarkMode = self.isDarkMode
         }
         
     }

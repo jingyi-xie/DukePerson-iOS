@@ -31,6 +31,8 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
     
     var rawList : [DukePerson] = []
     
+    var isDarkMode : Bool = false
+    
     // picker view for gender
     let genders = ["Male", "Female"]
     var genderPickerView = UIPickerView()
@@ -43,6 +45,13 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if isDarkMode {
+            overrideUserInterfaceStyle = .dark
+        }
+        else {
+            overrideUserInterfaceStyle = .light
+        }
         
         // set up delegate of picker views
         genderPickerView.delegate = self
@@ -122,6 +131,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
             let dest = segue.destination as! BackViewController
             dest.currentPerson = self.currentPerson
             dest.rawList = self.rawList
+            dest.isDarkMode = self.isDarkMode
         }
     }
     
