@@ -18,12 +18,28 @@
 		91024A1C251948D100D1B633 /* do.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 91024A19251948D100D1B633 /* do.mp3 */; };
 		91024A1F25194EFE00D1B633 /* PlayerHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91024A1E25194EFE00D1B633 /* PlayerHeader.swift */; };
 		9102B8D52502E79F006D2A1E /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9102B8D42502E79F006D2A1E /* TableViewController.swift */; };
+		9130854C252A65E600CA6863 /* shibauthframework2019.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9114F5BD252A20FE00A64956 /* shibauthframework2019.framework */; };
+		9130854D252A65E600CA6863 /* shibauthframework2019.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9114F5BD252A20FE00A64956 /* shibauthframework2019.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		919302FE25033D81007CF865 /* PersonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919302FD25033D81007CF865 /* PersonCell.swift */; };
 		9193030225047C80007CF865 /* ECE564.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9193030125047C80007CF865 /* ECE564.swift */; };
 		91A2642724FB6E6C00DABD2A /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A2642624FB6E6C00DABD2A /* InformationViewController.swift */; };
 		91A3ADD1250DAB5C00DCF394 /* BackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A3ADD0250DAB5C00DCF394 /* BackViewController.swift */; };
 		91EBD4172521708000CE642B /* DukePerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EBD4162521708000CE642B /* DukePerson.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9130854E252A65E700CA6863 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9130854D252A65E600CA6863 /* shibauthframework2019.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		8734815C2469DEE8000B9A79 /* ECE564_HW.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ECE564_HW.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -42,6 +58,7 @@
 		91024A19251948D100D1B633 /* do.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = do.mp3; sourceTree = "<group>"; };
 		91024A1E25194EFE00D1B633 /* PlayerHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHeader.swift; sourceTree = "<group>"; };
 		9102B8D42502E79F006D2A1E /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		9114F5BD252A20FE00A64956 /* shibauthframework2019.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = shibauthframework2019.framework; sourceTree = "<group>"; };
 		919302FD25033D81007CF865 /* PersonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonCell.swift; sourceTree = "<group>"; };
 		9193030125047C80007CF865 /* ECE564.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECE564.swift; sourceTree = "<group>"; };
 		91A2642624FB6E6C00DABD2A /* InformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationViewController.swift; sourceTree = "<group>"; };
@@ -54,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9130854C252A65E600CA6863 /* shibauthframework2019.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +86,7 @@
 				873481752469E43A000B9A79 /* HW1.playground */,
 				8734815E2469DEE8000B9A79 /* ECE564_HW */,
 				8734815D2469DEE8000B9A79 /* Products */,
+				9114F5BE252A214400A64956 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -115,6 +134,14 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		9114F5BE252A214400A64956 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9114F5BD252A20FE00A64956 /* shibauthframework2019.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		91A2642C24FB713900DABD2A /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -153,6 +180,7 @@
 				873481582469DEE8000B9A79 /* Sources */,
 				873481592469DEE8000B9A79 /* Frameworks */,
 				8734815A2469DEE8000B9A79 /* Resources */,
+				9130854E252A65E700CA6863 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -372,6 +400,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U6J58C8CJT;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ECE564_HW",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = ECE564_HW/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -390,6 +423,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U6J58C8CJT;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ECE564_HW",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = ECE564_HW/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

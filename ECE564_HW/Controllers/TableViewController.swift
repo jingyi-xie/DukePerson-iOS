@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import shibauthframework2019
 
 // search bar scope: used for three different search options
 enum searchBarScope: Int {
@@ -15,7 +16,7 @@ enum searchBarScope: Int {
     case languages = 2
 }
 
-class TableViewController: UITableViewController, UISearchBarDelegate {
+class TableViewController: UITableViewController, UISearchBarDelegate, LoginAlertDelegate {
     
     let searchBar = UISearchBar()
 
@@ -26,6 +27,13 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
 
     var selectedPerson: DukePerson? = nil
     var isDarkMode : Bool = false
+    
+    
+    @IBOutlet weak var LoginBtn: UIBarButtonItem!
+    @IBOutlet weak var PostBtn: UIBarButtonItem!
+    @IBOutlet weak var GetBtn: UIBarButtonItem!
+    var loginProgressAlert : UIAlertController?
+    var loginResult : NetidLookupResultData?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -401,4 +409,75 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         }
     }
     
+    @IBAction func clickLogin(_ sender: Any) {
+        let alertController = LoginAlert(title: "Authenticate", message: nil, preferredStyle: .alert)
+        alertController.delegate = self
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    @IBAction func clickPost(_ sender: Any) {
+        if !checkLoggedIn() {
+            return
+        }
+    }
+    
+    @IBAction func clickGet(_ sender: Any) {
+        if !checkLoggedIn() {
+            return
+        }
+    }
+    
+    func onSuccess(_ loginAlertController: LoginAlert, didFinishSucceededWith status: LoginResults, netidLookupResult: NetidLookupResultData?, netidLookupResultRawData: Data?, cookies: [HTTPCookie]?, lastLoginTime: Date) {
+        // succeeded, extract netidLookupResult.id and netidLookupResult.password for your server credential
+        // other properties needed for homework are also in netidLookupResult
+        DispatchQueue.main.async {
+            self.loginProgressAlert!.dismiss(animated: true, completion: nil);
+            self.loginProgressAlert = nil
+            if netidLookupResult == nil {
+                return
+            }
+            self.loginResult = netidLookupResult!
+        }
+        
+    }
+    
+    func onFail(_ loginAlertController: LoginAlert, didFinishFailedWith reason: LoginResults) {
+        // when authentication fails, this method will be called.
+        // default implementation provided
+        DispatchQueue.main.async {
+            self.loginProgressAlert!.dismiss(animated: true, completion: nil);
+            self.loginProgressAlert = nil
+            print(reason)
+            let alert = UIAlertController(title: "Error", message: reason.description, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+                alert.dismiss(animated: true, completion: nil)
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func inProgress(_ loginAlertController: LoginAlert, didSubmittedWith status: LoginResults) {
+        // this method will get called for each step in progress.
+        // default implementation provided
+        if self.loginProgressAlert != nil {
+            return
+        }
+        self.loginProgressAlert = UIAlertController(title: nil, message: "⏳ Please wait...", preferredStyle: .alert)
+        present(self.loginProgressAlert!, animated: true, completion: nil)
+    }
+    
+    func checkLoggedIn() -> Bool {
+        if self.loginResult == nil {
+            let alert = UIAlertController(title: "Error", message: "You must log in first", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+                alert.dismiss(animated: true, completion: nil)
+            }))
+            self.present(alert, animated: true, completion: nil)
+            return false
+        }
+        return true
+    }
+
+
+
 }
