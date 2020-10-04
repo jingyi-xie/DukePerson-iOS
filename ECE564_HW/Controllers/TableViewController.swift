@@ -150,7 +150,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
     // load initial data
     func loadInitialData() {
         if DukePerson.loadDukePerson() != nil {
-            updateList()
+            updateList(raw_list: DukePerson.loadDukePerson()!)
             self.tableView.reloadData()
         } else {
             var rawList: [DukePerson] = []
@@ -198,8 +198,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
         }
     }
     
-    func updateList() {
-        let raw_list = DukePerson.loadDukePerson()!
+    func updateList(raw_list: [DukePerson]) {
         var temp_list = [[DukePerson]]()
         var professor_list = [DukePerson]()
         var ta_list = [DukePerson]()
@@ -212,10 +211,10 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
             if person.role == "Professor" {
                 professor_list.append(person)
             }
-            else if person.role == "Teaching Assistant" {
+            else if person.role == "Teaching Assistant" || person.role == "TA" {
                 ta_list.append(person)
             }
-            else {
+            else if person.role == "Student" {
                 let team = person.team.trimmingCharacters(in:.whitespacesAndNewlines).lowercased()
                 if team != "" && team != "none" && team != "na" {
                     if sectionHeaders.firstIndex(of: person.team) != nil {
@@ -265,7 +264,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
             // if delete all the text in the search bar, refetch the data
-            self.updateList()
+            self.updateList(raw_list: DukePerson.loadDukePerson()!)
             self.tableView.reloadData()
         }
         else {
@@ -276,7 +275,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
     
     // if chage the search option, refetch the data
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        self.updateList()
+        self.updateList(raw_list: DukePerson.loadDukePerson()!)
         self.tableView.reloadData()
         searchBar.text = nil
     }
@@ -327,7 +326,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
     
     // when return from the information view, refresh the table
     @IBAction func returnFromInformation(_ sender: UIStoryboardSegue) {
-        self.updateList()
+        self.updateList(raw_list: DukePerson.loadDukePerson()!)
         self.tableView.reloadData()
     }
     
@@ -347,7 +346,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
         let action = UIContextualAction(style: .normal, title: "Delete", handler: {(action, view, completion) in
             self.people_list[indexPath.section].remove(at: indexPath.row)
             let _ = DukePerson.saveDukePerson(self.people_list.reduce([], +))
-            self.updateList()
+            self.updateList(raw_list: DukePerson.loadDukePerson()!)
             self.tableView.reloadData()
             completion(true)
         })
@@ -425,9 +424,35 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
     }
     
     @IBAction func clickGet(_ sender: Any) {
-        if !checkLoggedIn(clickLogin: false) {
-            return
+//        if !checkLoggedIn(clickLogin: false) {
+//            return
+//        }
+        let url = URL(string: "https://rt113-dt01.egr.duke.edu:5640/b64entries")!
+        DispatchQueue.main.async {
+            let task = URLSession.shared.dataTask(with: url) {
+                (data, response, error) in
+                if let error = error {
+                    print("error: \(error)")
+                }
+                else {
+                    if let response = response as? HTTPURLResponse {
+                        print("status: \(response.statusCode)")
+                    }
+                    if let data = data, let _ = String(data: data, encoding: .utf8) {
+                        let decoder = JSONDecoder()
+                        var raw_list = [DukePerson]()
+                        if let decoded = try? decoder.decode([DukePerson].self, from: data) {
+                            raw_list = decoded
+                            self.updateList(raw_list: raw_list)
+                        }
+                    }
+                }
+            }
+            task.resume()
         }
+        print(self.people_list)
+        let _ = DukePerson.saveDukePerson(self.people_list.reduce([], +))
+        self.tableView.reloadData()
     }
     
     func onSuccess(_ loginAlertController: LoginAlert, didFinishSucceededWith status: LoginResults, netidLookupResult: NetidLookupResultData?, netidLookupResultRawData: Data?, cookies: [HTTPCookie]?, lastLoginTime: Date) {
