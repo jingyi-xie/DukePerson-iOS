@@ -410,19 +410,22 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
     }
     
     @IBAction func clickLogin(_ sender: Any) {
+        if checkLoggedIn(clickLogin: true) {
+            return
+        }
         let alertController = LoginAlert(title: "Authenticate", message: nil, preferredStyle: .alert)
         alertController.delegate = self
         self.present(alertController, animated: true, completion: nil)
     }
     
     @IBAction func clickPost(_ sender: Any) {
-        if !checkLoggedIn() {
+        if !checkLoggedIn(clickLogin: false) {
             return
         }
     }
     
     @IBAction func clickGet(_ sender: Any) {
-        if !checkLoggedIn() {
+        if !checkLoggedIn(clickLogin: false) {
             return
         }
     }
@@ -466,9 +469,19 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
         present(self.loginProgressAlert!, animated: true, completion: nil)
     }
     
-    func checkLoggedIn() -> Bool {
+    func checkLoggedIn(clickLogin: Bool) -> Bool {
         if self.loginResult == nil {
-            let alert = UIAlertController(title: "Error", message: "You must log in first", preferredStyle: .alert)
+            if !clickLogin {
+                let alert = UIAlertController(title: "Error", message: "You must log in first", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
+            return false
+        }
+        if clickLogin {
+            let alert = UIAlertController(title: "Message", message: "You already logged in!", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
                 alert.dismiss(animated: true, completion: nil)
             }))
