@@ -1,0 +1,71 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.1.3 (swiftlang-1100.0.282.1 clang-1100.0.33.15)
+// swift-module-flags: -target x86_64-apple-ios11.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -Onone -module-name shibauthframework2019
+import CommonCrypto
+import Foundation
+import Swift
+import UIKit
+import WebKit
+import os
+@_exported import shibauthframework2019
+public struct NetidLookupResultData : Swift.Codable, Swift.CustomStringConvertible {
+  public var email: Swift.String? {
+    get
+  }
+  public var netid: Swift.String?
+  public var id: Swift.String? {
+    get
+  }
+  public var lastName: Swift.String?
+  public var firstName: Swift.String?
+  public var role: Swift.String? {
+    get
+  }
+  public var password: Swift.String? {
+    get
+  }
+  public var description: Swift.String {
+    get
+  }
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public protocol LoginAlertDelegate : AnyObject {
+  func onFail(_ loginAlertController: shibauthframework2019.LoginAlert, didFinishFailedWith reason: shibauthframework2019.LoginResults)
+  func inProgress(_ loginAlertController: shibauthframework2019.LoginAlert, didSubmittedWith status: shibauthframework2019.LoginResults)
+  func onSuccess(_ loginAlertController: shibauthframework2019.LoginAlert, didFinishSucceededWith status: shibauthframework2019.LoginResults, netidLookupResult: shibauthframework2019.NetidLookupResultData?, netidLookupResultRawData: Foundation.Data?, cookies: [Foundation.HTTPCookie]?, lastLoginTime: Foundation.Date)
+  func onLoginButtonTapped(_ loginAlertController: shibauthframework2019.LoginAlert)
+  func onCancelButtonTapped(_ loginAlertController: shibauthframework2019.LoginAlert)
+}
+extension LoginAlertDelegate {
+  public func onFail(_ loginAlertController: shibauthframework2019.LoginAlert, didFinishFailedWith reason: shibauthframework2019.LoginResults)
+  public func inProgress(_ loginAlertController: shibauthframework2019.LoginAlert, didSubmittedWith status: shibauthframework2019.LoginResults)
+  public func onLoginButtonTapped(_ loginAlertController: shibauthframework2019.LoginAlert)
+  public func onCancelButtonTapped(_ loginAlertController: shibauthframework2019.LoginAlert)
+}
+@objc public class LoginAlert : UIKit.UIAlertController {
+  weak public var delegate: shibauthframework2019.LoginAlertDelegate?
+  @objc override dynamic public func viewDidLoad()
+  @objc override dynamic public func viewWillAppear(_ animated: Swift.Bool)
+  @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
+  @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+public enum LoginResults : Swift.Error, Swift.CustomStringConvertible {
+  case ShibURLNotAccessible
+  case MultiFactorRequired
+  case UsernamePasswordEmpty
+  case UsernamePasswordWrong
+  case LoginSucceeded
+  case UsernamePasswordSubmitted
+  case IllegalNavigation
+  case UnknownNavigation
+  public var description: Swift.String {
+    get
+  }
+  public static func == (a: shibauthframework2019.LoginResults, b: shibauthframework2019.LoginResults) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+  public func hash(into hasher: inout Swift.Hasher)
+}
