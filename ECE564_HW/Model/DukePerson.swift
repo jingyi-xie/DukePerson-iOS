@@ -65,7 +65,7 @@ public class DukePerson: ECE564, CustomStringConvertible, Codable {
             des += pronouns[1] + " email is \(self.email). "
         }
         // team
-        if self.role == "Student" && self.team != "" && self.team.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() != "na" && self.team.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() != "none" {
+        if self.role.lowercased() == "student" && self.team != "" && self.team.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() != "na" && self.team.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() != "none" {
             des += pronouns[1] + " team is \(self.team). "
         }
         return des
@@ -85,7 +85,7 @@ public class DukePerson: ECE564, CustomStringConvertible, Codable {
         self.netid = netid
         self.email = email
         self.department = ""
-        self.id = ""
+        self.id = netid
     }
 
     

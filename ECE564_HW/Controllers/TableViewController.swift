@@ -408,6 +408,26 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
         }
     }
     
+    func findPersonToUpdate() -> DukePerson? {
+        if self.loginResult == nil {
+            return nil
+        }
+        for person in self.people_list.reduce([], +) {
+            if person.netid == self.loginResult!.netid! {
+                return person
+            }
+        }
+        return nil
+    }
+    
+    func showPostAlert(success: Bool) {
+        let alert = UIAlertController(title: "Message", message: success ? "POST succeeded" : "POST failed! Try again.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     @IBAction func clickLogin(_ sender: Any) {
         if checkLoggedIn(clickLogin: true) {
             return
@@ -418,9 +438,79 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
     }
     
     @IBAction func clickPost(_ sender: Any) {
-        if !checkLoggedIn(clickLogin: false) {
+        print("in post")
+        if !checkLoggedIn(clickLogin: false) || loginResult == nil {
+            self.showPostAlert(success: false)
+            print("failed 1")
             return
         }
+        let url = URL(string: "https://rt113-dt01.egr.duke.edu:5640/b64entries")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        let username = loginResult!.id!
+        let password = loginResult!.password!
+        let loginString = "\(username):\(password)"
+        guard let loginData = loginString.data(using: String.Encoding.utf8) else {
+            self.showPostAlert(success: false)
+            print("failed 2")
+
+            return
+        }
+        let base64LoginString = loginData.base64EncodedString()
+        request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        let personToUpdate = findPersonToUpdate()
+        if personToUpdate == nil {
+            self.showPostAlert(success: false)
+            print("failed 3")
+            return
+        }
+        let jsonDict = [
+            "id": loginResult!.id! as Any,
+            "netid": loginResult!.netid! as Any,
+            "firstname": personToUpdate!.firstname as Any,
+            "lastname": personToUpdate!.lastname as Any,
+            "wherefrom": personToUpdate!.wherefrom as Any,
+            "gender": personToUpdate!.gender as Any,
+            "role": personToUpdate!.role as Any,
+            "degree": personToUpdate!.degree as Any,
+            "team": personToUpdate!.team as Any,
+            "hobbies": personToUpdate!.hobbies as Any,
+            "languages": personToUpdate!.languages as Any,
+            "department": personToUpdate!.department as Any,
+            "email": personToUpdate!.email as Any,
+            "picture": personToUpdate!.picture as Any,
+        ] as [String : Any]
+        let jsonData = try! JSONSerialization.data(withJSONObject: jsonDict, options: [])
+        request.httpBody = jsonData
+        
+        let task = URLSession.shared.dataTask(with: request) {
+            (data, response, error) in
+            if let error = error {
+                print("error:", error)
+                self.showPostAlert(success: false)
+                return
+            }
+            do {
+                if data != nil && response != nil {
+                    print("data: \(data!)")
+                    print("response: \(response!)")
+                }
+                guard let data = data else { return }
+                guard (try JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject]) != nil else {
+                    self.showPostAlert(success: false)
+                    return
+                }
+            } catch {
+                self.showPostAlert(success: false)
+                print("error:", error)
+                return
+            }
+        }
+        task.resume()
+        self.showPostAlert(success: true)
     }
     
     @IBAction func clickGet(_ sender: Any) {
@@ -458,6 +548,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
     func onSuccess(_ loginAlertController: LoginAlert, didFinishSucceededWith status: LoginResults, netidLookupResult: NetidLookupResultData?, netidLookupResultRawData: Data?, cookies: [HTTPCookie]?, lastLoginTime: Date) {
         // succeeded, extract netidLookupResult.id and netidLookupResult.password for your server credential
         // other properties needed for homework are also in netidLookupResult
+        print("login success")
         DispatchQueue.main.async {
             self.loginProgressAlert!.dismiss(animated: true, completion: nil);
             self.loginProgressAlert = nil
@@ -472,6 +563,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
     func onFail(_ loginAlertController: LoginAlert, didFinishFailedWith reason: LoginResults) {
         // when authentication fails, this method will be called.
         // default implementation provided
+        print("login failed")
         DispatchQueue.main.async {
             self.loginProgressAlert!.dismiss(animated: true, completion: nil);
             self.loginProgressAlert = nil

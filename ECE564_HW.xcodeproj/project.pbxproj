@@ -18,8 +18,8 @@
 		91024A1C251948D100D1B633 /* do.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 91024A19251948D100D1B633 /* do.mp3 */; };
 		91024A1F25194EFE00D1B633 /* PlayerHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91024A1E25194EFE00D1B633 /* PlayerHeader.swift */; };
 		9102B8D52502E79F006D2A1E /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9102B8D42502E79F006D2A1E /* TableViewController.swift */; };
-		9130854C252A65E600CA6863 /* shibauthframework2019.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9114F5BD252A20FE00A64956 /* shibauthframework2019.framework */; };
-		9130854D252A65E600CA6863 /* shibauthframework2019.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9114F5BD252A20FE00A64956 /* shibauthframework2019.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		91308550252C2CDC00CA6863 /* shibauthframework2019.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9130854F252C2CDB00CA6863 /* shibauthframework2019.framework */; };
+		91308551252C2CDC00CA6863 /* shibauthframework2019.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9130854F252C2CDB00CA6863 /* shibauthframework2019.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		919302FE25033D81007CF865 /* PersonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919302FD25033D81007CF865 /* PersonCell.swift */; };
 		9193030225047C80007CF865 /* ECE564.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9193030125047C80007CF865 /* ECE564.swift */; };
 		91A2642724FB6E6C00DABD2A /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A2642624FB6E6C00DABD2A /* InformationViewController.swift */; };
@@ -34,7 +34,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9130854D252A65E600CA6863 /* shibauthframework2019.framework in Embed Frameworks */,
+				91308551252C2CDC00CA6863 /* shibauthframework2019.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -58,7 +58,7 @@
 		91024A19251948D100D1B633 /* do.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = do.mp3; sourceTree = "<group>"; };
 		91024A1E25194EFE00D1B633 /* PlayerHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHeader.swift; sourceTree = "<group>"; };
 		9102B8D42502E79F006D2A1E /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
-		9114F5BD252A20FE00A64956 /* shibauthframework2019.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = shibauthframework2019.framework; sourceTree = "<group>"; };
+		9130854F252C2CDB00CA6863 /* shibauthframework2019.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = shibauthframework2019.framework; path = "../login-master/shibauthframework2019.framework"; sourceTree = "<group>"; };
 		919302FD25033D81007CF865 /* PersonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonCell.swift; sourceTree = "<group>"; };
 		9193030125047C80007CF865 /* ECE564.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECE564.swift; sourceTree = "<group>"; };
 		91A2642624FB6E6C00DABD2A /* InformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationViewController.swift; sourceTree = "<group>"; };
@@ -71,7 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9130854C252A65E600CA6863 /* shibauthframework2019.framework in Frameworks */,
+				91308550252C2CDC00CA6863 /* shibauthframework2019.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,7 +137,7 @@
 		9114F5BE252A214400A64956 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9114F5BD252A20FE00A64956 /* shibauthframework2019.framework */,
+				9130854F252C2CDB00CA6863 /* shibauthframework2019.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
