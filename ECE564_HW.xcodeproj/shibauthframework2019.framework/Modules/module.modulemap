@@ -1,0 +1,11 @@
+framework module shibauthframework2019 {
+  umbrella header "shibauthframework2019.h"
+
+  export *
+  module * { export * }
+}
+
+module shibauthframework2019.Swift {
+    header "shibauthframework2019-Swift.h"
+    requires objc
+}

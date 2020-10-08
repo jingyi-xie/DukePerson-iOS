@@ -206,9 +206,9 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         let languages_list = languages.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
         // store the image in binary format and compress the picture
         let img = self.resizeImage(image: self.image.image!, targetSize: CGSize(width:200.0, height:200.0)).jpegData(compressionQuality: 1)
-        let img_str:String = img!.base64EncodedString(options: .lineLength64Characters)
+        let img_str:String = img!.base64EncodedString()
 
-        let newPerson = DukePerson(firstName: first.trimmingCharacters(in: .whitespacesAndNewlines), lastName: last.trimmingCharacters(in: .whitespacesAndNewlines), whereFrom: whereFrom, gender: gender, hobbies: hobbies_list, role: role, degree: program, languages: languages_list, picture: img_str, team: team.trimmingCharacters(in: .whitespacesAndNewlines), netid: "", email: email)
+        let newPerson = DukePerson(firstName: first.trimmingCharacters(in: .whitespacesAndNewlines), lastName: last.trimmingCharacters(in: .whitespacesAndNewlines), whereFrom: whereFrom, gender: gender, hobbies: hobbies_list, role: role, degree: program, languages: languages_list, picture: img_str, team: team.trimmingCharacters(in: .whitespacesAndNewlines), netid: "", email: email, department: "")
         self.rawList.append(newPerson)
         if !DukePerson.saveDukePerson(self.rawList) {
             print("In information view (add): failed to save people")
@@ -225,7 +225,7 @@ class InformationViewController: UIViewController, UITextFieldDelegate, UIPicker
         person.gender = gender
         person.role = role
         let img = self.resizeImage(image: self.image.image!, targetSize: CGSize(width:200.0, height:200.0)).jpegData(compressionQuality: 1)
-        let img_str:String = img!.base64EncodedString(options: .lineLength64Characters)
+        let img_str:String = img!.base64EncodedString()
         person.picture = img_str
         if !DukePerson.saveDukePerson(self.rawList) {
             print("In information view (update): failed to save people")

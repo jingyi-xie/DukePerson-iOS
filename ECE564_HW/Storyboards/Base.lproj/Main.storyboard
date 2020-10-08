@@ -79,18 +79,40 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="ECE 564" id="cYC-7b-W9D">
-                        <barButtonItem key="leftBarButtonItem" title="Light/Dark" id="sdh-VA-YxZ">
-                            <connections>
-                                <action selector="changeDarkMode:" destination="Y0k-qG-ur1" id="bKi-vm-fRW"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="tTU-Th-RMR">
-                            <connections>
-                                <segue destination="baZ-UY-dkz" kind="presentation" identifier="clickAdd" modalPresentationStyle="fullScreen" id="Vbm-ni-Zqu"/>
-                            </connections>
-                        </barButtonItem>
+                        <leftBarButtonItems>
+                            <barButtonItem title="Login" id="VCg-nI-DLw">
+                                <connections>
+                                    <action selector="clickLogin:" destination="Y0k-qG-ur1" id="tOf-OK-dA1"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Post" id="Aca-Zm-PxS">
+                                <connections>
+                                    <action selector="clickPost:" destination="Y0k-qG-ur1" id="5ST-J3-j7H"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Get" id="t8e-3M-FqQ">
+                                <connections>
+                                    <action selector="clickGet:" destination="Y0k-qG-ur1" id="ueN-CR-k4q"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="tTU-Th-RMR">
+                                <connections>
+                                    <segue destination="baZ-UY-dkz" kind="presentation" identifier="clickAdd" modalPresentationStyle="fullScreen" id="Vbm-ni-Zqu"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Light/Dark" id="sdh-VA-YxZ">
+                                <connections>
+                                    <action selector="changeDarkMode:" destination="Y0k-qG-ur1" id="bKi-vm-fRW"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="GetBtn" destination="t8e-3M-FqQ" id="omu-0G-PHU"/>
+                        <outlet property="LoginBtn" destination="VCg-nI-DLw" id="QWW-8O-MQ5"/>
+                        <outlet property="PostBtn" destination="Aca-Zm-PxS" id="o93-m6-a09"/>
                         <segue destination="baZ-UY-dkz" kind="presentation" identifier="clickCell" modalPresentationStyle="fullScreen" id="bbz-Sx-A7R"/>
                     </connections>
                 </tableViewController>

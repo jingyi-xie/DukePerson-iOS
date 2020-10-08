@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import shibauthframework2019
 
 // search bar scope: used for three different search options
 enum searchBarScope: Int {
@@ -15,7 +16,7 @@ enum searchBarScope: Int {
     case languages = 2
 }
 
-class TableViewController: UITableViewController, UISearchBarDelegate {
+class TableViewController: UITableViewController, UISearchBarDelegate, LoginAlertDelegate {
     
     let searchBar = UISearchBar()
 
@@ -26,6 +27,13 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
 
     var selectedPerson: DukePerson? = nil
     var isDarkMode : Bool = false
+    
+    
+    @IBOutlet weak var LoginBtn: UIBarButtonItem!
+    @IBOutlet weak var PostBtn: UIBarButtonItem!
+    @IBOutlet weak var GetBtn: UIBarButtonItem!
+    var loginProgressAlert : UIAlertController?
+    var loginResult : NetidLookupResultData?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -142,7 +150,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     // load initial data
     func loadInitialData() {
         if DukePerson.loadDukePerson() != nil {
-            updateList()
+            updateList(raw_list: DukePerson.loadDukePerson()!)
             self.tableView.reloadData()
         } else {
             var rawList: [DukePerson] = []
@@ -151,29 +159,29 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
             var student_list = [DukePerson]()
             // add professor
             let prof_img = self.resizeImage(image: UIImage(named: "ric.jpg")!, targetSize: CGSize(width:200.0, height:200.0)).jpegData(compressionQuality: 1)
-            let prof_str:String = prof_img!.base64EncodedString(options: .lineLength64Characters)
-            let prof = DukePerson(firstName: "Ric", lastName: "Telford", whereFrom: "Chatham County, NC", gender: "Male", hobbies: ["Hiking", "Swimming", "Biking"], role: "Professor", degree: "NA", languages: ["Swift", "C", "C++"], picture: prof_str, team: "None", netid: "rt113", email: "rt113@duke.edu")
+            let prof_str:String = prof_img!.base64EncodedString()
+            let prof = DukePerson(firstName: "Ric", lastName: "Telford", whereFrom: "Chatham County, NC", gender: "Male", hobbies: ["Hiking", "Swimming", "Biking"], role: "Professor", degree: "NA", languages: ["Swift", "C", "C++"], picture: prof_str, team: "None", netid: "rt113", email: "rt113@duke.edu", department: "")
             professor_list.append(prof)
             rawList.append(prof)
             
             // add myself
             let me_img = self.resizeImage(image: UIImage(named: "jingyi.jpeg")!, targetSize: CGSize(width:200.0, height:200.0)).jpegData(compressionQuality: 1)
-            let me_str:String = me_img!.base64EncodedString(options: .lineLength64Characters)
-            let me = DukePerson(firstName: "Jingyi", lastName: "Xie", whereFrom: "China", gender: "Male", hobbies: ["Traveling", "Movies", "Music"], role: "Student", degree: "Grad", languages: ["Python", "Java"], picture: me_str, team: "", netid: "jx95", email: "jx95@duke.edu")
+            let me_str:String = me_img!.base64EncodedString()
+            let me = DukePerson(firstName: "Jingyi", lastName: "Xie", whereFrom: "China", gender: "Male", hobbies: ["Traveling", "Movies", "Music"], role: "Student", degree: "Grad", languages: ["Python", "Java"], picture: me_str, team: "HealthPal", netid: "jx95", email: "jx95@duke.edu", department: "ECE")
             student_list.append(me)
             rawList.append(me)
             
             // add the first ta
             let ta1_img = self.resizeImage(image: UIImage(named: "haohong.jpeg")!, targetSize: CGSize(width:200.0, height:200.0)).jpegData(compressionQuality: 1)
-            let ta1_str:String = ta1_img!.base64EncodedString(options: .lineLength64Characters)
-            let ta1 = DukePerson(firstName: "Haohong", lastName: "Zhao", whereFrom: "China", gender: "Male", hobbies: ["reading books", "jogging"], role: "Teaching Assistant", degree: "Grad", languages: ["swift", "java"], picture: ta1_str, team: "", netid: "hz147", email: "haohong.zhao@duke.edu")
+            let ta1_str:String = ta1_img!.base64EncodedString()
+            let ta1 = DukePerson(firstName: "Haohong", lastName: "Zhao", whereFrom: "China", gender: "Male", hobbies: ["reading books", "jogging"], role: "Teaching Assistant", degree: "Grad", languages: ["swift", "java"], picture: ta1_str, team: "", netid: "hz147", email: "haohong.zhao@duke.edu", department: "")
             ta_list.append(ta1)
             rawList.append(ta1)
             
             // add the second ta
             let ta2_img = self.resizeImage(image: UIImage(named: "yuchen.jpg")!, targetSize: CGSize(width:200.0, height:200.0)).jpegData(compressionQuality: 1)
-            let ta2_str:String = ta2_img!.base64EncodedString(options: .lineLength64Characters)
-            let ta2 = DukePerson(firstName: "Yuchen", lastName: "Yang", whereFrom: "China", gender: "Female", hobbies: ["Dancing"], role: "Teaching Assistant", degree: "Grad", languages: ["Java", "cpp"], picture: ta2_str, team: "", netid: "yy227", email: "yy227@duke.edu")
+            let ta2_str:String = ta2_img!.base64EncodedString()
+            let ta2 = DukePerson(firstName: "Yuchen", lastName: "Yang", whereFrom: "China", gender: "Female", hobbies: ["Dancing"], role: "Teaching Assistant", degree: "Grad", languages: ["Java", "cpp"], picture: ta2_str, team: "", netid: "yy227", email: "yy227@duke.edu", department: "")
             ta_list.append(ta2)
             rawList.append(ta2)
             
@@ -190,8 +198,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         }
     }
     
-    func updateList() {
-        let raw_list = DukePerson.loadDukePerson()!
+    func updateList(raw_list: [DukePerson]) {
         var temp_list = [[DukePerson]]()
         var professor_list = [DukePerson]()
         var ta_list = [DukePerson]()
@@ -204,10 +211,10 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
             if person.role == "Professor" {
                 professor_list.append(person)
             }
-            else if person.role == "Teaching Assistant" {
+            else if person.role == "Teaching Assistant" || person.role == "TA" {
                 ta_list.append(person)
             }
-            else {
+            else if person.role == "Student" {
                 let team = person.team.trimmingCharacters(in:.whitespacesAndNewlines).lowercased()
                 if team != "" && team != "none" && team != "na" {
                     if sectionHeaders.firstIndex(of: person.team) != nil {
@@ -257,7 +264,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
             // if delete all the text in the search bar, refetch the data
-            self.updateList()
+            self.updateList(raw_list: DukePerson.loadDukePerson()!)
             self.tableView.reloadData()
         }
         else {
@@ -268,7 +275,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     
     // if chage the search option, refetch the data
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        self.updateList()
+        self.updateList(raw_list: DukePerson.loadDukePerson()!)
         self.tableView.reloadData()
         searchBar.text = nil
     }
@@ -319,7 +326,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     
     // when return from the information view, refresh the table
     @IBAction func returnFromInformation(_ sender: UIStoryboardSegue) {
-        self.updateList()
+        self.updateList(raw_list: DukePerson.loadDukePerson()!)
         self.tableView.reloadData()
     }
     
@@ -339,7 +346,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         let action = UIContextualAction(style: .normal, title: "Delete", handler: {(action, view, completion) in
             self.people_list[indexPath.section].remove(at: indexPath.row)
             let _ = DukePerson.saveDukePerson(self.people_list.reduce([], +))
-            self.updateList()
+            self.updateList(raw_list: DukePerson.loadDukePerson()!)
             self.tableView.reloadData()
             completion(true)
         })
@@ -401,4 +408,206 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         }
     }
     
+    func findPersonToUpdate() -> DukePerson? {
+        if self.loginResult == nil {
+            return nil
+        }
+        for person in self.people_list.reduce([], +) {
+            if person.netid == self.loginResult!.netid! {
+                return person
+            }
+        }
+        return nil
+    }
+    
+    func showPostAlert(success: Bool) {
+        let alert = UIAlertController(title: "Message", message: success ? "POST succeeded" : "POST failed! Try again.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func clickLogin(_ sender: Any) {
+        if checkLoggedIn(clickLogin: true) {
+            return
+        }
+        let alertController = LoginAlert(title: "Authenticate", message: nil, preferredStyle: .alert)
+        alertController.delegate = self
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    @IBAction func clickPost(_ sender: Any) {
+        print("in post")
+        if !checkLoggedIn(clickLogin: false) || loginResult == nil {
+            self.showPostAlert(success: false)
+            return
+        }
+        let url = URL(string: "https://rt113-dt01.egr.duke.edu:5640/b64entries")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        let username = loginResult!.id!
+        let password = loginResult!.password!
+        let loginString = "\(username):\(password)"
+        guard let loginData = loginString.data(using: String.Encoding.utf8) else {
+            self.showPostAlert(success: false)
+            return
+        }
+        let base64LoginString = loginData.base64EncodedString()
+        request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        let personToUpdate = findPersonToUpdate()
+        if personToUpdate == nil {
+            self.showPostAlert(success: false)
+            return
+        }
+        let jsonDict = [
+            "id": loginResult!.id! as Any,
+            "netid": loginResult!.netid! as Any,
+            "firstname": personToUpdate!.firstname as Any,
+            "lastname": personToUpdate!.lastname as Any,
+            "wherefrom": personToUpdate!.wherefrom as Any,
+            "gender": personToUpdate!.gender as Any,
+            "role": personToUpdate!.role as Any,
+            "degree": personToUpdate!.degree as Any,
+            "team": personToUpdate!.team as Any,
+            "hobbies": personToUpdate!.hobbies as Any,
+            "languages": personToUpdate!.languages as Any,
+            "department": personToUpdate!.department as Any,
+            "email": personToUpdate!.email as Any,
+            "picture": personToUpdate!.picture as Any,
+        ] as [String : Any]
+        let jsonData = try! JSONSerialization.data(withJSONObject: jsonDict, options: [])
+        request.httpBody = jsonData
+        
+        let task = URLSession.shared.dataTask(with: request) {
+            (data, response, error) in
+            if let error = error {
+                print("error:", error)
+                self.showPostAlert(success: false)
+                return
+            }
+            do {
+                if data != nil && response != nil {
+                    print("data: \(data!)")
+                    print("response: \(response!)")
+                }
+                guard let data = data else { return }
+                guard (try JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject]) != nil else {
+                    self.showPostAlert(success: false)
+                    return
+                }
+            } catch {
+                self.showPostAlert(success: false)
+                print("error:", error)
+                return
+            }
+        }
+        task.resume()
+        self.showPostAlert(success: true)
+    }
+    
+    @IBAction func clickGet(_ sender: Any) {
+//        if !checkLoggedIn(clickLogin: false) {
+//            return
+//        }
+        let url = URL(string: "https://rt113-dt01.egr.duke.edu:5640/b64entries")!
+        DispatchQueue.main.async {
+            let task = URLSession.shared.dataTask(with: url) {
+                (data, response, error) in
+                if let error = error {
+                    print("error: \(error)")
+                }
+                else {
+                    if let response = response as? HTTPURLResponse {
+                        print("status: \(response.statusCode)")
+                    }
+                    if let data = data, let _ = String(data: data, encoding: .utf8) {
+                        let decoder = JSONDecoder()
+                        var raw_list = [DukePerson]()
+                        if let decoded = try? decoder.decode([DukePerson].self, from: data) {
+                            raw_list = decoded
+                            print(raw_list)
+
+                            self.updateList(raw_list: raw_list)
+                            DispatchQueue.main.async {
+                                let _ = DukePerson.saveDukePerson(self.people_list.reduce([], +))
+                                self.tableView.reloadData()
+                            }
+                            
+                        }
+                    }
+                }
+            }
+            task.resume()
+        }
+    }
+    
+    func onSuccess(_ loginAlertController: LoginAlert, didFinishSucceededWith status: LoginResults, netidLookupResult: NetidLookupResultData?, netidLookupResultRawData: Data?, cookies: [HTTPCookie]?, lastLoginTime: Date) {
+        // succeeded, extract netidLookupResult.id and netidLookupResult.password for your server credential
+        // other properties needed for homework are also in netidLookupResult
+        print("login success")
+        DispatchQueue.main.async {
+            self.loginProgressAlert!.dismiss(animated: true, completion: nil);
+            self.loginProgressAlert = nil
+            if netidLookupResult == nil {
+                return
+            }
+            self.loginResult = netidLookupResult!
+        }
+        
+    }
+    
+    func onFail(_ loginAlertController: LoginAlert, didFinishFailedWith reason: LoginResults) {
+        // when authentication fails, this method will be called.
+        // default implementation provided
+        print("login failed")
+        DispatchQueue.main.async {
+            self.loginProgressAlert!.dismiss(animated: true, completion: nil);
+            self.loginProgressAlert = nil
+            print(reason)
+            let alert = UIAlertController(title: "Error", message: reason.description, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+                alert.dismiss(animated: true, completion: nil)
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func inProgress(_ loginAlertController: LoginAlert, didSubmittedWith status: LoginResults) {
+        // this method will get called for each step in progress.
+        // default implementation provided
+        if self.loginProgressAlert != nil {
+            return
+        }
+        self.loginProgressAlert = UIAlertController(title: nil, message: "⏳ Please wait...", preferredStyle: .alert)
+        present(self.loginProgressAlert!, animated: true, completion: nil)
+    }
+    
+    func checkLoggedIn(clickLogin: Bool) -> Bool {
+        if self.loginResult == nil {
+            if !clickLogin {
+                let alert = UIAlertController(title: "Error", message: "You must log in first", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
+            return false
+        }
+        if clickLogin {
+            let alert = UIAlertController(title: "Message", message: "You already logged in!", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+                alert.dismiss(animated: true, completion: nil)
+            }))
+            self.present(alert, animated: true, completion: nil)
+            return false
+        }
+        return true
+    }
+
+
+
 }
