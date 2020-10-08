@@ -68,7 +68,9 @@ Extra Features:
 4. Change between **dark mode and light mode** in the nav bar of table view
 
 Screenshots of camera and email features when tested on my device
+https://gitlab.oit.duke.edu/jx95/ece564_hw/-/blob/master/camera.PNG
+https://gitlab.oit.duke.edu/jx95/ece564_hw/-/blob/master/email.PNG
 
-![](camera.PNG)
-
-![](email.PNG)
+## HW7
+* **For the POST, you can only post your own information (the logged in person). Therefore, please make sure that you see your information in the table before you do the POST.**
+* Extra Feature: loading indicator when log in
