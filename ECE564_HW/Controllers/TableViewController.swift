@@ -529,20 +529,20 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
                         var raw_list = [DukePerson]()
                         if let decoded = try? decoder.decode([DukePerson].self, from: data) {
                             raw_list = decoded
-                            self.updateList(raw_list: raw_list)
-                            let _ = DukePerson.saveDukePerson(self.people_list.reduce([], +))
-                            //self.tableView.reloadData()
-                            UIView.transition(with: self.tableView, duration: 0.5, options: .transitionCrossDissolve, animations: {self.tableView.reloadData()}, completion: nil)
+                            print(raw_list)
 
+                            self.updateList(raw_list: raw_list)
+                            DispatchQueue.main.async {
+                                let _ = DukePerson.saveDukePerson(self.people_list.reduce([], +))
+                                self.tableView.reloadData()
+                            }
+                            
                         }
                     }
                 }
             }
             task.resume()
         }
-//        print(self.people_list)
-//        let _ = DukePerson.saveDukePerson(self.people_list.reduce([], +))
-//        self.tableView.reloadData()
     }
     
     func onSuccess(_ loginAlertController: LoginAlert, didFinishSucceededWith status: LoginResults, netidLookupResult: NetidLookupResultData?, netidLookupResultRawData: Data?, cookies: [HTTPCookie]?, lastLoginTime: Date) {
