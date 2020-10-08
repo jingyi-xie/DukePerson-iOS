@@ -159,29 +159,29 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
             var student_list = [DukePerson]()
             // add professor
             let prof_img = self.resizeImage(image: UIImage(named: "ric.jpg")!, targetSize: CGSize(width:200.0, height:200.0)).jpegData(compressionQuality: 1)
-            let prof_str:String = prof_img!.base64EncodedString(options: .lineLength64Characters)
-            let prof = DukePerson(firstName: "Ric", lastName: "Telford", whereFrom: "Chatham County, NC", gender: "Male", hobbies: ["Hiking", "Swimming", "Biking"], role: "Professor", degree: "NA", languages: ["Swift", "C", "C++"], picture: prof_str, team: "None", netid: "rt113", email: "rt113@duke.edu")
+            let prof_str:String = prof_img!.base64EncodedString()
+            let prof = DukePerson(firstName: "Ric", lastName: "Telford", whereFrom: "Chatham County, NC", gender: "Male", hobbies: ["Hiking", "Swimming", "Biking"], role: "Professor", degree: "NA", languages: ["Swift", "C", "C++"], picture: prof_str, team: "None", netid: "rt113", email: "rt113@duke.edu", department: "")
             professor_list.append(prof)
             rawList.append(prof)
             
             // add myself
             let me_img = self.resizeImage(image: UIImage(named: "jingyi.jpeg")!, targetSize: CGSize(width:200.0, height:200.0)).jpegData(compressionQuality: 1)
-            let me_str:String = me_img!.base64EncodedString(options: .lineLength64Characters)
-            let me = DukePerson(firstName: "Jingyi", lastName: "Xie", whereFrom: "China", gender: "Male", hobbies: ["Traveling", "Movies", "Music"], role: "Student", degree: "Grad", languages: ["Python", "Java"], picture: me_str, team: "", netid: "jx95", email: "jx95@duke.edu")
+            let me_str:String = me_img!.base64EncodedString()
+            let me = DukePerson(firstName: "Jingyi", lastName: "Xie", whereFrom: "China", gender: "Male", hobbies: ["Traveling", "Movies", "Music"], role: "Student", degree: "Grad", languages: ["Python", "Java"], picture: me_str, team: "HealthPal", netid: "jx95", email: "jx95@duke.edu", department: "ECE")
             student_list.append(me)
             rawList.append(me)
             
             // add the first ta
             let ta1_img = self.resizeImage(image: UIImage(named: "haohong.jpeg")!, targetSize: CGSize(width:200.0, height:200.0)).jpegData(compressionQuality: 1)
-            let ta1_str:String = ta1_img!.base64EncodedString(options: .lineLength64Characters)
-            let ta1 = DukePerson(firstName: "Haohong", lastName: "Zhao", whereFrom: "China", gender: "Male", hobbies: ["reading books", "jogging"], role: "Teaching Assistant", degree: "Grad", languages: ["swift", "java"], picture: ta1_str, team: "", netid: "hz147", email: "haohong.zhao@duke.edu")
+            let ta1_str:String = ta1_img!.base64EncodedString()
+            let ta1 = DukePerson(firstName: "Haohong", lastName: "Zhao", whereFrom: "China", gender: "Male", hobbies: ["reading books", "jogging"], role: "Teaching Assistant", degree: "Grad", languages: ["swift", "java"], picture: ta1_str, team: "", netid: "hz147", email: "haohong.zhao@duke.edu", department: "")
             ta_list.append(ta1)
             rawList.append(ta1)
             
             // add the second ta
             let ta2_img = self.resizeImage(image: UIImage(named: "yuchen.jpg")!, targetSize: CGSize(width:200.0, height:200.0)).jpegData(compressionQuality: 1)
-            let ta2_str:String = ta2_img!.base64EncodedString(options: .lineLength64Characters)
-            let ta2 = DukePerson(firstName: "Yuchen", lastName: "Yang", whereFrom: "China", gender: "Female", hobbies: ["Dancing"], role: "Teaching Assistant", degree: "Grad", languages: ["Java", "cpp"], picture: ta2_str, team: "", netid: "yy227", email: "yy227@duke.edu")
+            let ta2_str:String = ta2_img!.base64EncodedString()
+            let ta2 = DukePerson(firstName: "Yuchen", lastName: "Yang", whereFrom: "China", gender: "Female", hobbies: ["Dancing"], role: "Teaching Assistant", degree: "Grad", languages: ["Java", "cpp"], picture: ta2_str, team: "", netid: "yy227", email: "yy227@duke.edu", department: "")
             ta_list.append(ta2)
             rawList.append(ta2)
             
@@ -441,7 +441,6 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
         print("in post")
         if !checkLoggedIn(clickLogin: false) || loginResult == nil {
             self.showPostAlert(success: false)
-            print("failed 1")
             return
         }
         let url = URL(string: "https://rt113-dt01.egr.duke.edu:5640/b64entries")!
@@ -453,8 +452,6 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
         let loginString = "\(username):\(password)"
         guard let loginData = loginString.data(using: String.Encoding.utf8) else {
             self.showPostAlert(success: false)
-            print("failed 2")
-
             return
         }
         let base64LoginString = loginData.base64EncodedString()
@@ -464,7 +461,6 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
         let personToUpdate = findPersonToUpdate()
         if personToUpdate == nil {
             self.showPostAlert(success: false)
-            print("failed 3")
             return
         }
         let jsonDict = [
@@ -534,15 +530,19 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
                         if let decoded = try? decoder.decode([DukePerson].self, from: data) {
                             raw_list = decoded
                             self.updateList(raw_list: raw_list)
+                            let _ = DukePerson.saveDukePerson(self.people_list.reduce([], +))
+                            //self.tableView.reloadData()
+                            UIView.transition(with: self.tableView, duration: 0.5, options: .transitionCrossDissolve, animations: {self.tableView.reloadData()}, completion: nil)
+
                         }
                     }
                 }
             }
             task.resume()
         }
-        print(self.people_list)
-        let _ = DukePerson.saveDukePerson(self.people_list.reduce([], +))
-        self.tableView.reloadData()
+//        print(self.people_list)
+//        let _ = DukePerson.saveDukePerson(self.people_list.reduce([], +))
+//        self.tableView.reloadData()
     }
     
     func onSuccess(_ loginAlertController: LoginAlert, didFinishSucceededWith status: LoginResults, netidLookupResult: NetidLookupResultData?, netidLookupResultRawData: Data?, cookies: [HTTPCookie]?, lastLoginTime: Date) {

@@ -71,7 +71,7 @@ public class DukePerson: ECE564, CustomStringConvertible, Codable {
         return des
     }
     
-    init(firstName: String, lastName: String, whereFrom: String, gender: String, hobbies: [String], role: String, degree: String, languages: [String], picture: String, team: String, netid: String, email: String) {
+    init(firstName: String, lastName: String, whereFrom: String, gender: String, hobbies: [String], role: String, degree: String, languages: [String], picture: String, team: String, netid: String, email: String, department: String) {
         self.firstname = firstName
         self.lastname = lastName
         self.wherefrom = whereFrom
@@ -84,7 +84,7 @@ public class DukePerson: ECE564, CustomStringConvertible, Codable {
         self.team = team
         self.netid = netid
         self.email = email
-        self.department = ""
+        self.department = department
         self.id = netid
     }
 
