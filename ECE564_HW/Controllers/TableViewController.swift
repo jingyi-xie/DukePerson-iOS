@@ -538,6 +538,16 @@ class TableViewController: UITableViewController, UISearchBarDelegate, LoginAler
                             }
                             
                         }
+                        else {
+                            DispatchQueue.main.async {
+                                let alert = UIAlertController(title: "Error", message: "Failed to decode. Please check the server (picture).", preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+                                    alert.dismiss(animated: true, completion: nil)
+                                }))
+                                self.present(alert, animated: true, completion: nil)
+                                print("Failed to decode")
+                            }
+                        }
                     }
                 }
             }
